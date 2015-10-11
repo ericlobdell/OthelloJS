@@ -96,4 +96,16 @@ describe( "ScoreKeeper", () => {
             expect( sut ).toEqual( [] );
         } );
     } );
+
+    describe("setScoreForMove", () => {
+        it("should search in all 8 directions for possible points", () => {
+            const gb = [[], [], [], [], [], [], [], []];
+
+            spyOn( _sk, "searchAt" );
+
+            _sk.setScoreForMove( 3, 3, 1, gb );
+
+            expect(_sk.searchAt.calls.count()).toBe(8);
+        });
+    });
 } );

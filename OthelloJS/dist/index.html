@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="en">
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
@@ -7,27 +7,28 @@
     <link href="css/app.min.css" rel="stylesheet" />
 </head>
 <body>
-<div class="container">
+    <div class="container">
 
-    <div class="scoreboards-container">
-        <div class="player-1 score-board">
-            <p>Player One: <span class="score"></span></p>
+        <div class="scoreboards-container">
+            <div class="player-1 score-board">
+                <p>Player One: <span class="score"></span></p>
+            </div>
+            <div class="player-2 score-board">
+                <p>Player Two: <span class="score"></span></p>
+            </div>
         </div>
-        <div class="player-2 score-board">
-            <p>Player Two: <span class="score"></span></p>
-        </div>
-    </div>
         <div class="game-board-container">
             <div class="game-board"></div>
         </div>
 
 
-    <div class="stats">
-        <span class="player"></span>
+        <div class="stats">
+            <span class="player"></span>
+        </div>
     </div>
-</div>
 
-<script src="js/vendor/jQuery.js"></script>
-<script src="js/app.js"></script>
+    <script src="js/vendor/jQuery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.25/browser-polyfill.min.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

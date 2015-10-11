@@ -1,25 +1,17 @@
 /// <reference path="../../typings/jquery/jquery.d.ts" />
 
 (() => {
-    let _playerOne = new Player( 1 ),
-        _playerTwo = new Player( 2 ),
-        _activePlayer = _playerOne,
-        _players = [ _playerOne, _playerTwo ],
-        _scoreKeeper, 
-        _gameOver = false,
-        _startTime = new Date(),
-        _repo = new Repository(),
-        _boardManager = new BoardManager(),
-        gameBoard = _boardManager.getInitialGameboard(),
-        _lastMoveTime = new Date().getMilliseconds();
-
-   
-
-    _scoreKeeper = new ScoreKeeper( _boardManager );
-
+    const _playerOne = new Player( 1 );
+    const _playerTwo = new Player( 2 );
+    let _activePlayer = _playerOne;
+    const _players = [ _playerOne, _playerTwo ];
+    const _boardManager = new BoardManager();
+    const gameBoard = _boardManager.getInitialGameboard();
+    const _scoreKeeper = new ScoreKeeper( _boardManager );
+    
     let renderGameBoard = () => {
-        let html = '';
-
+        console.log("rendering game board");
+        let html = "";
         gameBoard.rows.forEach( ( row, i ) => {
             row.forEach( ( cell, j ) => {
                 html += `<div class='cell' data-target="${cell.isTarget}" data-is-highest-scoring-move="${cell.isHighestScoring}" data-player-num="${cell.player}" data-row-num='${i}' data-col-num='${j}'>${cell.player}</div>`;
@@ -27,75 +19,46 @@
         } );
 
         $( ".game-board" ).html( html );
-    }
-
-    let recordTimeForMove = ( move, matchStartTime ) => {
-        let now = new Date().getMilliseconds();
-
-        move.time = now - _lastMoveTime;
-        move.timeInMatch = now - matchStartTime;
-        _lastMoveTime = now;
-
-        _repo.recordMove( {
-            players: _players,
-            gameBoard: gameBoard,
-            timestamp: now - matchStartTime,
-            gameCompleted: _gameOver
-        } );
     };
-
+    
     $( ".game-board" ).on( "click", ".cell", function () {
-        let $cell = $( this );
-        let row = +$cell.data( "row-num" );
-        let col = +$cell.data( "col-num" );
-        let player = +$cell.data( "player-num" );
-        let isHighestScoring = $cell.data("is-highest-scoring-move");
-        let cellObj = gameBoard.rows[ row ][ col ];
-        let isTarget = $cell.data( "target" );
-        let [ activePlayerNumber, otherPlayerNumber ] = getPlayerNumbers();
-
+        const $cell = $( this );
+        const isTarget = $cell.data( "target" );
         if ( !isTarget )
             return;
 
-        // calculate points and set cell values
-        let hits = _scoreKeeper.setScoreForMove( col, row, activePlayerNumber, gameBoard );
-        let pointsEarned = hits.length;
+        const row = +$cell.data( "row-num" );
+        const col = +$cell.data( "col-num" );
+        const isHighestScoring = $cell.data("is-highest-scoring-move");
+        const cellObj = gameBoard.rows[ row ][ col ];
+        
+        const [ activePlayerNumber, otherPlayerNumber ] = getPlayerNumbers();
 
+        // calculate points and set cell values
+        const hits = _scoreKeeper.setScoreForMove( col, row, activePlayerNumber, gameBoard );
+        console.log("HITS: ", hits);
+
+        const pointsEarned = hits.length;
         if ( pointsEarned === 0 )
             return;
-
-        let move = new Move( row, col, pointsEarned, activePlayerNumber, isHighestScoring );
+        const move = new Move( row, col, pointsEarned, activePlayerNumber, isHighestScoring );
         gameBoard.moves.push( move );
 
         cellObj.player = activePlayerNumber;
 
         hits.forEach( function ( h ) {
-            h.player = activePlayerNumber
+            h.player = activePlayerNumber;
         } );
 
-        recordTimeForMove( move, _startTime );
 
         // check if next player has any moves based on board state
         // no, declare victory, else continue
-        let potentialNextMoves = getPotentialNextMovesForNextPlayer();
+        const potentialNextMoves = getPotentialNextMovesForNextPlayer();
         console.log( "Potential Next Moves: ", potentialNextMoves );
-        let highestScoringNextMove = potentialNextMoves.sort( ( c1, c2 ) => {
+        const highestScoringNextMove = potentialNextMoves.sort( ( c1, c2 ) => {
             return c2.pointValue - c1.pointValue;
         } )[ 0 ];
-
         highestScoringNextMove.isHighestScoring = true;
-
-        //if ( gameOver ) {
-        //    // announce verdict
-        //    console.log("GAME OVER");
-        //} else if ( nextPlayerHasMove ) {
-        //    updateActivePlayer( otherPlayerNumber );
-        //    // change active player in UI
-        //    console.log( "It's now player %d's turn", otherPlayerNumber );
-        //} else if ( currentPlayerHasMove ) {
-        //    // update UI with status
-        //    console.log( "It's still player %d's turn", otherPlayerNumber );
-        //}
 
         updateActivePlayer( otherPlayerNumber );
         renderGameBoard();
@@ -111,42 +74,33 @@
 
     } );
 
+    // Move to Gameboard.get
     function getPotentialNextMovesForNextPlayer() {
-        let flatGamBoard = _scoreKeeper.getFlatGameBoard( gameBoard );
+        const flatGamBoard = _boardManager.getFlatGameBoard( gameBoard );
         flatGamBoard.forEach( ( cell ) => {
-            cell.potentialTarget = false;
+            cell.isTarget = false;
         } );
-
-        let activePlayerCells = flatGamBoard
+        const activePlayerCells = flatGamBoard
             .filter( ( cell ) => {
                 return cell.player === _activePlayer.number;
             } );
-
-        let potentialNextMoves = [];
-
+        const potentialNextMoves = [];
         activePlayerCells.forEach( c => {
-            let above = _boardManager.tryGetCell( c.col, c.row - 1, gameBoard );
+            const above = _boardManager.tryGetCell( c.col, c.row - 1, gameBoard );
             scoreMove( above, potentialNextMoves );
-
-            let aboveRight = _boardManager.tryGetCell( c.col + 1, c.row - 1, gameBoard );
+            const aboveRight = _boardManager.tryGetCell( c.col + 1, c.row - 1, gameBoard );
             scoreMove( aboveRight, potentialNextMoves );
-
-            let aboveLeft = _boardManager.tryGetCell( c.col - 1, c.row - 1, gameBoard );
+            const aboveLeft = _boardManager.tryGetCell( c.col - 1, c.row - 1, gameBoard );
             scoreMove( aboveLeft, potentialNextMoves );
-
-            let left = _boardManager.tryGetCell( c.col - 1, c.row, gameBoard );
+            const left = _boardManager.tryGetCell( c.col - 1, c.row, gameBoard );
             scoreMove( left, potentialNextMoves );
-
-            let right = _boardManager.tryGetCell( c.col + 1, c.row, gameBoard );
+            const right = _boardManager.tryGetCell( c.col + 1, c.row, gameBoard );
             scoreMove( right, potentialNextMoves );
-
-            let below = _boardManager.tryGetCell( c.col, c.row + 1, gameBoard );
+            const below = _boardManager.tryGetCell( c.col, c.row + 1, gameBoard );
             scoreMove( below, potentialNextMoves );
-
-            let belowRight = _boardManager.tryGetCell( c.col + 1, c.row + 1, gameBoard );
+            const belowRight = _boardManager.tryGetCell( c.col + 1, c.row + 1, gameBoard );
             scoreMove( belowRight, potentialNextMoves );
-
-            let belowLeft = _boardManager.tryGetCell( c.col - 1, c.row + 1, gameBoard );
+            const belowLeft = _boardManager.tryGetCell( c.col - 1, c.row + 1, gameBoard );
             scoreMove( belowLeft, potentialNextMoves );
         } );
 
@@ -154,22 +108,19 @@
     }
 
     function moveEarnsPoints( cell ) {
-        let [x,  otherPlayerNumber ] = getPlayerNumbers(),
-            hits = _scoreKeeper.setScoreForMove( cell.col, cell.row, otherPlayerNumber, gameBoard ),
-            points = hits.length,
-            isHit = cell.player === 0 && points > 0;
-
-        return { isHit: isHit, points: points };
+        const [x,  otherPlayerNumber ] = getPlayerNumbers();
+        const hits = _scoreKeeper.setScoreForMove( cell.col, cell.row, otherPlayerNumber, gameBoard );
+        const points = hits.length;
+        const isHit = cell.player === 0 && points > 0;
+        return [ isHit, points ];
     }
 
     function scoreMove( move, potentialNextMoves ) {
         if ( move === null ) return;
-
-        let moveResult = moveEarnsPoints( move );
-       // console.log( "isHit: %d %d points: %d", move.row, move.col, moveResult.points );
-        if ( moveResult.isHit ) {
-            move.potentialTarget = true;
-            move.pointValue = moveResult.points;
+        const [isHit, points] = moveEarnsPoints( move ); 
+        if ( isHit ) {
+            move.isTarget = true;
+            move.pointValue = points;
 
             if ( potentialNextMoves.indexOf( move ) === -1 )
                 potentialNextMoves.push( move );
@@ -177,14 +128,13 @@
     }
 
     function updateActivePlayer( newPlayerNumber ) {
-        let playerIndex = newPlayerNumber === 1 ? 0 : 1;
+        const playerIndex = newPlayerNumber === 1 ? 0 : 1;
         _activePlayer = _players[ playerIndex ];
     }
 
     function updateScoreBoards( players ) {
         players.forEach( function ( player ) {
-            let $playerSoreBoard = $( ".player-" + player.number );
-
+            const $playerSoreBoard = $( ".player-" + player.number );
             player.score = _scoreKeeper.getScoreForPlayer( player.number, gameBoard );
 
             $( ".player-" + player.number + " .score" ).html( player.score );
@@ -198,34 +148,11 @@
         } );
     }
 
-    function setNewGameValues() {
-        gameBoard.rows[ 3 ][ 3 ].player = 1;
-        gameBoard.rows[ 4 ][ 3 ].player = 2;
-        gameBoard.rows[ 3 ][ 4 ].player = 2;
-        gameBoard.rows[ 4 ][ 4 ].player = 1;
-
-        // mark player one potential targets
-        let potentialMoves = [
-            gameBoard.rows[ 2 ][ 4 ],
-            gameBoard.rows[ 3 ][ 5 ],
-            gameBoard.rows[ 4 ][ 2 ],
-            gameBoard.rows[ 5 ][ 3 ]
-        ];
-
-        potentialMoves.forEach( function ( cell ) {
-            cell.isTarget = true;
-        } );
-    }
-
     function getPlayerNumbers() {
-        let otherPlayerIndex = _activePlayer.number === 1 ? 1 : 0;
+        const otherPlayerIndex = _activePlayer.number === 1 ? 1 : 0;
         return [ _activePlayer.number, _players[ otherPlayerIndex ].number ];
     }
 
-    setNewGameValues();
     renderGameBoard();
     updateScoreBoards( _players );
-
-
-    // console.log( "Empty cells: ", _scoreKeeper.getEmptyCells( gameBoard ) );
 })();

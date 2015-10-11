@@ -15,10 +15,10 @@ class ScoreKeeper {
     }
 
     setScoreForMove( x, y, player, gameBoard ) {
-        let hits = [], row = -1, col = -1;
+        let hits = [];
 
-        for ( ; row <= 1; row++ )
-            for ( ; col <= 1; col++ )
+        for ( let row = -1 ; row <= 1; row++ )
+            for ( let col = -1 ; col <= 1; col++ )
                 if ( row === 0 && col === 0 )
                     continue;
                 else
@@ -79,7 +79,7 @@ class ScoreKeeper {
     }
 
     searchAt( x, y, rowInc, colInc, player, gameBoard ) {
-        let cell = this.boardManager.tryGetCell( x + colInc, y + rowInc, gameBoard );
+        const cell = this.boardManager.tryGetCell( x + colInc, y + rowInc, gameBoard );
         return cell !== null ?
             this.calculatePoints( cell, rowInc, colInc, player, gameBoard ) : [];
     }

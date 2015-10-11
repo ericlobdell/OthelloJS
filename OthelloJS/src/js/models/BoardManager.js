@@ -1,9 +1,9 @@
 
 class BoardManager {
 
-    tryGetCell( x, y, gameBoard) {
+    tryGetCell( x, y, gameBoard ) {
         return this.isValidMove( x, y ) ?
-            gameBoard.rows[ y ][ x ] :
+            gameBoard.rows[y][x] :
             null;
     }
 
@@ -28,11 +28,18 @@ class BoardManager {
             if ( ( x === 3 && y === 3 ) || ( x === 4 && y === 4 ) )
                 return 1;
 
-            if ( ( x === 3 && y === 4 ) || ( x === 4 && y === 3  ) )
+            if ( ( x === 3 && y === 4 ) || ( x === 4 && y === 3 ) )
                 return 2;
 
             return 0;
 
+        }
+
+        let cellIsTarget = ( row, col ) => {
+            return ( row === 2 && col === 4 ) ||
+            ( row === 3 && col === 5 ) ||
+            ( row === 4 && col === 2 ) ||
+            ( row === 5 && col === 3 );
         }
 
         const rowNum = 8;
@@ -41,8 +48,8 @@ class BoardManager {
         for ( let i = 0; i < rowNum; i++ ) {
             let row = [];
 
-            for ( let j = 0; j < colNum; j++ ) 
-                row.push( new Cell( i, j, initialPlayer( i, j ) ) );
+            for ( let j = 0; j < colNum; j++ )
+                row.push( new Cell( i, j, initialPlayer( i, j ), cellIsTarget( i, j ) ) );
 
             gameBoard.rows.push( row );
         }
@@ -50,6 +57,6 @@ class BoardManager {
         return gameBoard;
     }
 
-        
-    
+
+
 }

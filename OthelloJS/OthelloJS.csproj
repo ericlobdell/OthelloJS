@@ -104,14 +104,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="src\js\BoardManager.js" />
-    <Content Include="src\js\Gameboard.js" />
+    <Content Include="src\js\models\BoardManager.js" />
+    <Content Include="src\js\models\Gameboard.js" />
     <Content Include="src\js\models\Cell.js" />
     <Content Include="src\js\models\Move.js" />
     <Content Include="src\js\models\Player.js" />
     <Content Include="src\js\othello.js" />
-    <Content Include="src\js\Repository.js" />
-    <Content Include="src\js\ScoreKeeper.js" />
+    <Content Include="src\js\models\Repository.js" />
+    <Content Include="src\js\models\ScoreKeeper.js" />
     <Content Include="tests\spec\BoardManager.spec.js" />
     <Content Include="tests\spec\ScoreKeeper.spec.js" />
     <TypeScriptCompile Include="typings\jasmine\jasmine.d.ts" />

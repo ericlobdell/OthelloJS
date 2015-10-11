@@ -13,7 +13,7 @@ var exec = require('child_process').exec;
 
 
 gulp.task('build', function () {
-    return gulp.src('src/js/**/*.js')
+    return gulp.src( ['src/js/models/*.js', 'src/js/*.js'] )
         .pipe(sourcemaps.init())
         .pipe(babel())
         .pipe(uglify())
