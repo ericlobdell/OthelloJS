@@ -1,10 +1,11 @@
+const _ = null;
 
 describe( "ScoreKeeper", () => {
     var _sk, _bm;
 
-    beforeEach( () => {
+    beforeEach(() => {
         _bm = new BoardManager();
-        _sk = new ScoreKeeper(_bm);
+        _sk = new ScoreKeeper( _bm );
     } );
 
     describe( "getScoreForPlayer", () => {
@@ -16,14 +17,14 @@ describe( "ScoreKeeper", () => {
                     [{ player: 1 }, { player: 0 }, { player: 0 }]
                 ]
             };
-      
+
             const sut = _sk.getScoreForPlayer( 1, gb );
             expect( sut ).toBe( 5 );
         } );
     } );
 
     describe( "resetMoveScoreRatings", () => {
-        it("should set isHighestScoring property to false on all cells", () => {
+        it( "should set isHighestScoring property to false on all cells", () => {
             const expected = {
                 rows: [
                     [
@@ -53,9 +54,9 @@ describe( "ScoreKeeper", () => {
                     [{ player: 1 }, { player: 0 }, { player: 0 }]
                 ]
             };
-            const sut = _sk.resetMoveScoreRatings(gb);
-            expect(sut).toEqual(expected);
-        });
+            const sut = _sk.resetMoveScoreRatings( gb );
+            expect( sut ).toEqual( expected );
+        } );
     } );
 
     describe( "checkCell", () => {
@@ -97,15 +98,88 @@ describe( "ScoreKeeper", () => {
         } );
     } );
 
-    describe("setScoreForMove", () => {
-        it("should search in all 8 directions for possible points", () => {
+    describe("setHitDistance", () => {
+        it("should set the distance from the cell the move originated", () => {
+            const move = new Cell( 1, 1, _, _);
+            const hitRow = 3;
+            const hitCol = 4;
+            _sk.setHitDistance( move, hitRow, hitCol );
+            expect(move.distance).toBe(5);
+        });
+
+    });
+
+    describe( "setScoreForMove", () => {
+        it( "should search in all 8 directions for possible points", () => {
             const gb = [[], [], [], [], [], [], [], []];
 
             spyOn( _sk, "searchAt" );
 
             _sk.setScoreForMove( 3, 3, 1, gb );
+            let calls = _sk.searchAt.calls;
 
-            expect(_sk.searchAt.calls.count()).toBe(8);
+            expect( calls.count() ).toBe( 8 );
+
+            // up and left
+            expect( calls.argsFor( 0 )[2] ).toBe( -1 );
+            expect( calls.argsFor( 0 )[3] ).toBe( -1 );
+
+            // up
+            expect( calls.argsFor( 1 )[2] ).toBe( -1 );
+            expect( calls.argsFor( 1 )[3] ).toBe( 0 );
+
+            // up and right
+            expect( calls.argsFor( 2 )[2] ).toBe( -1 );
+            expect( calls.argsFor( 2 )[3] ).toBe( 1 );
+
+            // left
+            expect( calls.argsFor( 3 )[2] ).toBe( 0 );
+            expect( calls.argsFor( 3 )[3] ).toBe( -1 );
+
+            // right
+            expect( calls.argsFor( 4 )[2] ).toBe( 0 );
+            expect( calls.argsFor( 4 )[3] ).toBe( 1 );
+
+            // down and left
+            expect( calls.argsFor( 5 )[2] ).toBe( 1 );
+            expect( calls.argsFor( 5 )[3] ).toBe( -1 );
+
+            // down
+            expect( calls.argsFor( 6 )[2] ).toBe( 1 );
+            expect( calls.argsFor( 6 )[3] ).toBe( 0 );
+
+            // down and right
+            expect( calls.argsFor( 7 )[2] ).toBe( 1 );
+            expect( calls.argsFor( 7 )[3] ).toBe( 1 );
+        } );
+
+        it( "should calculate the correct score", () => {
+            const gb = _bm.getInitialGameboard();
+            const hits = _sk.setScoreForMove( 5, 3, 1, gb );
+            expect(hits.length).toBe(1);
+
+        } );
+
+        it("should mark the appropriate cell(s) with player number", () => {
+            const gb = _bm.getInitialGameboard();
+            const hits = _sk.setScoreForMove( 5, 3, 1, gb );
+            const sut = gb.rows[4][3].player;
+
+            expect(sut).toBe(1);
+        });
+    } );
+
+    describe("nextMovesForPlayer", () => {
+        it("should return an array of cells that the next player can use as a next move", () => {
+            const gb = _bm.getInitialGameboard();
+
+            const sut = _sk.nextMovesForPlayer( 1, gb );
+
+            expect( sut.length ).toBe( 4 );
+
+
         });
     });
 } );
+
+

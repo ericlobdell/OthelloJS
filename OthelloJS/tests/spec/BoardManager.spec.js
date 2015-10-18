@@ -49,4 +49,52 @@ describe( "BoardManager", function () {
         } )
     } );
 
+    describe( "resetTargetCells", () => {
+        it( "should set isTarget property of all cells to false", () => {
+            let gb = _bm.getInitialGameboard();
+
+            expect( _bm.getFlatGameBoard( gb )
+                .some( c => c.isTarget ) )
+                .toBe( true );
+
+            _bm.resetTargetCells( gb );
+
+            expect( _bm.getFlatGameBoard( gb )
+                .some( c => c.isTarget ) )
+                .toBe( false );
+
+        } );
+    } );
+
+
+    describe( "getPlayerCells", () => {
+        it( "should return an array of cells belonging to the player", () => {
+            let gb = _bm.getInitialGameboard();
+            let player2Cells = _bm.getPlayerCells( 2, gb );
+
+            expect( player2Cells.length ).toBe( 2 );
+            player2Cells.forEach( c => {
+                expect( c.player ).toBe( 2 );
+            } );
+
+        } );
+    } );
+
+    describe( "getOpenAdjacentCells", () => {
+        it( "should return te cells adjacent to the passed cell on the gameboard", () => {
+            let gb = _bm.getInitialGameboard();
+            let position1 = gb.rows[4][3];
+            let sut1 = _bm.getOpenAdjacentCells( position1, gb );
+
+            expect( sut1.length ).toBe( 5 );
+
+            let position2 = gb.rows[0][0];
+            let sut2 = _bm.getOpenAdjacentCells( position2, gb );
+
+            expect( sut2.length ).toBe( 3 );
+
+        } );
+    } );
+
+
 } );

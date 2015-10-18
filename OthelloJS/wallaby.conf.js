@@ -4,8 +4,9 @@ module.exports = function ( wallaby ) {
     return {
         files: [
             {pattern: 'node_modules/babel/node_modules/babel-core/browser-polyfill.js', instrument: false},
-            { pattern: "dist/js/vendor/jQuery.js", instrumant: false },
-           "src/js/**/*.js"
+            { pattern: "dist/js/vendor/jQuery.js", instrument: false },
+           "src/js/**/*.js",
+            { pattern: "src/js/othello.js", instrument: false }
         ],
 
         tests: [
