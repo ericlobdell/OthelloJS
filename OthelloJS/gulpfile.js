@@ -18,7 +18,10 @@ gulp.task('build', function () {
         .pipe(babel())
         .pipe(uglify())
         .pipe(concat('app.js'))
-        .pipe(sourcemaps.write('.'))
+        .pipe( sourcemaps.write( '.', {
+            includeContent: false,
+            sourceRoot: '../src'
+        } ) )
         .pipe(gulp.dest('dist/js'))
         .pipe(reload());
 });
@@ -36,10 +39,7 @@ gulp.task("less", function () {
 
 gulp.task("reload", function () {
 
-    gulp.src("./index.html" )
-        .pipe(reload());
-
-    gulp.src("./tests/SpecRunner.html" )
+    gulp.src("./dist/index.html" )
         .pipe(reload());
 });
 

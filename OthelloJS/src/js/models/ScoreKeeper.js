@@ -6,7 +6,9 @@ class ScoreKeeper {
     }
 
     setScoreForMove( initialRow, initialCol, player, gameBoard ) {
-        let hits = [];
+        var hits = [];
+
+      //  console.log( `Scoring move: ${initialRow}, ${initialCol}, ${player}` )
 
         for ( let row = -1 ; row <= 1; row++ )
             for ( let col = -1 ; col <= 1; col++ )
@@ -24,21 +26,25 @@ class ScoreKeeper {
 
     calculatePoints( initialCell, rowInc, colInc, player, gameBoard ) {
         let cells = [];
-        const self = this;
+        let self = this;
+
+       // console.log( "calculatePoints called with: ", [initialCell, rowInc, colInc, player, gameBoard] );
 
         function getScore( r, c ) {
-            let cell = self.boardManager.tryGetCell( r, c, gameBoard );
+            var cell = self.boardManager.tryGetCell( r, c, gameBoard );
+
+           // console.log( "checking cell: ", cell );
 
             if ( cell === null )
                 return [];
 
-            const result = self.checkCell( cell, player );
+            let result = self.checkCell( cell, player );
+
+           // console.log( "check result: ", result );
 
             if ( !result.isValidMove || result.isEmpty ) {
                 return [];
             } else if ( result.isPoint ) {
-                //self.setHitDistance( cell, r, c );
-                cell.player = player;
                 cells.push( cell );
                 return getScore( r + rowInc, c + colInc );
             } else {
@@ -51,8 +57,8 @@ class ScoreKeeper {
 
     checkCell( cell, player ) {
         var valid = this.boardManager.isValidMove( cell.row, cell.col ),
-              empty = valid ? cell.player === 0 : false,
-              point = valid ? cell.player !== player && !empty : false;
+            empty = valid ? cell.player === 0 : false,
+            point = valid ? cell.player !== player && !empty : false;
 
         return {
             isValidMove: valid,
@@ -79,26 +85,25 @@ class ScoreKeeper {
     }
 
     searchAt( row, col, rowInc, colInc, player, gameBoard ) {
-        const cell = this.boardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
+        let cell = this.boardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
         return cell !== null ?
             this.calculatePoints( cell, rowInc, colInc, player, gameBoard ) : [];
     }
 
     nextMovesForPlayer( player, gameBoard ) {
-        const _this = this;
+        let _this = this;
         var nextMoves = [];
         let opponent = player === 1 ? 2 : 1;
 
         _this.boardManager.resetTargetCells( gameBoard );
 
-        let opponentsCells = _this.boardManager.getPlayerCells( opponent, gameBoard );
+        var opponentsCells = _this.boardManager.getPlayerCells( opponent, gameBoard );
 
-        //console.log( opponentsCells );
-        
+        console.log( opponentsCells );
+
         opponentsCells.forEach( c => {
-                let adjacentCells = _this.boardManager.getOpenAdjacentCells( c, gameBoard );
-                
-                console.log( adjacentCells );
+
+                var adjacentCells = _this.boardManager.getOpenAdjacentCells( c, gameBoard );
 
                 adjacentCells.forEach( ac => {
 
