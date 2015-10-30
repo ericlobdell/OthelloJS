@@ -9,7 +9,7 @@
     let _boardManager = new BoardManager();
     let _gameBoard = _boardManager.getInitialGameboard();
     let _scoreKeeper = new ScoreKeeper( _boardManager );
-    let _othello = new Othello( _scoreKeeper );
+    let _othello = new Othello();
 
     let renderGameBoard = () => {
         let html = "";

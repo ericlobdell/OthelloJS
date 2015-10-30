@@ -1,29 +1,20 @@
 ﻿
-class Othello {
 
-    constructor( scoreKeeper ) {
-        this.scoreKeeper = scoreKeeper;
-    }
+
+class Othello {
 
     // prep
     sortMovesByPointValue( moves ) {
-        let copy = moves.map( m => m );
-
-        return copy.sort(( m1, m2 ) =>
-            m2.pointValue - m1.pointValue );
+        return this.copy( moves )
+            .sort(( m1, m2 ) =>
+                m2.pointValue - m1.pointValue );
     }
 
     sortMovesByCornerPosition( moves ) {
-        let copy = moves.map( m => m );
-
-        return copy.sort(( m1, m2 ) =>
-            this.isCorner( m2 ) - this.isCorner( m1 ) );
+        return this.copy( moves )
+            .sort(( m1, m2 ) =>
+                this.isCorner( m2 ) - this.isCorner( m1 ) );
     }
-
-    getHighestScoringMove( moves ) {
-        return this.sortMovesByPointValue( moves )[0];
-    }
-
 
     // classify
     isCorner( move ) {
@@ -38,23 +29,25 @@ class Othello {
                ( move.col === 0 || move.col === 7 );
     }
 
-    
-
-
-    // rank
-
     // choose
+    getHighestScoringMove( moves ) {
+        return this.sortMovesByPointValue( moves )[0];
+    }
 
     // act
     makeMove( availableMoves ) {
-        let topScoringMove = this.sortMovesByPointValue( availableMoves )[0];
-        let cornerMoves = availableMoves.filter( m => this.isCorner( m ) );
-
+        let topScoringMove = this.getHighestScoringMove( availableMoves );
+        let cornerMoves = availableMoves
+            .filter( m => this.isCorner( m ) );
 
         return {
             row: topScoringMove.row,
             col: topScoringMove.col
         }
+    }
+
+    copy( arr ) {
+        return arr.map( x => x );
     }
 
 }
