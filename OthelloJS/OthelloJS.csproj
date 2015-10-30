@@ -74,6 +74,7 @@
     <Content Include="package.json" />
     <Content Include="src\less\app.less" />
     <Content Include="tests\MIT.LICENSE" />
+    <Content Include="tests\spec\Repository.spec.js" />
     <Content Include="tsd.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

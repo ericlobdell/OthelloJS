@@ -179,7 +179,32 @@ describe( "ScoreKeeper", () => {
             nextMoves.forEach(
                 m => expect( m.isTarget ).toBe( true ) );
         } );
-    });
+    } );
+
+    describe( "getLeader", () => {
+        it( "should return the player number of the player with the higher score", () => {
+            let p1 = new Player( 1 );
+            let p2 = new Player( 2 );
+
+            p1.score = 10;
+            p2.score = 4;
+
+            let sut = _sk.getLeader( p1, p2 );
+            expect( sut ).toBe( 1 );
+        } );
+
+        it( "should return zero if scores are equal", () => {
+            let p1 = new Player( 1 );
+            let p2 = new Player( 2 );
+
+            p1.score = 10;
+            p2.score = 10;
+
+            let sut = _sk.getLeader( p1, p2 );
+            expect( sut ).toBe( 0 );
+        } );
+
+    } );
 } );
 
 

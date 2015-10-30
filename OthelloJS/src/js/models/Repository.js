@@ -15,7 +15,7 @@ class Repository {
 
     getSnapshotPattern( gameboard ) {
         return gameboard.moves.reduce( ( pattern, move ) => {
-            return pattern + `${move.x}-${move.y}-${move.player}-${ +move.wasHighestScoring || 0},`;
+            return pattern + `${move.col}-${move.row}-${move.player}-${ +move.wasHighestScoring || 0},`;
         }, "" );
     }
 }
