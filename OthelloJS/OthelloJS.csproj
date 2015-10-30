@@ -72,8 +72,10 @@
     <Content Include="dist\app.js.map" />
     <Content Include="dist\js\app.js.map" />
     <Content Include="package.json" />
+    <Content Include="src\js\othello.ai.js" />
     <Content Include="src\less\app.less" />
     <Content Include="tests\MIT.LICENSE" />
+    <Content Include="tests\spec\Othello.ai.spec.js" />
     <Content Include="tests\spec\Repository.spec.js" />
     <Content Include="tsd.json" />
     <None Include="Web.Debug.config">
@@ -110,7 +112,7 @@
     <Content Include="src\js\models\Cell.js" />
     <Content Include="src\js\models\Move.js" />
     <Content Include="src\js\models\Player.js" />
-    <Content Include="src\js\othello.js" />
+    <Content Include="src\js\othello.loop.js" />
     <Content Include="src\js\models\Repository.js" />
     <Content Include="src\js\models\ScoreKeeper.js" />
     <Content Include="tests\spec\BoardManager.spec.js" />
