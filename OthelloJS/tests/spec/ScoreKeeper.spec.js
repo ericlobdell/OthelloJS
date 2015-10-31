@@ -1,3 +1,8 @@
+/// <reference path="../lib/jasmine/jasmine.js" />
+/// <reference path="D:\repos\JS\OthelloJS\OthelloJS\src/js/models/Move.js" />
+/// <reference path="ScoreKeeper.spec.js" />
+/// <reference path="BoardManager.spec.js" />
+
 let _ = null;
 
 describe( "ScoreKeeper", () => {
@@ -204,6 +209,20 @@ describe( "ScoreKeeper", () => {
             expect( sut ).toBe( 0 );
         } );
 
+    } );
+
+    describe( "recordMove", () => {
+        it( "should return a falsy value for a non-scoring move", function () {
+            let gb = _bm.getInitialGameboard();
+
+            expect( _sk.recordMove( 0, 0, 1, gb ) ).toBeFalsy();
+        } );
+
+        it( "should return the point value for a scoring move", () => {
+            let gb = _bm.getInitialGameboard();
+
+            expect( _sk.recordMove( 5, 3, 1, gb ) ).toBe(1);
+        } );
     } );
 } );
 

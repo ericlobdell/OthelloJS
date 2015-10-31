@@ -1,3 +1,4 @@
+/// <reference path="D:\repos\JS\OthelloJS\OthelloJS\src/js/models/Move.js" />
 
 class ScoreKeeper {
 
@@ -16,6 +17,20 @@ class ScoreKeeper {
                     hits = hits.concat( this.searchAt( initialRow, initialCol, row, col, player, gameBoard ) );
 
         return hits;
+    }
+
+    recordMove( row, col, player, gameBoard ) {
+        let opponentCaptures = this.setScoreForMove( row, col, player, gameBoard );
+
+        if ( opponentCaptures.length ) {
+            let move = new Move( row, col, opponentCaptures.length, player );
+            gameBoard.moves.push( move );
+            gameBoard.rows[row][col].player = player;
+            opponentCaptures.forEach( c => c.player = player );
+        }
+            
+        return opponentCaptures.length;
+
     }
 
     setHitDistance( move, col, row ) {
