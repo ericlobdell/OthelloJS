@@ -108,6 +108,11 @@ class ScoreKeeper {
             this.calculatePoints( cell, rowInc, colInc, player, gameBoard ) : [];
     }
 
+    setPlayerScores( players, gameBoard ) {
+        players.forEach( p => 
+            p.score = this.getScoreForPlayer( p.number, gameBoard ) );
+    }
+
     nextMovesForPlayer( player, gameBoard ) {
         let _this = this;
         var nextMoves = [];

@@ -5,13 +5,15 @@ class Othello {
 
     // prep
     sortMovesByPointValue( moves ) {
-        return this.copy( moves )
+        return moves
+            .map( x => x )
             .sort(( m1, m2 ) =>
                 m2.pointValue - m1.pointValue );
     }
 
     sortMovesByCornerPosition( moves ) {
-        return this.copy( moves )
+        return moves
+            .map( x => x )
             .sort(( m1, m2 ) =>
                 this.isCorner( m2 ) - this.isCorner( m1 ) );
     }
@@ -36,18 +38,20 @@ class Othello {
 
     // act
     makeMove( availableMoves ) {
-        let topScoringMove = this.getHighestScoringMove( availableMoves );
+        let nextMove = {};
         let cornerMoves = availableMoves
             .filter( m => this.isCorner( m ) );
 
-        return {
-            row: topScoringMove.row,
-            col: topScoringMove.col
-        }
-    }
+        if ( cornerMoves.length ) 
+            nextMove = this.getHighestScoringMove( cornerMoves );
 
-    copy( arr ) {
-        return arr.map( x => x );
+        else 
+            nextMove = this.getHighestScoringMove( availableMoves );
+
+        return {
+            row: nextMove.row,
+            col: nextMove.col
+        }
     }
 
 }
