@@ -118,16 +118,17 @@ class ScoreKeeper {
         var nextMoves = [];
         let highScore = 0;
         let opponent = player === 1 ? 2 : 1;
+        let gameBoardCopy = { rows: gameBoard.rows.map( x => x ) };
 
-        _this.boardManager.resetTargetCells( gameBoard );
+        _this.boardManager.resetTargetCells( gameBoardCopy );
 
-        _this.boardManager.getPlayerCells( opponent, gameBoard )
+        _this.boardManager.getPlayerCells( opponent, gameBoardCopy )
             .forEach( c => {
 
-                _this.boardManager.getOpenAdjacentCells( c, gameBoard )
+                _this.boardManager.getOpenAdjacentCells( c, gameBoardCopy )
                     .forEach( ac => {
 
-                        let pointsEarned = _this.setScoreForMove( ac.row, ac.col, player, gameBoard ).length;
+                        let pointsEarned = _this.setScoreForMove( ac.row, ac.col, player, gameBoardCopy ).length;
 
                         highScore = ( highScore > pointsEarned ) ? highScore : pointsEarned;
 

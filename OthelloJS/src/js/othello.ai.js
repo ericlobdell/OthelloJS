@@ -11,13 +11,6 @@ class Othello {
                 m2.pointValue - m1.pointValue );
     }
 
-    sortMovesByCornerPosition( moves ) {
-        return moves
-            .map( x => x )
-            .sort(( m1, m2 ) =>
-                this.isCorner( m2 ) - this.isCorner( m1 ) );
-    }
-
     // classify
     isCorner( move ) {
         let corners = [[0, 0], [0, 7], [7, 0], [7, 7]];
@@ -38,14 +31,20 @@ class Othello {
 
     // act
     makeMove( availableMoves ) {
-        let nextMove = {};
         let cornerMoves = availableMoves
             .filter( m => this.isCorner( m ) );
 
-        if ( cornerMoves.length ) 
+        let edgeMoves = availableMoves
+            .filter( m => this.isEdge( m ) );
+
+        let nextMove = {};
+        if ( cornerMoves.length )
             nextMove = this.getHighestScoringMove( cornerMoves );
 
-        else 
+        else if ( edgeMoves.length )
+            nextMove = this.getHighestScoringMove( edgeMoves );
+
+        else
             nextMove = this.getHighestScoringMove( availableMoves );
 
         return {

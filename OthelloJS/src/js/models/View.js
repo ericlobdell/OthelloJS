@@ -17,7 +17,6 @@ class View {
                 let row = +$cell.data( "row-num" );
                 let col = +$cell.data( "col-num" );
 
-                console.log( "notifying!" );
                 _this.onMove.notify( { row: row, col: col } );
             } );
         } );
@@ -25,7 +24,6 @@ class View {
     }
 
     renderGameBoard( gameBoard ) {
-        console.log( "Rendering: ", gameBoard );
         let html = "";
         gameBoard.rows.forEach( row => {
             row.forEach( cell => {
@@ -37,7 +35,7 @@ class View {
     }
 
     updateScoreBoards( players, currentPlpayer ) {
-        players.forEach( function ( player ) {
+        players.forEach(  player => {
             let $playerSoreBoard = $( ".player-" + player.number );
 
             $( ".player-" + player.number + " .score" ).html( player.score );

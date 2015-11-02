@@ -37,21 +37,6 @@
         } );
     } );
 
-    describe( "sortMovesByCornerPosition", () => {
-        it( "should return moves sorted by pointValue high to low", () => {
-            let notCornerMove1 = { row: 0, col: 3 };
-            let cornerMove = { row: 7, col: 0 }
-            let notCornerMove2 = { row: 4, col: 3 };
-            let notCornerMove3 = { row: 5, col: 0 }
-
-            let moves = [notCornerMove2, notCornerMove1, cornerMove, notCornerMove3];
-
-
-            let sut = _othello.sortMovesByCornerPosition( moves );
-            expect( sut[0] ).toEqual( cornerMove );
-        } );
-    } );
-
     describe( "getHighestScoringMove", () => {
         it( "should return a move with the highest pointValue", () => {
             let moves = [{ pointValue: 2 }, { pointValue: 4 }, { pointValue: 2 }, { pointValue: 1 }];
@@ -61,7 +46,7 @@
     } );
 
     describe( "makeMove", () => {
-        it( "should return the coordinates of the emove it wants to make", () => {
+        it( "should return the coordinates of the move it wants to make", () => {
             let moves = [
                 { col: 1, row: 1, pointValue: 4 },
                 { col: 2, row: 3, pointValue: 3 },
@@ -71,7 +56,28 @@
             let sut = _othello.makeMove( moves );
             expect( sut )
                 .toEqual( { row: jasmine.any( Number ), col: jasmine.any( Number ) } );
-        } )
+        } );
+
+        it( "should select a corner position even if it isn't the ehighest scoring move", () => {
+            let nonCorner1 = { col: 6, row: 2, pointValue: 4 };
+            let nonCorner2 = { col: 1, row: 2, pointValue: 6 };
+            let cornerMove = { col: 0, row: 0, pointValue: 3 };
+
+            let sut = _othello.makeMove( [nonCorner1, cornerMove, nonCorner2] );
+            expect( sut ).toEqual( { row: cornerMove.row, col: cornerMove.col } );
+        } );
+
+        it( "should select an edge position even if it isn't the ehighest scoring move, but nocorner available", () => {
+            let nonEdge1 = { col: 6, row: 2, pointValue: 4 };
+            let nonEdge2 = { col: 1, row: 2, pointValue: 6 };
+            let edgeMove = { col: 4, row: 0, pointValue: 3 };
+
+            let sut = _othello.makeMove( [nonEdge1, edgeMove, nonEdge2] );
+            expect( sut ).toEqual( { row: edgeMove.row, col: edgeMove.col } );
+        } );
+
+    
+
     } );
 
 } );
