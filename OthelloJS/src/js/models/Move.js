@@ -5,6 +5,6 @@
         this.row = row;
         this.pointValue = points;
         this.player = playerId;
-        this.highestScoring = isHighestScoring || false;
+        this.isHighestScoring = isHighestScoring || false;
     }
 }

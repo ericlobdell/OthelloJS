@@ -4,27 +4,43 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300,700' rel='stylesheet' type='text/css'>
     <meta charset="UTF-8">
     <title>Othello</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
     <link href="css/app.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
+    <div class="container shell">
 
-        <div class="scoreboards-container">
-            <div class="player-1 score-board">
-                <p>Player One: <span class="score"></span></p>
+        <div class="row">
+            <div class="col-sm-12 demo-toolbar">
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="show-move-marks" value=""> Show Move Marking
+                </label>
+
+                <label class="checkbox-inline">
+                    <input type="checkbox" class="show-logging" value=""> Show Decision Logging
+                </label>
             </div>
-            <div class="player-2 score-board">
-                <p>Player Two: <span class="score"></span></p>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 scoreboards-container">
+                <div class="player-1 score-board">
+                    <p>Player One: <span class="score"></span></p>
+                </div>
+                <div class="player-2 score-board">
+                    <p>Player Two: <span class="score"></span></p>
+                </div>
+            </div>
+
+            <div class="col-sm-6 game-board-container">
+                <div class="game-board"></div>
+            </div>
+
+            <div class="col-sm-3 logging-container">
+                <p>Logging container</p>
+                <p>Logging container second entry</p>
             </div>
         </div>
-        <div class="game-board-container">
-            <div class="game-board"></div>
-        </div>
 
-
-        <div class="stats">
-            <span class="player"></span>
-        </div>
     </div>
 
     <script src="js/vendor/jQuery.js"></script>

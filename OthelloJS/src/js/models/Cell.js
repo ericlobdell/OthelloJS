@@ -6,5 +6,6 @@ class Cell {
         this.col = col;
         this.player = player;
         this.isTarget = isTarget;
+        this.distance = 0;
     }
 }

@@ -103,13 +103,29 @@ describe( "ScoreKeeper", () => {
         } );
     } );
 
-    describe("setHitDistance", () => {
+    describe("getHitDistance", () => {
         it("should set the distance from the cell the move originated", () => {
             let move = new Cell( 1, 1, _, _);
-            let hitRow = 3;
+            let hitRow = 4;
             let hitCol = 4;
-            _sk.setHitDistance( move, hitRow, hitCol );
-            expect(move.distance).toBe(5);
+            let d = _sk.getHitDistance( move, hitRow, hitCol );
+
+            expect( d ).toBe(3);
+
+            let hitRow2 = 1;
+            let hitCol2 = 5;
+            let d2 = _sk.getHitDistance( move, hitRow2, hitCol2 );
+
+            expect(d2).toBe(4);
+
+            let hitRow3 = 3;
+            let hitCol3 = 1;
+            let d3 = _sk.getHitDistance( move, hitRow3, hitCol3 );
+
+            expect(d3).toBe(2);
+
+
+
         });
 
     });

@@ -14,19 +14,19 @@
     // manage game modes
     let gameModes = { singlePlayer: 0, twoPlayer: 1, learning: 2 };
     // hard code for now
-    let gameMode = gameModes.learning;
+    let gameMode = gameModes.twoPlayer;
 
     let handleOnMove = ( move ) => {
-        let pointsEarned = _scoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard );
+        let opponentCaptures = _scoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard );
+        let pointsEarned = opponentCaptures.length;
 
         if ( pointsEarned ) {
             let opponentNextMoves = _scoreKeeper.nextMovesForPlayer( _otherPlayer.number, _gameBoard );
 
 
             _scoreKeeper.setPlayerScores( _players, _gameBoard );
-            _view.updateScoreBoards( _players, _currentPlayer.number );
 
-            _view.renderGameBoard( _gameBoard );
+            _view.renderGameBoard( _gameBoard, opponentCaptures );
             _scoreKeeper.resetMoveScoreRatings( _gameBoard );
 
             if ( opponentNextMoves.length ) {
@@ -34,14 +34,15 @@
 
                 // computer player (inter) actions
                 if ( isComputerPlayerTurn( gameMode, _otherPlayer ) ) {
-                    console.log( "Othello is thinking..." );
+                    _view.updateLogging( "Othello is thinking..." );
                     setTimeout(() => {
                         let nextMove = _othello.makeMove( opponentNextMoves );
-                        console.log( `Othello is making move at row:${nextMove.row}, col:${nextMove.col}` );
+
+                        _view.updateLogging( `<p>Othello is making move at row:${nextMove.row}, col:${nextMove.col}</p>` );
 
                         handleOnMove( nextMove );
 
-                    }, 1000 );
+                    }, 2000 );
                 }
 
                 updateActivePlayer( _currentPlayer.number );
@@ -72,6 +73,8 @@
                         console.log( `Game Over! We have a tie!` );
                 }  
             }
+
+            _view.updateScoreBoards( _players, _currentPlayer.number );
         }
 
     }
@@ -92,7 +95,7 @@
     }
 
     _view.onMove.subscribe( handleOnMove );
-    _view.renderGameBoard( _gameBoard );
+    _view.renderGameBoard( _gameBoard, [] );
     _view.updateScoreBoards( _players, _currentPlayer.number );
 
 } )();

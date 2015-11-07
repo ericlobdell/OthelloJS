@@ -2,15 +2,15 @@
 
 class ScoreKeeper {
 
-    constructor( boardManager ) {
+    constructor ( boardManager ) {
         this.boardManager = boardManager;
     }
 
-    setScoreForMove( initialRow, initialCol, player, gameBoard ) {
+    setScoreForMove ( initialRow, initialCol, player, gameBoard ) {
         var hits = [];
 
-        for ( let row = -1 ; row <= 1; row++ )
-            for ( let col = -1 ; col <= 1; col++ )
+        for ( let row = -1; row <= 1; row++ )
+            for ( let col = -1; col <= 1; col++ )
                 if ( row === 0 && col === 0 )
                     continue;
                 else
@@ -19,29 +19,39 @@ class ScoreKeeper {
         return hits;
     }
 
-    recordMove( row, col, player, gameBoard ) {
+    recordMove ( row, col, player, gameBoard ) {
         let opponentCaptures = this.setScoreForMove( row, col, player, gameBoard );
+        let currentMove =  new Move( row, col, opponentCaptures.length, player);
 
         if ( opponentCaptures.length ) {
-            let move = new Move( row, col, opponentCaptures.length, player );
-            gameBoard.moves.push( move );
-            gameBoard.rows[row][col].player = player;
-            opponentCaptures.forEach( c => c.player = player );
+            gameBoard.moves.push( currentMove );
+            gameBoard.rows[ row ][ col ].player = player;
+            opponentCaptures.forEach( c => {
+
+                c.distance = this.getHitDistance( currentMove, c.col, c.row );
+                c.player = player;
+                c.isHit = true;
+
+            } );
         }
-            
-        return opponentCaptures.length;
+
+        return opponentCaptures;
 
     }
 
-    setHitDistance( move, col, row ) {
-        move.distance = Math.abs( col - move.col ) + Math.abs( row - move.row );
+    getHitDistance ( move, col, row ) {
+        let yDiff = Math.abs( row - move.row );
+        let xDiff = Math.abs( col - move.col );
+
+        return xDiff || yDiff;
+
     }
 
-    calculatePoints( initialCell, rowInc, colInc, player, gameBoard ) {
+    calculatePoints ( initialCell, rowInc, colInc, player, gameBoard ) {
         let cells = [];
         let self = this;
 
-        function getScore( r, c ) {
+        function getScore ( r, c ) {
             var cell = self.boardManager.tryGetCell( r, c, gameBoard );
 
             if ( cell === null )
@@ -62,7 +72,7 @@ class ScoreKeeper {
         return getScore( initialCell.row, initialCell.col );
     }
 
-    checkCell( cell, player ) {
+    checkCell ( cell, player ) {
         var valid = this.boardManager.isValidMove( cell.row, cell.col ),
             empty = valid ? cell.player === 0 : false,
             point = valid ? cell.player !== player && !empty : false;
@@ -74,9 +84,9 @@ class ScoreKeeper {
         };
     }
 
-    getScoreForPlayer( playerNumber, gameBoard ) {
+    getScoreForPlayer ( playerNumber, gameBoard ) {
         return this.boardManager.getFlatGameBoard( gameBoard )
-            .reduce(( score, cell ) => {
+            .reduce( ( score, cell ) => {
                 if ( cell.player === playerNumber )
                     score++;
 
@@ -84,7 +94,7 @@ class ScoreKeeper {
             }, 0 );
     }
 
-    getLeader( player1, player2 ) {
+    getLeader ( player1, player2 ) {
         if ( player1.score > player2.score )
             return 1;
 
@@ -95,30 +105,34 @@ class ScoreKeeper {
             return 0;
     }
 
-    resetMoveScoreRatings( gameBoard ) {
+    resetMoveScoreRatings ( gameBoard ) {
         this.boardManager.getFlatGameBoard( gameBoard )
-            .forEach( cell  => cell.isHighestScoring = false );
+            .forEach( cell  => {
+                cell.isHighestScoring = false;
+                cell.isHit = false;
+                cell.distance = 0;
+            } );
 
         return gameBoard;
     }
 
-    searchAt( row, col, rowInc, colInc, player, gameBoard ) {
+    searchAt ( row, col, rowInc, colInc, player, gameBoard ) {
         let cell = this.boardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
         return cell !== null ?
             this.calculatePoints( cell, rowInc, colInc, player, gameBoard ) : [];
     }
 
-    setPlayerScores( players, gameBoard ) {
-        players.forEach( p => 
+    setPlayerScores ( players, gameBoard ) {
+        players.forEach( p =>
             p.score = this.getScoreForPlayer( p.number, gameBoard ) );
     }
 
-    nextMovesForPlayer( player, gameBoard ) {
+    nextMovesForPlayer ( player, gameBoard ) {
         let _this = this;
         var nextMoves = [];
         let highScore = 0;
         let opponent = player === 1 ? 2 : 1;
-        let gameBoardCopy = { rows: gameBoard.rows.map( x => x ) };
+        let gameBoardCopy = { rows: gameBoard.rows.slice(0) };
 
         _this.boardManager.resetTargetCells( gameBoardCopy );
 
