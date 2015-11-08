@@ -28,42 +28,6 @@ describe( "ScoreKeeper", () => {
         } );
     } );
 
-    describe( "resetMoveScoreRatings", () => {
-        it( "should set isHighestScoring property to false on all cells", () => {
-            let expected = {
-                rows: [
-                    [
-                        { player: 1, isHighestScoring: false }, { player: 1, isHighestScoring: false }, {
-                            player: 0,
-                            isHighestScoring: false
-                        }
-                    ],
-                    [
-                        { player: 1, isHighestScoring: false }, { player: 1, isHighestScoring: false }, {
-                            player: 0,
-                            isHighestScoring: false
-                        }
-                    ],
-                    [
-                        { player: 1, isHighestScoring: false }, { player: 0, isHighestScoring: false }, {
-                            player: 0,
-                            isHighestScoring: false
-                        }
-                    ]
-                ]
-            };
-            let gb = {
-                rows: [
-                    [{ player: 1, isHighestScoring: true }, { player: 1 }, { player: 0 }],
-                    [{ player: 1 }, { player: 1 }, { player: 0 }],
-                    [{ player: 1 }, { player: 0 }, { player: 0 }]
-                ]
-            };
-            let sut = _sk.resetMoveScoreRatings( gb );
-            expect( sut ).toEqual( expected );
-        } );
-    } );
-
     describe( "checkCell", () => {
         it( "should return an object with the results from scoring that location for player", () => {
             var sut = _sk.checkCell( { player: 2, row: 2, col: 1 }, 1 );
@@ -228,17 +192,7 @@ describe( "ScoreKeeper", () => {
     } );
 
     describe( "recordMove", () => {
-        it( "should return a falsy value for a non-scoring move", function () {
-            let gb = _bm.getInitialGameboard();
-
-            expect( _sk.recordMove( 0, 0, 1, gb ) ).toBeFalsy();
-        } );
-
-        it( "should return the point value for a scoring move", () => {
-            let gb = _bm.getInitialGameboard();
-
-            expect( _sk.recordMove( 5, 3, 1, gb ) ).toBe(1);
-        } );
+        
     } );
 } );
 

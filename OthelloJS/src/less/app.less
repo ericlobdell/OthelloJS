@@ -1,14 +1,18 @@
 @import "animations";
 
+
 .game-board-container {
     padding: 1em;
     box-sizing: border-box;
+
 
     .game-board {
         width: 500px;
         height: 500px;
         box-sizing: border-box;
         margin: 0 auto;
+        padding:1em;
+        border: 1px solid #eee;
     }
 }
 
@@ -38,7 +42,7 @@
 }
 
 .cell {
-    font-weight: lighter;
+    font-weight: 300;
     width: 100%/8;
     height: 100%/8;
     float: left;
@@ -46,20 +50,22 @@
     text-align: center;
     border: 1px solid #eee;
     box-sizing: border-box;
-    padding: 1.9em 0;
     cursor: pointer;
+    background: #006600;
 
-    &:hover {
-        border: 1px solid #666;
-    }
 
     &[data-player-num="1"] {
-        background: #000;
-        color: #fff;
+        .player-game-piece {
+            .game-piece(#fff);
+        }
+
     }
 
     &[data-player-num="2"] {
-        background: #ccc;
+        .player-game-piece {
+            .game-piece(#222);
+        }
+
     }
 
 
@@ -67,8 +73,16 @@
 
 .shell {
     margin: 2em auto;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Roboto', sans-serif;
     width: 1200px;
+
+
+    .title {
+        font-weight: 700;
+        font-size: 2em;
+        display: inline-block;
+        margin: 0 2em 0 0;
+    }
 
     .demo-toolbar {
         margin: 1em 0;
@@ -77,11 +91,11 @@
     &.show-marks {
         .cell {
             &[data-target="true"] {
-                border: 1px solid #FF0000;
+                border: 3px solid #0b97c4;
             }
 
             &[data-is-highest-scoring-move="true"] {
-                background: #ff0000;
+                background: #0b97c4;
             }
         }
     }
@@ -92,4 +106,20 @@
             display: block;
         }
     }
+}
+
+.border-radius(@rad) {
+    border-radius: @rad;
+    -moz-border-radius: @rad;
+    -webkit-border-radius: @rad;
+}
+.round(@diameter) {
+    .border-radius(@diameter / 2);
+    height: @diameter;
+    width: @diameter;
+}
+.game-piece(@bgcolor) {
+    .round(90%);
+    background: @bgcolor;
+    margin: 5% auto;
 }

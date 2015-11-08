@@ -55,7 +55,7 @@
                               data-player-num="${cell.player}"
                               data-row-num='${cell.row}'
                               data-col-num='${cell.col}'>
-                              ${cell.player}
+                              ${ cell.player ? "<div class='player-game-piece'></div>" : '' }
                          </div>`;
             } );
         } );
@@ -68,7 +68,7 @@
             .sort( (d1, d2) => d1 - d2 )
             .forEach( (d, i) => {
                 setTimeout( () => {
-                    $(`[data-distance='${d}']`)
+                    $(`[data-distance='${d}'] .player-game-piece`)
                         .addClass("animated pulse");
                 }, 200 * i );
             } );
