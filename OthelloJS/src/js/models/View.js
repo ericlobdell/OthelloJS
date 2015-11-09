@@ -43,10 +43,19 @@
 
     }
 
+    markInitialPlayerPieces ( gameBoard ) {
+
+    }
+
     renderGameBoard ( gameBoard, opponentCaptures ) {
         let html = "";
+
         gameBoard.rows.forEach( row => {
             row.forEach( cell => {
+
+                let cellContents = cell.player ?
+                    `<div class='player-game-piece'></div>` : '';
+
                 html += `<div class='cell'
                               title='row: ${cell.row} col: ${cell.col} distance: ${cell.distance} isTarget: ${cell.isTarget}'
                               data-target="${cell.isTarget}"
@@ -54,9 +63,7 @@
                               data-is-highest-scoring-move="${cell.isHighestScoring}"
                               data-player-num="${cell.player}"
                               data-row-num='${cell.row}'
-                              data-col-num='${cell.col}'>
-                              ${ cell.player ? "<div class='player-game-piece'></div>" : '' }
-                         </div>`;
+                              data-col-num='${cell.col}'>${ cellContents }</div>`;
             } );
         } );
 
@@ -64,13 +71,13 @@
 
         opponentCaptures
             .map( c => c.distance )
-            .filter( ( d, i, uniqueValues ) => uniqueValues.indexOf(d) === i )
-            .sort( (d1, d2) => d1 - d2 )
-            .forEach( (d, i) => {
+            .filter( ( d, i, uniqueDistances ) => uniqueDistances.indexOf( d ) === i )
+            .sort( ( d1, d2 ) => d1 - d2 )
+            .forEach( ( d, i ) => {
                 setTimeout( () => {
-                    $(`[data-distance='${d}'] .player-game-piece`)
-                        .addClass("animated pulse");
-                }, 200 * i );
+                    $( `[data-distance='${d}'] .player-game-piece` )
+                        .addClass( `animated-fast pulse` );
+                }, 75 * i );
             } );
     }
 
@@ -88,6 +95,11 @@
             }
 
         } );
+    }
+
+    announceWinner( playerNumber ) {
+        $(`.score-board.player-${ playerNumber }`)
+            .addClass("active animated tada");
     }
 
     updateLogging ( entry ) {
