@@ -31,6 +31,7 @@ class Othello {
 
     // act
     makeMove( availableMoves ) {
+        let reason = "";
         let cornerMoves = availableMoves
             .filter( m => this.isCorner( m ) );
 
@@ -38,19 +39,41 @@ class Othello {
             .filter( m => this.isEdge( m ) );
 
         let nextMove = {};
-        if ( cornerMoves.length )
+        if ( cornerMoves.length ) {
             nextMove = this.getHighestScoringMove( cornerMoves );
+            reason = "corner position available";
+        }
 
-        else if ( edgeMoves.length )
+        else if ( edgeMoves.length ) {
             nextMove = this.getHighestScoringMove( edgeMoves );
+            reason = "edge position available";
+        }
 
-        else
+        else {
             nextMove = this.getHighestScoringMove( availableMoves );
+            reason = "highest point value";
+        }
 
         return {
             row: nextMove.row,
-            col: nextMove.col
+            col: nextMove.col,
+            basedOn: reason
         }
+    }
+
+    makeRandomMove( availableMoves ) {
+        let randomMoveIndex = this.getRandomIndex( availableMoves.length );
+        let randomMove = availableMoves[randomMoveIndex];
+
+        return {
+            row: randomMove.row,
+            col: randomMove.col,
+            basedOn: "random selection"
+        }
+    }
+
+    getRandomIndex( max ) {
+        return Math.floor(Math.random() * max);
     }
 
 }

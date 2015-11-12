@@ -33,11 +33,16 @@
 
                 // computer player (inter) actions
                 if ( isComputerPlayerTurn( gameMode, _otherPlayer ) ) {
-                    _view.updateLogging( "Othello is thinking..." );
-                    setTimeout( () => {
-                        let nextMove = _othello.makeMove( opponentNextMoves );
+                    let otherPlayerNum = _otherPlayer.number;
 
-                        _view.updateLogging( `<p>Othello is making move at row:${nextMove.row}, col:${nextMove.col}</p>` );
+
+                    _view.updateLogging( `Player ${otherPlayerNum} is thinking...` );
+                    setTimeout( () => {
+                        let nextMove = otherPlayerNum === 1 ?
+                            _othello.makeRandomMove(opponentNextMoves) :
+                            _othello.makeMove( opponentNextMoves );
+                        
+                        _view.updateLogging( `<p class="p${otherPlayerNum}">Player ${otherPlayerNum} chose row: ${nextMove.row}, col: ${nextMove.col} based on: ${nextMove.basedOn}</p>` );
 
                         handleOnMove( nextMove );
 
@@ -57,8 +62,12 @@
                     // computer player (inter) actions
                     if ( isComputerPlayerTurn( gameMode, _otherPlayer ) ) {
                         setTimeout( () => {
-                            let nextMove = _othello.makeMove( currentPlayerNextMoves );
-                            console.log( `Othello is making move at row:${nextMove.row}, col:${nextMove.col}` );
+                            let otherPlayerNum = _otherPlayer.number;
+                            let nextMove = otherPlayerNum === 1 ?
+                                _othello.makeRandomMove(currentPlayerNextMoves) :
+                                _othello.makeMove( currentPlayerNextMoves );
+
+                            console.log( `Player ${otherPlayerNum} chose row: ${nextMove.row}, col: ${nextMove.col} based on: ${nextMove.basedOn}` );
 
                             handleOnMove( nextMove );
 
@@ -81,9 +90,9 @@
 
     };
 
-    let isComputerPlayerTurn = ( gameMode, currentPlayer ) => {
+    let isComputerPlayerTurn = ( gameMode, otherPlayer ) => {
         return gameMode === gameModes.learning ||
-            ( gameMode === gameModes.singlePlayer && currentPlayer.number === 2 );
+            ( gameMode === gameModes.singlePlayer && otherPlayer.number === 2 );
     };
 
     let updateActivePlayer = ( currentPlayerNumber ) => {

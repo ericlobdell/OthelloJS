@@ -108,7 +108,7 @@
             let $log = $( ".logging-container" );
 
             $log.append( entry );
-            $log.animate( { scrollTop: $log.prop( "scrollHeight" ) }, 2000 );
+            $log.animate( { scrollTop: $log.prop( "scrollHeight" ) }, 975 );
         }
 
     }
