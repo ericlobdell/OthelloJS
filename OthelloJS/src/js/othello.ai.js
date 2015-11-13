@@ -1,42 +1,34 @@
-﻿
+﻿class Othello {
 
-
-class Othello {
-
-    // prep
-    sortMovesByPointValue( moves ) {
+    sortMovesByPointValue ( moves ) {
         return moves
             .map( x => x )
-            .sort(( m1, m2 ) =>
-                m2.pointValue - m1.pointValue );
+            .sort( ( m1, m2 ) => m2.pointValue - m1.pointValue );
     }
 
-    // classify
-    isCorner( move ) {
-        let corners = [[0, 0], [0, 7], [7, 0], [7, 7]];
+    isCorner ( move ) {
+        let corners = [ [ 0, 0 ], [ 0, 7 ], [ 7, 0 ], [ 7, 7 ] ];
 
         return corners.some( c =>
-            c[0] === move.col && c[1] === move.row );
+            c[ 0 ] === move.col && c[ 1 ] === move.row );
     }
 
-    isEdge( move ) {
+    isEdge ( move ) {
         return ( move.row === 0 || move.row === 7 ) ||
-               ( move.col === 0 || move.col === 7 );
+            ( move.col === 0 || move.col === 7 );
     }
 
-    // choose
-    getHighestScoringMove( moves ) {
-        return this.sortMovesByPointValue( moves )[0];
+    getHighestScoringMove ( moves ) {
+        return this.sortMovesByPointValue( moves )[ 0 ];
     }
 
-    // act
-    makeMove( availableMoves ) {
+    makeMove ( availableMoves ) {
         let reason = "";
         let cornerMoves = availableMoves
-            .filter( m => this.isCorner( m ) );
+                .filter( m => this.isCorner( m ) );
 
         let edgeMoves = availableMoves
-            .filter( m => this.isEdge( m ) );
+                .filter( m => this.isEdge( m ) );
 
         let nextMove = {};
         if ( cornerMoves.length ) {
@@ -61,9 +53,9 @@ class Othello {
         }
     }
 
-    makeRandomMove( availableMoves ) {
+    makeRandomMove ( availableMoves ) {
         let randomMoveIndex = this.getRandomIndex( availableMoves.length );
-        let randomMove = availableMoves[randomMoveIndex];
+        let randomMove = availableMoves[ randomMoveIndex ];
 
         return {
             row: randomMove.row,
@@ -72,8 +64,8 @@ class Othello {
         }
     }
 
-    getRandomIndex( max ) {
-        return Math.floor(Math.random() * max);
+    getRandomIndex ( max ) {
+        return Math.floor( Math.random() * max );
     }
 
 }

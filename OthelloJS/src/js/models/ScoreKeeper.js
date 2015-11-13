@@ -19,9 +19,9 @@ class ScoreKeeper {
         return hits;
     }
 
-    recordMove ( row, col, player, gameBoard ) {
+    recordMove ( row, col, player, gameBoard, isHighScoring ) {
         let opponentCaptures = this.setScoreForMove( row, col, player, gameBoard );
-        let currentMove =  new Move( row, col, opponentCaptures.length, player);
+        let currentMove = new Move( row, col, opponentCaptures.length, player, isHighScoring );
 
         if ( opponentCaptures.length ) {
             gameBoard.moves.push( currentMove );
@@ -33,6 +33,8 @@ class ScoreKeeper {
                 c.isHit = true;
 
             } );
+
+            console.log( "Recording move: ", gameBoard );
         }
 
         return opponentCaptures;
@@ -40,11 +42,10 @@ class ScoreKeeper {
     }
 
     getHitDistance ( move, col, row ) {
-        let yDiff = Math.abs( row - move.row );
-        let xDiff = Math.abs( col - move.col );
+        let rowDiff = Math.abs( row - move.row );
+        let colDiff = Math.abs( col - move.col );
 
-        return xDiff || yDiff;
-
+        return colDiff || rowDiff;
     }
 
     calculatePoints ( initialCell, rowInc, colInc, player, gameBoard ) {
@@ -132,7 +133,7 @@ class ScoreKeeper {
         var nextMoves = [];
         let highScore = 0;
         let opponent = player === 1 ? 2 : 1;
-        let gameBoardCopy = { rows: gameBoard.rows.slice(0) };
+        let gameBoardCopy = { rows: gameBoard.rows.slice( 0 ) };
 
         _this.boardManager.resetTargetCells( gameBoardCopy );
 

@@ -5,23 +5,17 @@
     let _otherPlayer = _playerTwo;
     let _players = [ _playerOne, _playerTwo ];
     let _boardManager = new BoardManager();
-    let _gameBoard = _boardManager.getInitialGameboard();
+    let _gameBoard = _boardManager.getInitialGameboard( _players );
     let _scoreKeeper = new ScoreKeeper( _boardManager );
     let _othello = new Othello();
     let _view = new View();
 
-    // manage game modes
-    let gameModes = { singlePlayer: 0, twoPlayer: 1, learning: 2 };
-    // hard code for now
-    let gameMode = gameModes.learning;
-
     let handleOnMove = ( move ) => {
-        let opponentCaptures = _scoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard );
+        let opponentCaptures = _scoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
         let pointsEarned = opponentCaptures.length;
 
         if ( pointsEarned ) {
             let opponentNextMoves = _scoreKeeper.nextMovesForPlayer( _otherPlayer.number, _gameBoard );
-
 
             _scoreKeeper.setPlayerScores( _players, _gameBoard );
 
@@ -35,14 +29,13 @@
                 if ( isComputerPlayerTurn( gameMode, _otherPlayer ) ) {
                     let otherPlayerNum = _otherPlayer.number;
 
-
-                    _view.updateLogging( `Player ${otherPlayerNum} is thinking...` );
+                    _view.updateLogging( `<div class="meta p${otherPlayerNum}">Player ${otherPlayerNum} is thinking</div>` );
                     setTimeout( () => {
                         let nextMove = otherPlayerNum === 1 ?
-                            _othello.makeRandomMove(opponentNextMoves) :
+                            _othello.makeRandomMove( opponentNextMoves ) :
                             _othello.makeMove( opponentNextMoves );
-                        
-                        _view.updateLogging( `<p class="p${otherPlayerNum}">Player ${otherPlayerNum} chose row: ${nextMove.row}, col: ${nextMove.col} based on: ${nextMove.basedOn}</p>` );
+
+                        _view.updateLogging( `<p class="p${otherPlayerNum}">Player ${otherPlayerNum} chose <br />row: ${nextMove.row}, col: ${nextMove.col} <br />based on: ${nextMove.basedOn}</p>` );
 
                         handleOnMove( nextMove );
 
@@ -64,10 +57,10 @@
                         setTimeout( () => {
                             let otherPlayerNum = _otherPlayer.number;
                             let nextMove = otherPlayerNum === 1 ?
-                                _othello.makeRandomMove(currentPlayerNextMoves) :
+                                _othello.makeRandomMove( currentPlayerNextMoves ) :
                                 _othello.makeMove( currentPlayerNextMoves );
 
-                            console.log( `Player ${otherPlayerNum} chose row: ${nextMove.row}, col: ${nextMove.col} based on: ${nextMove.basedOn}` );
+                            console.log( `Player ${otherPlayerNum} chose <br />row: ${nextMove.row}, col: ${nextMove.col}<br />based on: ${nextMove.basedOn}` );
 
                             handleOnMove( nextMove );
 
@@ -108,5 +101,20 @@
     _view.onMove.subscribe( handleOnMove );
     _view.renderGameBoard( _gameBoard, [] );
     _view.updateScoreBoards( _players, _currentPlayer.number );
+
+    // manage game modes
+    let gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
+
+    // hard code for now
+    let gameMode = gameModes.twoPlayer;
+
+    if ( gameMode === gameModes.learning ) {
+        console.log( "Starting learning mode..." );
+
+        let currentPlayerNextMoves = _scoreKeeper.nextMovesForPlayer( _currentPlayer.number, _gameBoard );
+        let initialMove = _othello.makeRandomMove( currentPlayerNextMoves );
+
+        handleOnMove( initialMove );
+    }
 
 })();

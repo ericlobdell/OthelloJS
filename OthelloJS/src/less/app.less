@@ -35,9 +35,19 @@
 }
 
 .score-board {
+    margin: 25px auto;
     padding: @paddingMedium;
     .border-radius(3px);
-    font-size: 1.1em;
+    text-align: center;
+
+    p {
+        font-size: 2em;
+    }
+
+    .score {
+        font-size: 4em;
+        font-weight: lighter;
+    }
 
     &.player-1.active {
         background: @colorPlayerOne;
@@ -76,7 +86,6 @@
         }
 
     }
-
 }
 
 .shell {
@@ -118,15 +127,34 @@
 
             display: block;
 
+            .meta {
+                width: 100%;
+
+                &.p2 {
+                    text-align: right;
+                }
+
+            }
+
+
             p {
+                margin: 2px 0 20px 0;
+                padding: @paddingStandard;
+                color: #fff;
+
                 &.p1 {
-                    color: @colorPlayerOne;
+                    margin-right: 25px;
+                    background: @colorPlayerOne;
+                    border-bottom-right-radius: 10px;
                 }
 
                 &.p2 {
-                    color: @colorPlayerTwo;
+                    margin-left: 25px;
+                    background: @colorPlayerTwo;
+                    border-bottom-left-radius: 10px;
                 }
             }
+
         }
     }
 }

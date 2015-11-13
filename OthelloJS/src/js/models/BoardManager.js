@@ -69,8 +69,8 @@ class BoardManager {
             ( row === 5 && col === 3 );
     };
 
-    getInitialGameboard() {
-        let gameBoard = new Gameboard();
+    getInitialGameboard( players ) {
+        let gameBoard = new Gameboard( players );
 
         for ( let r = 0; r < 8; r++ ) {
             let row = [];

@@ -4,7 +4,6 @@
         let _this = this;
 
         this.onMove = new Observable();
-        this.loggingEnabled = false;
 
         $( () => {
             let $shell = $( ".shell" );
@@ -12,6 +11,7 @@
             $( ".game-board" ).on( "click", ".cell", function () {
                 let $cell = $( this );
                 let isTarget = $cell.data( "target" );
+                let isHighScoring = $cell.data("is-highest-scoring-move");
 
                 if ( !isTarget )
                     return;
@@ -19,7 +19,8 @@
                 let row = +$cell.data( "row-num" );
                 let col = +$cell.data( "col-num" );
 
-                _this.onMove.notify( { row: row, col: col } );
+
+                _this.onMove.notify( { row: row, col: col, isHighScoring: isHighScoring } );
             } );
 
             $( ".demo-toolbar" )
@@ -30,8 +31,6 @@
                         $shell.removeClass( 'show-marks' );
                 } )
                 .on( "change", ".show-logging", function () {
-                    _this.loggingEnabled = this.checked;
-
                     if ( this.checked )
                         $shell.addClass( 'show-logging' );
                     else
@@ -40,10 +39,6 @@
                 } );
 
         } );
-
-    }
-
-    markInitialPlayerPieces ( gameBoard ) {
 
     }
 
@@ -85,14 +80,16 @@
         players.forEach( player => {
             let $playerSoreBoard = $( ".player-" + player.number );
 
-            $( ".player-" + player.number + " .score" ).html( player.score );
-            $( ".player-" + player.number + " .moves" ).html( player.moves.length );
+            $( ".player-" + player.number + " .score" )
+                .html( player.score )
+                .addClass(`animated-fast pulse`);
 
-            if ( player.number === currentPlayer ) {
-                $playerSoreBoard.addClass( "active" );
-            } else {
-                $playerSoreBoard.removeClass( "active" );
-            }
+            if ( player.number === currentPlayer )
+                $playerSoreBoard
+                    .addClass( "active" );
+            else
+                $playerSoreBoard
+                    .removeClass( "active" );
 
         } );
     }
@@ -103,14 +100,10 @@
     }
 
     updateLogging ( entry ) {
+        let $log = $( ".logging-container" );
 
-        if ( this.loggingEnabled ) {
-            let $log = $( ".logging-container" );
-
-            $log.append( entry );
-            $log.animate( { scrollTop: $log.prop( "scrollHeight" ) }, 975 );
-        }
-
+        $log.append( entry );
+        $log.animate( { scrollTop: $log.prop( "scrollHeight" ) }, 975 );
     }
 
 }
