@@ -3,27 +3,27 @@
     constructor () {
         let _this = this;
 
-        this.onMove = new Observable();
+        this.onMove = new ObservableEvent();
+        this.onGameModeSelect = new ObservableEvent();
 
         $( () => {
             let $shell = $( ".shell" );
 
             $( ".game-board" ).on( "click", ".cell", function () {
                 let $cell = $( this );
-                let isTarget = $cell.data( "target" );
-                let isHighScoring = $cell.data("is-highest-scoring-move");
 
-                if ( !isTarget )
+                if ( !$cell.data( "is-target" ) )
                     return;
 
-                let row = +$cell.data( "row-num" );
-                let col = +$cell.data( "col-num" );
+                _this.onMove.notify( {
+                    row: +$cell.data( "row-num" ),
+                    col: +$cell.data( "col-num" ),
+                    isHighScoring: $cell.data( "is-highest-scoring" )
+                } );
 
-
-                _this.onMove.notify( { row: row, col: col, isHighScoring: isHighScoring } );
             } );
 
-            $( ".demo-toolbar" )
+            $shell
                 .on( "change", ".show-move-marks", function () {
                     if ( this.checked )
                         $shell.addClass( 'show-marks' );
@@ -35,6 +35,22 @@
                         $shell.addClass( 'show-logging' );
                     else
                         $shell.removeClass( 'show-logging' );
+
+                } )
+                .on( "click", ".game-mode-button", function () {
+                    let mode = $( this ).data( "game-mode" );
+                    let $chooseView = $( ".choose-game-mode-view" );
+
+                    $chooseView.addClass( "animated-fast fadeOut" );
+
+                    setTimeout( () => {
+                        $chooseView.hide();
+                        $( ".game-view" )
+                            .show()
+                            .addClass( "animated-fast fadeIn" );
+
+                        _this.onGameModeSelect.notify( mode );
+                    }, 250 );
 
                 } );
 
@@ -52,10 +68,9 @@
                     `<div class='player-game-piece'></div>` : '';
 
                 html += `<div class='cell'
-                              title='row: ${cell.row} col: ${cell.col} distance: ${cell.distance} isTarget: ${cell.isTarget}'
-                              data-target="${cell.isTarget}"
                               data-distance="${cell.distance}"
-                              data-is-highest-scoring-move="${cell.isHighestScoring}"
+                              data-is-target="${cell.isTarget}"
+                              data-is-highest-scoring="${cell.isHighestScoring}"
                               data-player-num="${cell.player}"
                               data-row-num='${cell.row}'
                               data-col-num='${cell.col}'>${ cellContents }</div>`;
@@ -81,8 +96,7 @@
             let $playerSoreBoard = $( ".player-" + player.number );
 
             $( ".player-" + player.number + " .score" )
-                .html( player.score )
-                .addClass(`animated-fast pulse`);
+                .html( player.score );
 
             if ( player.number === currentPlayer )
                 $playerSoreBoard
@@ -94,9 +108,9 @@
         } );
     }
 
-    announceWinner( playerNumber ) {
-        $(`.score-board.player-${ playerNumber }`)
-            .addClass("active animated tada");
+    announceWinner ( playerNumber ) {
+        $( `.score-board.player-${ playerNumber }` )
+            .addClass( "active animated tada" );
     }
 
     updateLogging ( entry ) {

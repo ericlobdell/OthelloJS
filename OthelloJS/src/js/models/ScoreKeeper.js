@@ -6,32 +6,32 @@ class ScoreKeeper {
         this.boardManager = boardManager;
     }
 
-    setScoreForMove ( initialRow, initialCol, player, gameBoard ) {
+    getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
         var hits = [];
 
-        for ( let row = -1; row <= 1; row++ )
-            for ( let col = -1; col <= 1; col++ )
-                if ( row === 0 && col === 0 )
+        for ( let rowIncrement = -1; rowIncrement <= 1; rowIncrement++ )
+            for ( let colIncrement = -1; colIncrement <= 1; colIncrement++ )
+                if ( rowIncrement === 0 && colIncrement === 0 )
                     continue;
                 else
-                    hits = hits.concat( this.searchAt( initialRow, initialCol, row, col, player, gameBoard ) );
+                    hits = hits.concat( this.doDirectionalSearch( initialRow, initialCol, rowIncrement, colIncrement, player, gameBoard ) );
 
         return hits;
     }
 
-    recordMove ( row, col, player, gameBoard, isHighScoring ) {
-        let opponentCaptures = this.setScoreForMove( row, col, player, gameBoard );
-        let currentMove = new Move( row, col, opponentCaptures.length, player, isHighScoring );
+    recordMove ( row, col, playerNumber, gameBoard, isHighScoring ) {
+        let opponentCaptures = this.getMoveCaptures( row, col, playerNumber, gameBoard );
+        let currentMove = new Move( row, col, opponentCaptures.length, playerNumber, isHighScoring );
 
         if ( opponentCaptures.length ) {
+
             gameBoard.moves.push( currentMove );
-            gameBoard.rows[ row ][ col ].player = player;
+            gameBoard.rows[ row ][ col ].player = playerNumber;
+
             opponentCaptures.forEach( c => {
-
                 c.distance = this.getHitDistance( currentMove, c.col, c.row );
-                c.player = player;
+                c.player = playerNumber;
                 c.isHit = true;
-
             } );
 
             console.log( "Recording move: ", gameBoard );
@@ -45,20 +45,20 @@ class ScoreKeeper {
         let rowDiff = Math.abs( row - move.row );
         let colDiff = Math.abs( col - move.col );
 
-        return colDiff || rowDiff;
+        return rowDiff || colDiff;
     }
 
     calculatePoints ( initialCell, rowInc, colInc, player, gameBoard ) {
         let cells = [];
-        let self = this;
+        let _this = this;
 
         function getScore ( r, c ) {
-            var cell = self.boardManager.tryGetCell( r, c, gameBoard );
+            var cell = _this.boardManager.tryGetCell( r, c, gameBoard );
 
             if ( cell === null )
                 return [];
 
-            let result = self.checkCell( cell, player );
+            let result = _this.evaluateCell( cell, player );
 
             if ( !result.isValidMove || result.isEmpty ) {
                 return [];
@@ -73,26 +73,22 @@ class ScoreKeeper {
         return getScore( initialCell.row, initialCell.col );
     }
 
-    checkCell ( cell, player ) {
-        var valid = this.boardManager.isValidMove( cell.row, cell.col ),
-            empty = valid ? cell.player === 0 : false,
-            point = valid ? cell.player !== player && !empty : false;
+    evaluateCell ( cell, player ) {
+        var isValid = this.boardManager.isValidMove( cell.row, cell.col ),
+            isEmpty = isValid ? cell.player === 0 : false,
+            isPoint = isValid ? cell.player !== player && !isEmpty : false;
 
         return {
-            isValidMove: valid,
-            isEmpty: empty,
-            isPoint: point
+            isValidMove: isValid,
+            isEmpty: isEmpty,
+            isPoint: isPoint
         };
     }
 
     getScoreForPlayer ( playerNumber, gameBoard ) {
         return this.boardManager.getFlatGameBoard( gameBoard )
-            .reduce( ( score, cell ) => {
-                if ( cell.player === playerNumber )
-                    score++;
-
-                return score;
-            }, 0 );
+            .filter( c => c.player === playerNumber )
+            .length;
     }
 
     getLeader ( player1, player2 ) {
@@ -106,7 +102,7 @@ class ScoreKeeper {
             return 0;
     }
 
-    resetMoveScoreRatings ( gameBoard ) {
+    resetMoveRatings ( gameBoard ) {
         this.boardManager.getFlatGameBoard( gameBoard )
             .forEach( cell  => {
                 cell.isHighestScoring = false;
@@ -117,7 +113,7 @@ class ScoreKeeper {
         return gameBoard;
     }
 
-    searchAt ( row, col, rowInc, colInc, player, gameBoard ) {
+    doDirectionalSearch ( row, col, rowInc, colInc, player, gameBoard ) {
         let cell = this.boardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
         return cell !== null ?
             this.calculatePoints( cell, rowInc, colInc, player, gameBoard ) : [];
@@ -128,30 +124,30 @@ class ScoreKeeper {
             p.score = this.getScoreForPlayer( p.number, gameBoard ) );
     }
 
-    nextMovesForPlayer ( player, gameBoard ) {
+    getNextMovesForPlayer ( player, gameBoard ) {
         let _this = this;
-        var nextMoves = [];
+        let nextMoves = [];
         let highScore = 0;
         let opponent = player === 1 ? 2 : 1;
-        let gameBoardCopy = { rows: gameBoard.rows.slice( 0 ) };
 
-        _this.boardManager.resetTargetCells( gameBoardCopy );
+        _this.boardManager.resetTargetCells( gameBoard );
 
-        _this.boardManager.getPlayerCells( opponent, gameBoardCopy )
-            .forEach( c => {
+        _this.boardManager.getPlayerCells( opponent, gameBoard )
+            .forEach( opponentCell => {
 
-                _this.boardManager.getOpenAdjacentCells( c, gameBoardCopy )
-                    .forEach( ac => {
+                _this.boardManager.getOpenAdjacentCells( opponentCell, gameBoard )
+                    .forEach( adjacentCell => {
 
-                        let pointsEarned = _this.setScoreForMove( ac.row, ac.col, player, gameBoardCopy ).length;
+                        let pointsEarned = _this.getMoveCaptures( adjacentCell.row, adjacentCell.col, player, gameBoard ).length;
 
                         highScore = ( highScore > pointsEarned ) ? highScore : pointsEarned;
 
                         if ( pointsEarned ) {
-                            ac.isTarget = true;
-                            ac.pointValue = pointsEarned;
-                            nextMoves.push( ac );
+                            adjacentCell.isTarget = true;
+                            adjacentCell.pointValue = pointsEarned;
+                            nextMoves.push( adjacentCell );
                         }
+
                     } );
 
             } );

@@ -50,7 +50,7 @@ class BoardManager {
             .forEach( c => c.isTarget = false );
     }
 
-    getiInitialPlayer( row, col ) {
+    __getInitialPlayer__( row, col ) {
 
         if ( ( row === 3 && col === 3 ) || ( row === 4 && col === 4 ) )
             return 1;
@@ -62,20 +62,20 @@ class BoardManager {
 
     };
 
-    cellIsInitialTarget( row, col ) {
+    __cellIsInitialTarget__( row, col ) {
         return ( row === 2 && col === 4 ) ||
             ( row === 3 && col === 5 ) ||
             ( row === 4 && col === 2 ) ||
             ( row === 5 && col === 3 );
     };
 
-    getInitialGameboard( players ) {
+    getInitialGameBoard( players ) {
         let gameBoard = new Gameboard( players );
 
         for ( let r = 0; r < 8; r++ ) {
             let row = [];
             for ( let c = 0; c < 8; c++ )
-                row.push( new Cell( r, c, this.getiInitialPlayer( r, c ), this.cellIsInitialTarget( r, c ) ) );
+                row.push( new Cell( r, c, this.__getInitialPlayer__( r, c ), this.__cellIsInitialTarget__( r, c ) ) );
 
             gameBoard.rows.push( row );
         }
@@ -83,8 +83,6 @@ class BoardManager {
         return gameBoard;
     }
 
-
-
-
-
 }
+
+

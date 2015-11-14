@@ -16,6 +16,16 @@
     }
 }
 
+.game-view {
+    display: none;
+}
+
+.choose-game-mode-view {
+    margin: 50px 0 0 0;
+    width: 100%;
+    text-align: center;
+}
+
 .logging-container {
     display: none;
     padding: @paddingStandard;
@@ -69,22 +79,23 @@
     text-align: center;
     border-right: 1px solid #fff;
     border-bottom: 1px solid #fff;
-    cursor: pointer;
     background: @colorCellBackground;
     padding: @paddingSmall;
+
+    &[data-is-target="true"] {
+        cursor: pointer;
+    }
 
     &[data-player-num="1"] {
         .player-game-piece {
             .game-piece(@colorPlayerOne);
         }
-
     }
 
     &[data-player-num="2"] {
         .player-game-piece {
             .game-piece(@colorPlayerTwo);
         }
-
     }
 }
 
@@ -106,13 +117,13 @@
 
     &.show-marks {
         .cell {
-            &[data-target="true"] {
-                border-right: 1px solid #5C696B;
-                border-bottom: 1px solid #5C696B;
+            &[data-is-target="true"] {
+                border-right: 1px solid @colorHighlight;
+                border-bottom: 1px solid @colorHighlight;
             }
 
-            &[data-is-highest-scoring-move="true"] {
-                background: #5C696B;
+            &[data-is-highest-scoring="true"] {
+                background: @colorHighlight;
                 border-right: 1px solid #fff;
                 border-bottom: 1px solid #fff;
             }

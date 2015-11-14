@@ -1,4 +1,4 @@
-﻿class Observable {
+﻿class ObservableEvent {
 
     constructor() {
         this.observers = [];

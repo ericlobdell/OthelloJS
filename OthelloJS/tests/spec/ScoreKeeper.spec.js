@@ -28,9 +28,9 @@ describe( "ScoreKeeper", () => {
         } );
     } );
 
-    describe( "checkCell", () => {
+    describe( "evaluateCell", () => {
         it( "should return an object with the results from scoring that location for player", () => {
-            var sut = _sk.checkCell( { player: 2, row: 2, col: 1 }, 1 );
+            var sut = _sk.evaluateCell( { player: 2, row: 2, col: 1 }, 1 );
             let expected = {
                 isValidMove: true,
                 isEmpty: false,
@@ -41,7 +41,7 @@ describe( "ScoreKeeper", () => {
         } );
 
         it( "should return false for valid move if coords are out of bounds", () => {
-            let sut = _sk.checkCell( { player: 2, row: 8, col: 1 }, 1 );
+            let sut = _sk.evaluateCell( { player: 2, row: 8, col: 1 }, 1 );
             let expected = {
                 isValidMove: false,
                 isEmpty: false,
@@ -49,15 +49,15 @@ describe( "ScoreKeeper", () => {
             };
             expect( sut ).toEqual( expected );
 
-            var sut2 = _sk.checkCell( { player: 2, row: 1, col: -1 }, 1 );
+            var sut2 = _sk.evaluateCell( { player: 2, row: 1, col: -1 }, 1 );
 
             expect( sut2 ).toEqual( expected );
         } );
     } );
 
-    describe( "searchAt", () => {
+    describe( "doDirectionalSearch", () => {
         it( "should return an empty array if passed an invalid cell location", () => {
-            var sut = _sk.searchAt( 0, 0, 0, 0, 1, {
+            var sut = _sk.doDirectionalSearch( 0, 0, 0, 0, 1, {
                 rows: [
                     [{ row: -1, col: 1 }]
                 ]
@@ -94,14 +94,14 @@ describe( "ScoreKeeper", () => {
 
     });
 
-    describe( "setScoreForMove", () => {
+    describe( "getMoveCaptures", () => {
         it( "should search in all 8 directions for possible points", () => {
-            let gb = _bm.getInitialGameboard();
+            let gb = _bm.getInitialGameBoard();
 
-            spyOn( _sk, "searchAt" );
+            spyOn( _sk, "doDirectionalSearch" );
 
-            _sk.setScoreForMove( 3, 3, 1, gb );
-            let calls = _sk.searchAt.calls;
+            _sk.getMoveCaptures( 3, 3, 1, gb );
+            let calls = _sk.doDirectionalSearch.calls;
 
             expect( calls.count() ).toBe( 8 );
 
@@ -139,27 +139,27 @@ describe( "ScoreKeeper", () => {
         } );
 
         it( "should calculate the correct score", () => {
-            let gb = _bm.getInitialGameboard();
-            let hits = _sk.setScoreForMove( 5, 3, 1, gb );
+            let gb = _bm.getInitialGameBoard();
+            let hits = _sk.getMoveCaptures( 5, 3, 1, gb );
             expect(hits.length).toBe(1);
 
         } );
 
     } );
 
-    describe("nextMovesForPlayer", () => {
+    describe("getNextMovesForPlayer", () => {
         it("should return an array of cells that the next player can use as a next move", () => {
-            let gb = _bm.getInitialGameboard();
+            let gb = _bm.getInitialGameBoard();
 
-            let sut = _sk.nextMovesForPlayer( 1, gb );
+            let sut = _sk.getNextMovesForPlayer( 1, gb );
 
             expect( sut.length ).toBe( 4 );
         } );
 
         it( "should mark all cells as isTarget", () => {
-            let gb = _bm.getInitialGameboard();
+            let gb = _bm.getInitialGameBoard();
 
-            let nextMoves = _sk.nextMovesForPlayer( 1, gb );
+            let nextMoves = _sk.getNextMovesForPlayer( 1, gb );
 
             nextMoves.forEach(
                 m => expect( m.isTarget ).toBe( true ) );
