@@ -108,9 +108,15 @@
         } );
     }
 
-    announceWinner ( playerNumber ) {
-        $( `.score-board.player-${ playerNumber }` )
-            .addClass( "active animated tada" );
+    announceWinner ( winner ) {
+        var $winningScoreBoard;
+
+        if ( winner )
+            $winningScoreBoard = $( `.score-board.player-${ winner }` );
+        else
+            $winningScoreBoard = $( `.score-board` );
+
+        $winningScoreBoard.addClass( "active animated tada" );
     }
 
     updateLogging ( entry ) {

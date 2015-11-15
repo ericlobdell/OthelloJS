@@ -28,32 +28,6 @@ describe( "ScoreKeeper", () => {
         } );
     } );
 
-    describe( "evaluateCell", () => {
-        it( "should return an object with the results from scoring that location for player", () => {
-            var sut = _sk.evaluateCell( { player: 2, row: 2, col: 1 }, 1 );
-            let expected = {
-                isValidMove: true,
-                isEmpty: false,
-                isPoint: true
-            };
-            expect( sut ).toEqual( expected );
-
-        } );
-
-        it( "should return false for valid move if coords are out of bounds", () => {
-            let sut = _sk.evaluateCell( { player: 2, row: 8, col: 1 }, 1 );
-            let expected = {
-                isValidMove: false,
-                isEmpty: false,
-                isPoint: false
-            };
-            expect( sut ).toEqual( expected );
-
-            var sut2 = _sk.evaluateCell( { player: 2, row: 1, col: -1 }, 1 );
-
-            expect( sut2 ).toEqual( expected );
-        } );
-    } );
 
     describe( "doDirectionalSearch", () => {
         it( "should return an empty array if passed an invalid cell location", () => {
