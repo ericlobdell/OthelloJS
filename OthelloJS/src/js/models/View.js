@@ -93,9 +93,10 @@
 
     updateScoreBoards ( players, currentPlayer ) {
         players.forEach( player => {
-            let $playerSoreBoard = $( ".player-" + player.number );
+            let $playerSoreBoard = $( ".score-board.player-" + player.number );
 
-            $( ".player-" + player.number + " .score" )
+            $playerSoreBoard
+                .find( ".score" )
                 .html( player.score );
 
             if ( player.number === currentPlayer )

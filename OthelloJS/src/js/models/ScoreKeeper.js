@@ -40,12 +40,9 @@ class ScoreKeeper {
             if ( cellEvaluation.isEmptyPosition ) {
                 return [];
             } else if ( cellEvaluation.isOpponentPosition ) {
-                // capture and keep searching this direction
                 captures.push( cell );
                 return getCapturesRecursive( r + rowInc, c + colInc );
             } else {
-                // we've reached a position belonging to current player
-                // return captures for this direction
                 return captures;
             }
         };
