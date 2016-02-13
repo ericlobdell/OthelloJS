@@ -1,7 +1,10 @@
 ﻿class ObservableEvent {
 
-    constructor() {
+    constructor(...args) {
         this.observers = [];
+        
+        if (args.length)
+            this.observers.concat(args);
     }
 
     subscribe( fn ) {

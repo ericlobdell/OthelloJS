@@ -1,48 +1,48 @@
 ﻿class Othello {
 
-    sortMovesByPointValue ( moves ) {
+    static sortMovesByPointValue ( moves ) {
         return moves
             .map( x => x )
             .sort( ( m1, m2 ) => m2.pointValue - m1.pointValue );
     }
 
-    isCorner ( move ) {
+    static isCorner ( move ) {
         let corners = [ [ 0, 0 ], [ 0, 7 ], [ 7, 0 ], [ 7, 7 ] ];
 
         return corners.some( c =>
             c[ 0 ] === move.col && c[ 1 ] === move.row );
     }
 
-    isEdge ( move ) {
+    static isEdge ( move ) {
         return ( move.row === 0 || move.row === 7 ) ||
             ( move.col === 0 || move.col === 7 );
     }
 
-    getHighestScoringMove ( moves ) {
-        return this.sortMovesByPointValue( moves )[ 0 ];
+    static getHighestScoringMove ( moves ) {
+        return Othello.sortMovesByPointValue( moves )[ 0 ];
     }
 
-    makeMove ( availableMoves ) {
+    static makeMove ( availableMoves ) {
         let reason = "";
         let cornerMoves = availableMoves
-                .filter( m => this.isCorner( m ) );
+                .filter( m => Othello.isCorner( m ) );
 
         let edgeMoves = availableMoves
-                .filter( m => this.isEdge( m ) );
+                .filter( m => Othello.isEdge( m ) );
 
         let nextMove = {};
         if ( cornerMoves.length ) {
-            nextMove = this.getHighestScoringMove( cornerMoves );
+            nextMove = Othello.getHighestScoringMove( cornerMoves );
             reason = "corner position available";
         }
 
         else if ( edgeMoves.length ) {
-            nextMove = this.getHighestScoringMove( edgeMoves );
+            nextMove = Othello.getHighestScoringMove( edgeMoves );
             reason = "edge position available";
         }
 
         else {
-            nextMove = this.getHighestScoringMove( availableMoves );
+            nextMove = Othello.getHighestScoringMove( availableMoves );
             reason = "highest point value";
         }
 
@@ -54,7 +54,7 @@
     }
 
     makeRandomMove ( availableMoves ) {
-        let randomMoveIndex = this.getRandomIndex( availableMoves.length );
+        let randomMoveIndex = Othello.getRandomIndex( availableMoves.length );
         let randomMove = availableMoves[ randomMoveIndex ];
 
         return {
@@ -64,7 +64,7 @@
         }
     }
 
-    getRandomIndex ( max ) {
+    static getRandomIndex ( max ) {
         return Math.floor( Math.random() * max );
     }
 
