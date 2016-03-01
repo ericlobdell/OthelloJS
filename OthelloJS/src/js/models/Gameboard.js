@@ -1,6 +1,6 @@
 ﻿class Gameboard {
 
-    constructor(players) {
+    constructor( players ) {
         this.rows = [];
         this.moves = [];
         this.players = players;

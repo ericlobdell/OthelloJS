@@ -1,11 +1,5 @@
 ﻿
 describe( "BoardManager", function () {
-    var _sk, _bm;
-
-    beforeEach( () => {
-        _bm = new BoardManager();
-        _sk = new ScoreKeeper( _bm );
-    } );
 
     describe( "getFlatGameboard", () => {
         it( "should return a matrix as a flat one dimensional array", function () {
@@ -17,7 +11,7 @@ describe( "BoardManager", function () {
                 ]
             };
             let expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-            expect( _bm.getFlatGameBoard( gb ) ).toEqual( expected );
+            expect( BoardManager.getFlatGameBoard( gb ) ).toEqual( expected );
         } );
     } );
 
@@ -31,7 +25,7 @@ describe( "BoardManager", function () {
                     [{ player: 1 }, { player: 0 }, { player: 0 }]
                 ]
             };
-            let sut = _bm.getEmptyCells( gb );
+            let sut = BoardManager.getEmptyCells( gb );
 
             expect( sut.length ).toBe( 4 );
             expect( sut ).toEqual( expected );
@@ -40,7 +34,7 @@ describe( "BoardManager", function () {
 
     describe( "getInitialGameBoard", () => {
         it( "should return a gameboard with the initial center squares occupied", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
             expect( gb.rows[3][3].player ).toBe( 1 );
             expect( gb.rows[4][4].player ).toBe( 1 );
@@ -51,33 +45,33 @@ describe( "BoardManager", function () {
 
     describe( "getiInitialPlayer", () => {
         it( "should return the correct player number for initial positions on gameboard", () => {
-            expect( _bm.__getInitialPlayer__( 3, 3 ) ).toBe( 1 );
-            expect( _bm.__getInitialPlayer__( 4, 4 ) ).toBe( 1 );
-            expect( _bm.__getInitialPlayer__( 3, 4 ) ).toBe( 2 );
-            expect( _bm.__getInitialPlayer__( 4, 3 ) ).toBe( 2 );
+            expect( BoardManager.getInitialPlayer( 3, 3 ) ).toBe( 1 );
+            expect( BoardManager.getInitialPlayer( 4, 4 ) ).toBe( 1 );
+            expect( BoardManager.getInitialPlayer( 3, 4 ) ).toBe( 2 );
+            expect( BoardManager.getInitialPlayer( 4, 3 ) ).toBe( 2 );
         } )
     } );
 
     describe( "cellIsTarget", () => {
         it( "should return true for initial potential moves for player one", () => {
-            expect( _bm.__cellIsInitialTarget__( 2, 4 ) ).toBe( true );
-            expect( _bm.__cellIsInitialTarget__( 4, 2 ) ).toBe( true );
-            expect( _bm.__cellIsInitialTarget__( 3, 5 ) ).toBe( true );
-            expect( _bm.__cellIsInitialTarget__( 5, 3 ) ).toBe( true );
+            expect( BoardManager.cellIsInitialTarget( 2, 4 ) ).toBe( true );
+            expect( BoardManager.cellIsInitialTarget( 4, 2 ) ).toBe( true );
+            expect( BoardManager.cellIsInitialTarget( 3, 5 ) ).toBe( true );
+            expect( BoardManager.cellIsInitialTarget( 5, 3 ) ).toBe( true );
         } );
     } );
 
     describe( "resetTargetCells", () => {
         it( "should set isTarget property of all cells to false", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
-            expect( _bm.getFlatGameBoard( gb )
+            expect( BoardManager.getFlatGameBoard( gb )
                 .some( c => c.isTarget ) )
                 .toBe( true );
 
-            _bm.resetTargetCells( gb );
+            BoardManager.resetTargetCells( gb );
 
-            expect( _bm.getFlatGameBoard( gb )
+            expect( BoardManager.getFlatGameBoard( gb )
                 .some( c => c.isTarget ) )
                 .toBe( false );
 
@@ -86,8 +80,8 @@ describe( "BoardManager", function () {
 
     describe( "getPlayerCells", () => {
         it( "should return an array of cells belonging to the player", () => {
-            let gb = _bm.getInitialGameBoard();
-            let player2Cells = _bm.getPlayerCells( 2, gb );
+            let gb = BoardManager.getInitialGameBoard();
+            let player2Cells = BoardManager.getPlayerCells( 2, gb );
 
             expect( player2Cells.length ).toBe( 2 );
             player2Cells.forEach( c => {
@@ -99,15 +93,15 @@ describe( "BoardManager", function () {
 
     describe( "getAdjacentCells", () => {
         it( "should return every cell surrounding the position on the game board", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
             let position1 = gb.rows[4][3];
-            let sut1 = _bm.getAdjacentCells( position1, gb );
+            let sut1 = BoardManager.getAdjacentCells( position1, gb );
 
             expect( sut1.length ).toBe( 8 );
 
             let position2 = gb.rows[0][0];
-            let sut2 = _bm.getAdjacentCells( position2, gb );
+            let sut2 = BoardManager.getAdjacentCells( position2, gb );
 
             expect( sut2.length ).toBe( 3 );
         } )
@@ -115,15 +109,15 @@ describe( "BoardManager", function () {
 
     describe( "getOpenAdjacentCells", () => {
         it( "should return te cells adjacent to the passed cell on the game board", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
             let position1 = gb.rows[4][3];
-            let sut1 = _bm.getOpenAdjacentCells( position1, gb );
+            let sut1 = BoardManager.getOpenAdjacentCells( position1, gb );
 
             expect( sut1.length ).toBe( 5 );
 
             let position2 = gb.rows[0][0];
-            let sut2 = _bm.getOpenAdjacentCells( position2, gb );
+            let sut2 = BoardManager.getOpenAdjacentCells( position2, gb );
 
             expect( sut2.length ).toBe( 3 );
 

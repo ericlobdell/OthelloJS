@@ -3,7 +3,7 @@
     constructor(...args) {
         this.observers = [];
         
-        if (args.length)
+        if ( args.length )
             this.observers.concat(args);
     }
 

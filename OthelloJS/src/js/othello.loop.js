@@ -4,10 +4,7 @@
     let _currentPlayer = _playerOne;
     let _otherPlayer = _playerTwo;
     let _players = [ _playerOne, _playerTwo ];
-    let _boardManager = new BoardManager();
-    let _gameBoard = _boardManager.getInitialGameBoard( _players );
-    let _scoreKeeper = new ScoreKeeper( _boardManager );
-    let _othello = new Othello();
+    let _gameBoard = BoardManager.getInitialGameBoard( _players );
     let _view = new View();
     let _gameMode = null;
     let _gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
@@ -16,35 +13,46 @@
     _view.onGameModeSelect.subscribe( handleOnGameModeSelect );
 
     function handleOnMove ( move ) {
-        let opponentCaptures = _scoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
-        let opponentNextMoves = _scoreKeeper.getNextMovesForPlayer( _otherPlayer.number, _gameBoard );
-        let currentPlayerNextMoves = _scoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
+        let opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
+        
+        if ( opponentCaptures.length ) {
+           
+            let opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _otherPlayer.number, _gameBoard );
+            ScoreKeeper.setPlayerScores( _players, _gameBoard );
 
-        _view.renderGameBoard( _gameBoard, opponentCaptures );
+            _view.renderGameBoard( _gameBoard, opponentCaptures );
 
-        _scoreKeeper.setPlayerScores( _players, _gameBoard );
+            ScoreKeeper.resetMoveRatings( _gameBoard );
 
-        _view.updateScoreBoards( _players, _currentPlayer.number );
+            if ( opponentNextMoves.length ) {
+                console.log( `It's now player ${_otherPlayer.number}'s turn` );
 
-        _scoreKeeper.resetMoveRatings( _gameBoard );
+                if ( isComputerPlayerTurn() )
+                    takeComputerTurn( opponentNextMoves );
 
-        if ( opponentNextMoves.length ) {
-            console.log( `It's now player ${_otherPlayer.number}'s turn` );
+            }
 
-            if ( isComputerPlayerTurn() )
-                takeComputerTurn( opponentNextMoves );
+            _view.updateScoreBoards( _players, _currentPlayer.number );
 
             updateActivePlayer();
 
-        }
-        else if ( currentPlayerNextMoves.length ) {
-            console.log( `It's still player ${_currentPlayer.number}'s turn` );
+        } else {
+            let currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
+            _view.renderGameBoard( _gameBoard, opponentCaptures );
 
-            if ( isComputerPlayerTurn() )
-                takeComputerTurn( currentPlayerNextMoves );
+            if ( currentPlayerNextMoves.length ) {
+                console.log( `It's still player ${_currentPlayer.number}'s turn` );
+
+                if ( isComputerPlayerTurn() )
+                    takeComputerTurn( currentPlayerNextMoves );
+
+                _view.updateScoreBoards( _players, _currentPlayer.number );
+            }
+            else
+                handleEndOfMatch();
         }
-        else
-            handleEndOfMatch();
+        
+
 
     }
 
@@ -55,13 +63,13 @@
         _view.updateScoreBoards( _players, _currentPlayer.number );
 
         if ( _gameMode === _gameModes.learning ) {
-            let currentPlayerNextMoves = _scoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
+            let currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
             takeComputerTurn( currentPlayerNextMoves );
         }
     }
 
     function handleEndOfMatch () {
-        let leader = _scoreKeeper.getLeader( _playerOne, _playerTwo );
+        let leader = ScoreKeeper.getLeader( _playerOne, _playerTwo );
         _view.announceWinner( leader );
     }
 
@@ -73,8 +81,8 @@
     function takeComputerTurn ( availableNextMoves ) {
         setTimeout( () => {
             let nextMove = _otherPlayer.number === _playerOne.number ?
-                _othello.makeRandomMove( availableNextMoves ) :
-                _othello.makeMove( availableNextMoves );
+                Othello.makeRandomMove( availableNextMoves ) :
+                Othello.makeMove( availableNextMoves );
 
             handleOnMove( nextMove );
 

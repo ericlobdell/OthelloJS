@@ -53,7 +53,7 @@
         }
     }
 
-    makeRandomMove ( availableMoves ) {
+    static makeRandomMove ( availableMoves ) {
         let randomMoveIndex = Othello.getRandomIndex( availableMoves.length );
         let randomMove = availableMoves[ randomMoveIndex ];
 

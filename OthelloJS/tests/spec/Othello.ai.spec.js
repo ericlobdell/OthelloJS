@@ -11,7 +11,7 @@
             let moves = [{ pointValue: 2 }, { pointValue: 4 }, { pointValue: 2 }, { pointValue: 1 }];
             let expected = [{ pointValue: 4 }, { pointValue: 2 }, { pointValue: 2 }, { pointValue: 1 }];
 
-            let sut = _othello.sortMovesByPointValue( moves );
+            let sut = Othello.sortMovesByPointValue( moves );
             expect( sut ).toEqual( expected );
         } );
     } );
@@ -21,8 +21,8 @@
             let notCornerMove = { row: 0, col: 3 };
             let cornerMove = { row: 7, col: 0 }
 
-            expect( _othello.isCorner( notCornerMove ) ).toBe( false );
-            expect( _othello.isCorner( cornerMove ) ).toBe( true );
+            expect( Othello.isCorner( notCornerMove ) ).toBe( false );
+            expect( Othello.isCorner( cornerMove ) ).toBe( true );
 
         } );
     } );
@@ -32,8 +32,8 @@
             let nonEdgeMove = { col: 3, row: 5 };
             let edgeMove = { row: 0, col: 5 };
 
-            expect( _othello.isEdge( nonEdgeMove ) ).toBe( false );
-            expect( _othello.isEdge( edgeMove ) ).toBe( true );
+            expect( Othello.isEdge( nonEdgeMove ) ).toBe( false );
+            expect( Othello.isEdge( edgeMove ) ).toBe( true );
         } );
     } );
 
@@ -41,7 +41,7 @@
         it( "should return a move with the highest pointValue", () => {
             let moves = [{ pointValue: 2 }, { pointValue: 4 }, { pointValue: 2 }, { pointValue: 1 }];
 
-            expect( _othello.getHighestScoringMove( moves ) ).toEqual( { pointValue: 4 } );
+            expect( Othello.getHighestScoringMove( moves ) ).toEqual( { pointValue: 4 } );
         } );
     } );
 
@@ -53,7 +53,7 @@
                 { col: 1, row: 2, pointValue: 6 }
             ];
 
-            let sut = _othello.makeMove( moves );
+            let sut = Othello.makeMove( moves );
             expect( sut )
                 .toEqual( {
                     row: jasmine.any( Number ),
@@ -66,7 +66,7 @@
             let nonCorner2 = { col: 1, row: 2, pointValue: 6 };
             let cornerMove = { col: 0, row: 0, pointValue: 3 };
 
-            let sut = _othello.makeMove( [nonCorner1, cornerMove, nonCorner2] );
+            let sut = Othello.makeMove( [nonCorner1, cornerMove, nonCorner2] );
             expect( sut ).toEqual( {
                 row: cornerMove.row,
                 col: cornerMove.col,
@@ -78,7 +78,7 @@
             let nonEdge2 = { col: 1, row: 2, pointValue: 6 };
             let edgeMove = { col: 4, row: 0, pointValue: 3 };
 
-            let sut = _othello.makeMove( [nonEdge1, edgeMove, nonEdge2] );
+            let sut = Othello.makeMove( [nonEdge1, edgeMove, nonEdge2] );
             expect( sut ).toEqual( {
                 row: edgeMove.row,
                 col: edgeMove.col,
@@ -94,7 +94,7 @@
           let max = 100;
 
            for(let i = 0; i <= max; i++) {
-               let sut = _othello.getRandomIndex(max);
+               let sut = Othello.getRandomIndex(max);
                expect(sut >= 0).toBe(true);
                expect(sut <= max).toBe(true);
            }
@@ -108,7 +108,7 @@
             let nonCorner2 = { col: 1, row: 2, pointValue: 6 };
             let cornerMove = { col: 0, row: 0, pointValue: 3 };
 
-            let sut = _othello.makeRandomMove( [nonCorner1, cornerMove, nonCorner2] );
+            let sut = Othello.makeRandomMove( [nonCorner1, cornerMove, nonCorner2] );
             expect( sut )
                 .toEqual( {
                     row: jasmine.any( Number ),

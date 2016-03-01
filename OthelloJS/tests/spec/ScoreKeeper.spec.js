@@ -6,12 +6,6 @@
 let _ = null;
 
 describe( "ScoreKeeper", () => {
-    var _sk, _bm;
-
-    beforeEach(() => {
-        _bm = new BoardManager();
-        _sk = new ScoreKeeper( _bm );
-    } );
 
     describe( "getScoreForPlayer", () => {
         it( "should return the number of cells of the game board occupied by the player", () => {
@@ -23,7 +17,7 @@ describe( "ScoreKeeper", () => {
                 ]
             };
 
-            let sut = _sk.getScoreForPlayer( 1, gb );
+            let sut = ScoreKeeper.getScoreForPlayer( 1, gb );
             expect( sut ).toBe( 5 );
         } );
     } );
@@ -31,7 +25,7 @@ describe( "ScoreKeeper", () => {
 
     describe( "doDirectionalSearch", () => {
         it( "should return an empty array if passed an invalid cell location", () => {
-            var sut = _sk.doDirectionalSearch( 0, 0, 0, 0, 1, {
+            var sut = ScoreKeeper.doDirectionalSearch( 0, 0, 0, 0, 1, {
                 rows: [
                     [{ row: -1, col: 1 }]
                 ]
@@ -46,19 +40,19 @@ describe( "ScoreKeeper", () => {
             let move = new Cell( 1, 1, _, _);
             let hitRow = 4;
             let hitCol = 4;
-            let d = _sk.getHitDistance( move, hitRow, hitCol );
+            let d = ScoreKeeper.getHitDistance( move, hitRow, hitCol );
 
             expect( d ).toBe(3);
 
             let hitRow2 = 1;
             let hitCol2 = 5;
-            let d2 = _sk.getHitDistance( move, hitRow2, hitCol2 );
+            let d2 = ScoreKeeper.getHitDistance( move, hitRow2, hitCol2 );
 
             expect(d2).toBe(4);
 
             let hitRow3 = 3;
             let hitCol3 = 1;
-            let d3 = _sk.getHitDistance( move, hitRow3, hitCol3 );
+            let d3 = ScoreKeeper.getHitDistance( move, hitRow3, hitCol3 );
 
             expect(d3).toBe(2);
 
@@ -70,12 +64,12 @@ describe( "ScoreKeeper", () => {
 
     describe( "getMoveCaptures", () => {
         it( "should search in all 8 directions for possible points", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
-            spyOn( _sk, "doDirectionalSearch" );
+            spyOn( ScoreKeeper, "doDirectionalSearch" );
 
-            _sk.getMoveCaptures( 3, 3, 1, gb );
-            let calls = _sk.doDirectionalSearch.calls;
+            ScoreKeeper.getMoveCaptures( 3, 3, 1, gb );
+            let calls = ScoreKeeper.doDirectionalSearch.calls;
 
             expect( calls.count() ).toBe( 8 );
 
@@ -113,8 +107,8 @@ describe( "ScoreKeeper", () => {
         } );
 
         it( "should calculate the correct score", () => {
-            let gb = _bm.getInitialGameBoard();
-            let hits = _sk.getMoveCaptures( 5, 3, 1, gb );
+            let gb = BoardManager.getInitialGameBoard();
+            let hits = ScoreKeeper.getMoveCaptures( 5, 3, 1, gb );
             expect(hits.length).toBe(1);
 
         } );
@@ -123,17 +117,17 @@ describe( "ScoreKeeper", () => {
 
     describe("getNextMovesForPlayer", () => {
         it("should return an array of cells that the next player can use as a next move", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
-            let sut = _sk.getNextMovesForPlayer( 1, gb );
+            let sut = ScoreKeeper.getNextMovesForPlayer( 1, gb );
 
             expect( sut.length ).toBe( 4 );
         } );
 
         it( "should mark all cells as isTarget", () => {
-            let gb = _bm.getInitialGameBoard();
+            let gb = BoardManager.getInitialGameBoard();
 
-            let nextMoves = _sk.getNextMovesForPlayer( 1, gb );
+            let nextMoves = ScoreKeeper.getNextMovesForPlayer( 1, gb );
 
             nextMoves.forEach(
                 m => expect( m.isTarget ).toBe( true ) );
@@ -148,7 +142,7 @@ describe( "ScoreKeeper", () => {
             p1.score = 10;
             p2.score = 4;
 
-            let sut = _sk.getLeader( p1, p2 );
+            let sut = ScoreKeeper.getLeader( p1, p2 );
             expect( sut ).toBe( 1 );
         } );
 
@@ -159,7 +153,7 @@ describe( "ScoreKeeper", () => {
             p1.score = 10;
             p2.score = 10;
 
-            let sut = _sk.getLeader( p1, p2 );
+            let sut = ScoreKeeper.getLeader( p1, p2 );
             expect( sut ).toBe( 0 );
         } );
 

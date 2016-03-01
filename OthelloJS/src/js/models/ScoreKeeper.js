@@ -2,11 +2,7 @@
 
 class ScoreKeeper {
 
-    constructor ( boardManager ) {
-        this.boardManager = boardManager;
-    }
-
-    getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
+    static getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
         var hits = [];
 
         for ( let rowIncrement = -1; rowIncrement <= 1; rowIncrement++ )
@@ -19,18 +15,18 @@ class ScoreKeeper {
         return hits;
     }
 
-    doDirectionalSearch ( row, col, rowInc, colInc, player, gameBoard ) {
-        let cell = this.boardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
+    static doDirectionalSearch ( row, col, rowInc, colInc, player, gameBoard ) {
+        let cell = BoardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
         return cell !== null ?
             this.getDirectionalCaptures( cell, rowInc, colInc, player, gameBoard ) : [];
     }
 
-    getDirectionalCaptures ( initialCell, rowInc, colInc, player, gameBoard ) {
+    static getDirectionalCaptures ( initialCell, rowInc, colInc, player, gameBoard ) {
         let captures = [];
         let _this = this;
 
         let getCapturesRecursive = ( r, c ) => {
-            var cell = _this.boardManager.tryGetCell( r, c, gameBoard );
+            var cell = BoardManager.tryGetCell( r, c, gameBoard );
 
             if ( cell === null ) // we've walked off the game board
                 return [];
@@ -50,14 +46,14 @@ class ScoreKeeper {
         return getCapturesRecursive( initialCell.row, initialCell.col );
     }
 
-    evaluateCell ( cell, player ) {
+    static evaluateCell ( cell, player ) {
         return {
             isEmptyPosition: cell.player === 0,
             isOpponentPosition: cell.player !== player
         };
     }
 
-    recordMove ( row, col, playerNumber, gameBoard, isHighScoring ) {
+    static recordMove ( row, col, playerNumber, gameBoard, isHighScoring ) {
         let opponentCaptures = this.getMoveCaptures( row, col, playerNumber, gameBoard );
         let currentMove = new Move( row, col, opponentCaptures.length, playerNumber, isHighScoring );
 
@@ -79,20 +75,21 @@ class ScoreKeeper {
 
     }
 
-    getHitDistance ( move, col, row ) {
+    static getHitDistance ( move, col, row ) {
         let rowDiff = Math.abs( row - move.row );
         let colDiff = Math.abs( col - move.col );
 
         return rowDiff || colDiff;
     }
 
-    getScoreForPlayer ( playerNumber, gameBoard ) {
-        return this.boardManager.getFlatGameBoard( gameBoard )
+    static getScoreForPlayer ( playerNumber, gameBoard ) {
+        return BoardManager.getFlatGameBoard( gameBoard )
             .filter( c => c.player === playerNumber )
             .length;
     }
 
-    getLeader ( player1, player2 ) {
+    static getLeader( player1, player2 ) {
+
         if ( player1.score > player2.score )
             return 1;
 
@@ -103,37 +100,37 @@ class ScoreKeeper {
             return 0;
     }
 
-    resetMoveRatings ( gameBoard ) {
-        this.boardManager.getFlatGameBoard( gameBoard )
+    static resetMoveRatings ( gameBoard ) {
+        BoardManager.getFlatGameBoard( gameBoard )
             .forEach( cell  => {
                 cell.isHighestScoring = false;
                 cell.isHit = false;
                 cell.distance = 0;
             } );
 
+        console.log( "RESET GB: ", gameBoard );
         return gameBoard;
     }
 
-    setPlayerScores ( players, gameBoard ) {
+    static setPlayerScores ( players, gameBoard ) {
         players.forEach( p =>
-            p.score = this.getScoreForPlayer( p.number, gameBoard ) );
+            p.score = ScoreKeeper.getScoreForPlayer( p.number, gameBoard ) );
     }
 
-    getNextMovesForPlayer ( playerNumber, gameBoard ) {
-        let _this = this;
+    static getNextMovesForPlayer ( playerNumber, gameBoard ) {
         let nextMoves = [];
         let highestPointValue = 0;
         let opponent = playerNumber === 1 ? 2 : 1;
 
-        _this.boardManager.resetTargetCells( gameBoard );
+        BoardManager.resetTargetCells( gameBoard );
 
-        _this.boardManager.getPlayerCells( opponent, gameBoard )
+        BoardManager.getPlayerCells( opponent, gameBoard )
             .forEach( opponentCell => {
 
-                _this.boardManager.getOpenAdjacentCells( opponentCell, gameBoard )
+                BoardManager.getOpenAdjacentCells( opponentCell, gameBoard )
                     .forEach( adjacentCell => {
 
-                        let pointsEarned = _this.getMoveCaptures( adjacentCell.row, adjacentCell.col, playerNumber, gameBoard ).length;
+                        let pointsEarned = ScoreKeeper.getMoveCaptures( adjacentCell.row, adjacentCell.col, playerNumber, gameBoard ).length;
 
                         highestPointValue = ( highestPointValue > pointsEarned ) ? highestPointValue : pointsEarned;
 
