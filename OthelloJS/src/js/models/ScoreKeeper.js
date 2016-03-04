@@ -1,8 +1,8 @@
 /// <reference path="D:\repos\JS\OthelloJS\OthelloJS\src/js/models/Move.js" />
 
-class ScoreKeeper {
+const ScoreKeeper = new class ScoreKeeper {
 
-    static getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
+    getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
         var hits = [];
 
         for ( let rowIncrement = -1; rowIncrement <= 1; rowIncrement++ )
@@ -15,13 +15,13 @@ class ScoreKeeper {
         return hits;
     }
 
-    static doDirectionalSearch ( row, col, rowInc, colInc, player, gameBoard ) {
+    doDirectionalSearch ( row, col, rowInc, colInc, player, gameBoard ) {
         let cell = BoardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
         return cell !== null ?
             this.getDirectionalCaptures( cell, rowInc, colInc, player, gameBoard ) : [];
     }
 
-    static getDirectionalCaptures ( initialCell, rowInc, colInc, player, gameBoard ) {
+    getDirectionalCaptures ( initialCell, rowInc, colInc, player, gameBoard ) {
         let captures = [];
         let _this = this;
 
@@ -46,14 +46,14 @@ class ScoreKeeper {
         return getCapturesRecursive( initialCell.row, initialCell.col );
     }
 
-    static evaluateCell ( cell, player ) {
+    evaluateCell ( cell, player ) {
         return {
             isEmptyPosition: cell.player === 0,
             isOpponentPosition: cell.player !== player
         };
     }
 
-    static recordMove ( row, col, playerNumber, gameBoard, isHighScoring ) {
+    recordMove ( row, col, playerNumber, gameBoard, isHighScoring ) {
         let opponentCaptures = this.getMoveCaptures( row, col, playerNumber, gameBoard );
         let currentMove = new Move( row, col, opponentCaptures.length, playerNumber, isHighScoring );
 
@@ -75,20 +75,20 @@ class ScoreKeeper {
 
     }
 
-    static getHitDistance ( move, col, row ) {
+    getHitDistance ( move, col, row ) {
         let rowDiff = Math.abs( row - move.row );
         let colDiff = Math.abs( col - move.col );
 
         return rowDiff || colDiff;
     }
 
-    static getScoreForPlayer ( playerNumber, gameBoard ) {
+    getScoreForPlayer ( playerNumber, gameBoard ) {
         return BoardManager.getFlatGameBoard( gameBoard )
             .filter( c => c.player === playerNumber )
             .length;
     }
 
-    static getLeader( player1, player2 ) {
+    getLeader( player1, player2 ) {
 
         if ( player1.score > player2.score )
             return 1;
@@ -100,7 +100,7 @@ class ScoreKeeper {
             return 0;
     }
 
-    static resetMoveRatings ( gameBoard ) {
+    resetMoveRatings ( gameBoard ) {
         BoardManager.getFlatGameBoard( gameBoard )
             .forEach( cell  => {
                 cell.isHighestScoring = false;
@@ -112,16 +112,16 @@ class ScoreKeeper {
         return gameBoard;
     }
 
-    static setPlayerScores ( players, gameBoard ) {
+    setPlayerScores ( players, gameBoard ) {
         players.forEach( p =>
-            p.score = ScoreKeeper.getScoreForPlayer( p.number, gameBoard ) );
+            p.score = this.getScoreForPlayer( p.number, gameBoard ) );
     }
 
-    static getNextMovesForPlayer ( playerNumber, gameBoard ) {
-        let nextMoves = [];
+    getNextMovesForPlayer ( playerNumber, gameBoard ) {
+        const nextMoves = [];
+        const opponent = playerNumber === 1 ? 2 : 1;
         let highestPointValue = 0;
-        let opponent = playerNumber === 1 ? 2 : 1;
-
+        
         BoardManager.resetTargetCells( gameBoard );
 
         BoardManager.getPlayerCells( opponent, gameBoard )
@@ -130,7 +130,7 @@ class ScoreKeeper {
                 BoardManager.getOpenAdjacentCells( opponentCell, gameBoard )
                     .forEach( adjacentCell => {
 
-                        let pointsEarned = ScoreKeeper.getMoveCaptures( adjacentCell.row, adjacentCell.col, playerNumber, gameBoard ).length;
+                        let pointsEarned = this.getMoveCaptures( adjacentCell.row, adjacentCell.col, playerNumber, gameBoard ).length;
 
                         highestPointValue = ( highestPointValue > pointsEarned ) ? highestPointValue : pointsEarned;
 
@@ -148,4 +148,4 @@ class ScoreKeeper {
         return nextMoves;
     }
 
-}
+}()

@@ -1,4 +1,4 @@
-﻿class View {
+﻿const View = new class View {
 
     constructor () {
         let _this = this;
@@ -127,4 +127,4 @@
         $log.animate( { scrollTop: $log.prop( "scrollHeight" ) }, 975 );
     }
 
-}
+}()

@@ -5,12 +5,11 @@
     let _otherPlayer = _playerTwo;
     let _players = [ _playerOne, _playerTwo ];
     let _gameBoard = BoardManager.getInitialGameBoard( _players );
-    let _view = new View();
     let _gameMode = null;
     let _gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
 
-    _view.onMove.subscribe( handleOnMove );
-    _view.onGameModeSelect.subscribe( handleOnGameModeSelect );
+    View.onMove.subscribe( handleOnMove );
+    View.onGameModeSelect.subscribe( handleOnGameModeSelect );
 
     function handleOnMove ( move ) {
         let opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
@@ -20,7 +19,7 @@
             let opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _otherPlayer.number, _gameBoard );
             ScoreKeeper.setPlayerScores( _players, _gameBoard );
 
-            _view.renderGameBoard( _gameBoard, opponentCaptures );
+            View.renderGameBoard( _gameBoard, opponentCaptures );
 
             ScoreKeeper.resetMoveRatings( _gameBoard );
 
@@ -32,13 +31,13 @@
 
             }
 
-            _view.updateScoreBoards( _players, _currentPlayer.number );
+            View.updateScoreBoards( _players, _currentPlayer.number );
 
             updateActivePlayer();
 
         } else {
             let currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
-            _view.renderGameBoard( _gameBoard, opponentCaptures );
+            View.renderGameBoard( _gameBoard, opponentCaptures );
 
             if ( currentPlayerNextMoves.length ) {
                 console.log( `It's still player ${_currentPlayer.number}'s turn` );
@@ -46,7 +45,7 @@
                 if ( isComputerPlayerTurn() )
                     takeComputerTurn( currentPlayerNextMoves );
 
-                _view.updateScoreBoards( _players, _currentPlayer.number );
+                View.updateScoreBoards( _players, _currentPlayer.number );
             }
             else
                 handleEndOfMatch();
@@ -59,8 +58,8 @@
     function handleOnGameModeSelect ( selectedGameMode ) {
         _gameMode = _gameModes[ selectedGameMode ];
 
-        _view.renderGameBoard( _gameBoard, [] );
-        _view.updateScoreBoards( _players, _currentPlayer.number );
+        View.renderGameBoard( _gameBoard, [] );
+        View.updateScoreBoards( _players, _currentPlayer.number );
 
         if ( _gameMode === _gameModes.learning ) {
             let currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
@@ -70,7 +69,7 @@
 
     function handleEndOfMatch () {
         let leader = ScoreKeeper.getLeader( _playerOne, _playerTwo );
-        _view.announceWinner( leader );
+        View.announceWinner( leader );
     }
 
     function isComputerPlayerTurn () {
