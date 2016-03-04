@@ -1,18 +1,15 @@
 ﻿class ObservableEvent {
 
-    constructor(...args) {
-        this.observers = [];
-        
-        if ( args.length )
-            this.observers.concat(args);
+    constructor(...subs) {
+        this.subscribers = subs || [];
     }
 
     subscribe( fn ) {
-        this.observers.push( fn );
+        this.subscribers.push( fn );
     }
 
     notify( args ) {
-        this.observers.forEach( fn => fn( args ) );
+        this.subscribers.forEach( fn => fn( args ) );
     }
 
 }

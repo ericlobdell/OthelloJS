@@ -1,16 +1,16 @@
 ﻿const View = new class View {
 
-    constructor () {
-        let _this = this;
+    constructor() {
+        const _this = this;
 
         this.onMove = new ObservableEvent();
         this.onGameModeSelect = new ObservableEvent();
 
-        $( () => {
-            let $shell = $( ".shell" );
+        $(() => {
+            const $shell = $( ".shell" );
 
             $( ".game-board" ).on( "click", ".cell", function () {
-                let $cell = $( this );
+                const $cell = $( this );
 
                 if ( !$cell.data( "is-target" ) )
                     return;
@@ -38,12 +38,12 @@
 
                 } )
                 .on( "click", ".game-mode-button", function () {
-                    let mode = $( this ).data( "game-mode" );
-                    let $chooseView = $( ".choose-game-mode-view" );
+                    const mode = $( this ).data( "game-mode" );
+                    const $chooseView = $( ".choose-game-mode-view" );
 
                     $chooseView.addClass( "animated-fast fadeOut" );
 
-                    setTimeout( () => {
+                    setTimeout(() => {
                         $chooseView.hide();
                         $( ".game-view" )
                             .show()
@@ -58,13 +58,13 @@
 
     }
 
-    renderGameBoard ( gameBoard, opponentCaptures ) {
+    renderGameBoard( gameBoard, opponentCaptures ) {
         let html = "";
 
         gameBoard.rows.forEach( row => {
             row.forEach( cell => {
 
-                let cellContents = cell.player ?
+                const cellContents = cell.player ?
                     `<div class='player-game-piece'></div>` : '';
 
                 html += `<div class='cell'
@@ -73,7 +73,7 @@
                               data-is-highest-scoring="${cell.isHighestScoring}"
                               data-player-num="${cell.player}"
                               data-row-num='${cell.row}'
-                              data-col-num='${cell.col}'>${ cellContents }</div>`;
+                              data-col-num='${cell.col}'>${cellContents}</div>`;
             } );
         } );
 
@@ -81,19 +81,19 @@
 
         opponentCaptures
             .map( c => c.distance )
-            .filter( ( d, i, uniqueDistances ) => uniqueDistances.indexOf( d ) === i )
-            .sort( ( d1, d2 ) => d1 - d2 )
-            .forEach( ( d, i ) => {
-                setTimeout( () => {
+            .filter(( d, i, uniqueDistances ) => uniqueDistances.indexOf( d ) === i )
+            .sort(( d1, d2 ) => d1 - d2 )
+            .forEach(( d, i ) => {
+                setTimeout(() => {
                     $( `[data-distance='${d}'] .player-game-piece` )
                         .addClass( `animated-fast pulse` );
                 }, 75 * i );
             } );
     }
 
-    updateScoreBoards ( players, currentPlayer ) {
+    updateScoreBoards( players, currentPlayer ) {
         players.forEach( player => {
-            let $playerSoreBoard = $( ".score-board.player-" + player.number );
+            const $playerSoreBoard = $( ".score-board.player-" + player.number );
 
             $playerSoreBoard
                 .find( ".score" )
@@ -109,22 +109,22 @@
         } );
     }
 
-    announceWinner ( winner ) {
-        var $winningScoreBoard;
+    announceWinner( winner ) {
+        let $winningScoreBoard;
 
         if ( winner )
-            $winningScoreBoard = $( `.score-board.player-${ winner }` );
+            $winningScoreBoard = $( `.score-board.player-${winner}` );
         else
             $winningScoreBoard = $( `.score-board` );
 
         $winningScoreBoard.addClass( "active animated tada" );
     }
 
-    updateLogging ( entry ) {
-        let $log = $( ".logging-container" );
+    updateLogging( entry ) {
+        const $log = $( ".logging-container" );
 
         $log.append( entry );
         $log.animate( { scrollTop: $log.prop( "scrollHeight" ) }, 975 );
     }
 
-}()
+}();

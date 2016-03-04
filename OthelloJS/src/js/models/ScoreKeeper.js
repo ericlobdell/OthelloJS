@@ -3,7 +3,7 @@
 const ScoreKeeper = new class ScoreKeeper {
 
     getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
-        var hits = [];
+        let hits = [];
 
         for ( let rowIncrement = -1; rowIncrement <= 1; rowIncrement++ )
             for ( let colIncrement = -1; colIncrement <= 1; colIncrement++ )
@@ -16,26 +16,25 @@ const ScoreKeeper = new class ScoreKeeper {
     }
 
     doDirectionalSearch ( row, col, rowInc, colInc, player, gameBoard ) {
-        let cell = BoardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
+        const cell = BoardManager.tryGetCell( row + rowInc, col + colInc, gameBoard );
         return cell !== null ?
             this.getDirectionalCaptures( cell, rowInc, colInc, player, gameBoard ) : [];
     }
 
     getDirectionalCaptures ( initialCell, rowInc, colInc, player, gameBoard ) {
-        let captures = [];
-        let _this = this;
+        const captures = [];
 
-        let getCapturesRecursive = ( r, c ) => {
-            var cell = BoardManager.tryGetCell( r, c, gameBoard );
+        const getCapturesRecursive = ( r, c ) => {
+            const cell = BoardManager.tryGetCell( r, c, gameBoard );
 
             if ( cell === null ) // we've walked off the game board
                 return [];
 
-            let cellEvaluation = _this.evaluateCell( cell, player );
+            let { isEmptyPosition, isOpponentPosition } = this.evaluateCell( cell, player );
 
-            if ( cellEvaluation.isEmptyPosition ) {
+            if ( isEmptyPosition ) {
                 return [];
-            } else if ( cellEvaluation.isOpponentPosition ) {
+            } else if ( isOpponentPosition ) {
                 captures.push( cell );
                 return getCapturesRecursive( r + rowInc, c + colInc );
             } else {
@@ -49,13 +48,13 @@ const ScoreKeeper = new class ScoreKeeper {
     evaluateCell ( cell, player ) {
         return {
             isEmptyPosition: cell.player === 0,
-            isOpponentPosition: cell.player !== player
+            isOpponentPosition: cell.player !== 0 && cell.player !== player
         };
     }
 
     recordMove ( row, col, playerNumber, gameBoard, isHighScoring ) {
-        let opponentCaptures = this.getMoveCaptures( row, col, playerNumber, gameBoard );
-        let currentMove = new Move( row, col, opponentCaptures.length, playerNumber, isHighScoring );
+        const opponentCaptures = this.getMoveCaptures( row, col, playerNumber, gameBoard );
+        const currentMove = new Move( row, col, opponentCaptures.length, playerNumber, isHighScoring );
 
         if ( opponentCaptures.length ) {
 
@@ -68,7 +67,6 @@ const ScoreKeeper = new class ScoreKeeper {
                 c.isHit = true;
             } );
 
-            console.log( "Recording move: ", gameBoard );
         }
 
         return opponentCaptures;
@@ -76,8 +74,8 @@ const ScoreKeeper = new class ScoreKeeper {
     }
 
     getHitDistance ( move, col, row ) {
-        let rowDiff = Math.abs( row - move.row );
-        let colDiff = Math.abs( col - move.col );
+        const rowDiff = Math.abs( row - move.row );
+        const colDiff = Math.abs( col - move.col );
 
         return rowDiff || colDiff;
     }
@@ -108,7 +106,6 @@ const ScoreKeeper = new class ScoreKeeper {
                 cell.distance = 0;
             } );
 
-        console.log( "RESET GB: ", gameBoard );
         return gameBoard;
     }
 
@@ -130,7 +127,7 @@ const ScoreKeeper = new class ScoreKeeper {
                 BoardManager.getOpenAdjacentCells( opponentCell, gameBoard )
                     .forEach( adjacentCell => {
 
-                        let pointsEarned = this.getMoveCaptures( adjacentCell.row, adjacentCell.col, playerNumber, gameBoard ).length;
+                        const pointsEarned = this.getMoveCaptures( adjacentCell.row, adjacentCell.col, playerNumber, gameBoard ).length;
 
                         highestPointValue = ( highestPointValue > pointsEarned ) ? highestPointValue : pointsEarned;
 

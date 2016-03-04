@@ -5,7 +5,7 @@ class Repository {
     }
 
     recordMove( data ) {
-        let snapshot = this.getSnapshotPattern( data.gameBoard );
+        const snapshot = this.getSnapshotPattern( data.gameBoard );
         console.log( "Snapshot created: ", snapshot );
 
         this.snapshots.push( snapshot );

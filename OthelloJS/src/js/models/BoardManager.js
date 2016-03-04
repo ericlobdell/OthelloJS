@@ -22,18 +22,18 @@ const BoardManager = new class BoardManager {
 
     getPlayerCells( playerNumber, gameBoard ) {
         return this.getFlatGameBoard( gameBoard )
-            .filter( c => c.player === playerNumber ); 
+            .filter( c => c.player === playerNumber );
     }
 
     getAdjacentCells( cell, gameBoard ) {
-        let above = this.tryGetCell( cell.row - 1, cell.col, gameBoard );
-        let aboveRight = this.tryGetCell( cell.row - 1, cell.col + 1, gameBoard );
-        let aboveLeft = this.tryGetCell( cell.row - 1, cell.col - 1, gameBoard );
-        let left = this.tryGetCell( cell.row, cell.col -1, gameBoard );
-        let right = this.tryGetCell( cell.row, cell.col + 1, gameBoard );
-        let below = this.tryGetCell( cell.row + 1, cell.col, gameBoard );
-        let belowRight = this.tryGetCell( cell.row + 1, cell.col + 1, gameBoard );
-        let belowLeft = this.tryGetCell( cell.row + 1, cell.col - 1, gameBoard );
+        const above = this.tryGetCell( cell.row - 1, cell.col, gameBoard );
+        const aboveRight = this.tryGetCell( cell.row - 1, cell.col + 1, gameBoard );
+        const aboveLeft = this.tryGetCell( cell.row - 1, cell.col - 1, gameBoard );
+        const left = this.tryGetCell( cell.row, cell.col - 1, gameBoard );
+        const right = this.tryGetCell( cell.row, cell.col + 1, gameBoard );
+        const below = this.tryGetCell( cell.row + 1, cell.col, gameBoard );
+        const belowRight = this.tryGetCell( cell.row + 1, cell.col + 1, gameBoard );
+        const belowLeft = this.tryGetCell( cell.row + 1, cell.col - 1, gameBoard );
 
         return [above, aboveRight, aboveLeft, left, right, below, belowRight, belowLeft]
             .filter( c => c !== null );
@@ -70,7 +70,7 @@ const BoardManager = new class BoardManager {
     };
 
     getInitialGameBoard( players ) {
-        let gameBoard = new Gameboard( players );
+        const gameBoard = new Gameboard( players );
 
         for ( let r = 0; r < 8; r++ ) {
             let row = [];
@@ -83,6 +83,6 @@ const BoardManager = new class BoardManager {
         return gameBoard;
     }
 
-}()
+}();
 
 

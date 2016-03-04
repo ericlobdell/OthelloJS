@@ -1,22 +1,23 @@
 (() => {
-    let _playerOne = new Player( 1 );
-    let _playerTwo = new Player( 2 );
+    const _playerOne = new Player( 1 );
+    const _playerTwo = new Player( 2 );
+    const _players = [ _playerOne, _playerTwo ];
+    const _gameBoard = BoardManager.getInitialGameBoard( _players );
+    const _gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
+
+    let _gameMode = null;
     let _currentPlayer = _playerOne;
     let _otherPlayer = _playerTwo;
-    let _players = [ _playerOne, _playerTwo ];
-    let _gameBoard = BoardManager.getInitialGameBoard( _players );
-    let _gameMode = null;
-    let _gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
 
     View.onMove.subscribe( handleOnMove );
     View.onGameModeSelect.subscribe( handleOnGameModeSelect );
 
     function handleOnMove ( move ) {
-        let opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
+        const opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
         
         if ( opponentCaptures.length ) {
            
-            let opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _otherPlayer.number, _gameBoard );
+            const opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _otherPlayer.number, _gameBoard );
             ScoreKeeper.setPlayerScores( _players, _gameBoard );
 
             View.renderGameBoard( _gameBoard, opponentCaptures );
@@ -36,7 +37,7 @@
             updateActivePlayer();
 
         } else {
-            let currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
+            const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
             View.renderGameBoard( _gameBoard, opponentCaptures );
 
             if ( currentPlayerNextMoves.length ) {
@@ -62,13 +63,13 @@
         View.updateScoreBoards( _players, _currentPlayer.number );
 
         if ( _gameMode === _gameModes.learning ) {
-            let currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
+            const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
             takeComputerTurn( currentPlayerNextMoves );
         }
     }
 
     function handleEndOfMatch () {
-        let leader = ScoreKeeper.getLeader( _playerOne, _playerTwo );
+        const leader = ScoreKeeper.getLeader( _playerOne, _playerTwo );
         View.announceWinner( leader );
     }
 
@@ -79,7 +80,7 @@
 
     function takeComputerTurn ( availableNextMoves ) {
         setTimeout( () => {
-            let nextMove = _otherPlayer.number === _playerOne.number ?
+            const nextMove = _otherPlayer.number === _playerOne.number ?
                 Othello.makeRandomMove( availableNextMoves ) :
                 Othello.makeMove( availableNextMoves );
 

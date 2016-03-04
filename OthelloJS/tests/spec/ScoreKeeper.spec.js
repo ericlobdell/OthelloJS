@@ -3,13 +3,13 @@
 /// <reference path="ScoreKeeper.spec.js" />
 /// <reference path="BoardManager.spec.js" />
 
-let _ = null;
+const _ = null;
 
 describe( "ScoreKeeper", () => {
 
     describe( "getScoreForPlayer", () => {
         it( "should return the number of cells of the game board occupied by the player", () => {
-            let gb = {
+            const gb = {
                 rows: [
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
@@ -17,7 +17,7 @@ describe( "ScoreKeeper", () => {
                 ]
             };
 
-            let sut = ScoreKeeper.getScoreForPlayer( 1, gb );
+            const sut = ScoreKeeper.getScoreForPlayer( 1, gb );
             expect( sut ).toBe( 5 );
         } );
     } );
@@ -37,22 +37,22 @@ describe( "ScoreKeeper", () => {
 
     describe("getHitDistance", () => {
         it("should set the distance from the cell the move originated", () => {
-            let move = new Cell( 1, 1, _, _);
-            let hitRow = 4;
-            let hitCol = 4;
-            let d = ScoreKeeper.getHitDistance( move, hitRow, hitCol );
+            const move = new Cell( 1, 1, _, _);
+            const hitRow = 4;
+            const hitCol = 4;
+            const d = ScoreKeeper.getHitDistance( move, hitRow, hitCol );
 
             expect( d ).toBe(3);
 
-            let hitRow2 = 1;
-            let hitCol2 = 5;
-            let d2 = ScoreKeeper.getHitDistance( move, hitRow2, hitCol2 );
+            const hitRow2 = 1;
+            const hitCol2 = 5;
+            const d2 = ScoreKeeper.getHitDistance( move, hitRow2, hitCol2 );
 
             expect(d2).toBe(4);
 
-            let hitRow3 = 3;
-            let hitCol3 = 1;
-            let d3 = ScoreKeeper.getHitDistance( move, hitRow3, hitCol3 );
+            const hitRow3 = 3;
+            const hitCol3 = 1;
+            const d3 = ScoreKeeper.getHitDistance( move, hitRow3, hitCol3 );
 
             expect(d3).toBe(2);
 
@@ -64,12 +64,12 @@ describe( "ScoreKeeper", () => {
 
     describe( "getMoveCaptures", () => {
         it( "should search in all 8 directions for possible points", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
             spyOn( ScoreKeeper, "doDirectionalSearch" );
 
             ScoreKeeper.getMoveCaptures( 3, 3, 1, gb );
-            let calls = ScoreKeeper.doDirectionalSearch.calls;
+            const calls = ScoreKeeper.doDirectionalSearch.calls;
 
             expect( calls.count() ).toBe( 8 );
 
@@ -107,8 +107,8 @@ describe( "ScoreKeeper", () => {
         } );
 
         it( "should calculate the correct score", () => {
-            let gb = BoardManager.getInitialGameBoard();
-            let hits = ScoreKeeper.getMoveCaptures( 5, 3, 1, gb );
+            const gb = BoardManager.getInitialGameBoard();
+            const hits = ScoreKeeper.getMoveCaptures( 5, 3, 1, gb );
             expect(hits.length).toBe(1);
 
         } );
@@ -117,17 +117,17 @@ describe( "ScoreKeeper", () => {
 
     describe("getNextMovesForPlayer", () => {
         it("should return an array of cells that the next player can use as a next move", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
-            let sut = ScoreKeeper.getNextMovesForPlayer( 1, gb );
+            const sut = ScoreKeeper.getNextMovesForPlayer( 1, gb );
 
             expect( sut.length ).toBe( 4 );
         } );
 
         it( "should mark all cells as isTarget", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
-            let nextMoves = ScoreKeeper.getNextMovesForPlayer( 1, gb );
+            const nextMoves = ScoreKeeper.getNextMovesForPlayer( 1, gb );
 
             nextMoves.forEach(
                 m => expect( m.isTarget ).toBe( true ) );
@@ -136,24 +136,24 @@ describe( "ScoreKeeper", () => {
 
     describe( "getLeader", () => {
         it( "should return the player number of the player with the higher score", () => {
-            let p1 = new Player( 1 );
-            let p2 = new Player( 2 );
+            const p1 = new Player( 1 );
+            const p2 = new Player( 2 );
 
             p1.score = 10;
             p2.score = 4;
 
-            let sut = ScoreKeeper.getLeader( p1, p2 );
+            const sut = ScoreKeeper.getLeader( p1, p2 );
             expect( sut ).toBe( 1 );
         } );
 
         it( "should return zero if scores are equal", () => {
-            let p1 = new Player( 1 );
-            let p2 = new Player( 2 );
+            const p1 = new Player( 1 );
+            const p2 = new Player( 2 );
 
             p1.score = 10;
             p2.score = 10;
 
-            let sut = ScoreKeeper.getLeader( p1, p2 );
+            const sut = ScoreKeeper.getLeader( p1, p2 );
             expect( sut ).toBe( 0 );
         } );
 

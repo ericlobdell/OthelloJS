@@ -3,29 +3,29 @@ describe( "BoardManager", function () {
 
     describe( "getFlatGameboard", () => {
         it( "should return a matrix as a flat one dimensional array", function () {
-            let gb = {
+            const gb = {
                 rows: [
                     [1, 2, 3],
                     [4, 5, 6],
                     [7, 8, 9]
                 ]
             };
-            let expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             expect( BoardManager.getFlatGameBoard( gb ) ).toEqual( expected );
         } );
     } );
 
     describe( "getEmptyCells", () => {
         it( "should return only the cells of the game board that are unoccupied", function () {
-            let expected = [{ player: 0 }, { player: 0 }, { player: 0 }, { player: 0 }];
-            let gb = {
+            const expected = [{ player: 0 }, { player: 0 }, { player: 0 }, { player: 0 }];
+            const gb = {
                 rows: [
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
                     [{ player: 1 }, { player: 0 }, { player: 0 }]
                 ]
             };
-            let sut = BoardManager.getEmptyCells( gb );
+            const sut = BoardManager.getEmptyCells( gb );
 
             expect( sut.length ).toBe( 4 );
             expect( sut ).toEqual( expected );
@@ -34,7 +34,7 @@ describe( "BoardManager", function () {
 
     describe( "getInitialGameBoard", () => {
         it( "should return a gameboard with the initial center squares occupied", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
             expect( gb.rows[3][3].player ).toBe( 1 );
             expect( gb.rows[4][4].player ).toBe( 1 );
@@ -63,7 +63,7 @@ describe( "BoardManager", function () {
 
     describe( "resetTargetCells", () => {
         it( "should set isTarget property of all cells to false", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
             expect( BoardManager.getFlatGameBoard( gb )
                 .some( c => c.isTarget ) )
@@ -80,8 +80,8 @@ describe( "BoardManager", function () {
 
     describe( "getPlayerCells", () => {
         it( "should return an array of cells belonging to the player", () => {
-            let gb = BoardManager.getInitialGameBoard();
-            let player2Cells = BoardManager.getPlayerCells( 2, gb );
+            const gb = BoardManager.getInitialGameBoard();
+            const player2Cells = BoardManager.getPlayerCells( 2, gb );
 
             expect( player2Cells.length ).toBe( 2 );
             player2Cells.forEach( c => {
@@ -93,15 +93,15 @@ describe( "BoardManager", function () {
 
     describe( "getAdjacentCells", () => {
         it( "should return every cell surrounding the position on the game board", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
-            let position1 = gb.rows[4][3];
-            let sut1 = BoardManager.getAdjacentCells( position1, gb );
+            const position1 = gb.rows[4][3];
+            const sut1 = BoardManager.getAdjacentCells( position1, gb );
 
             expect( sut1.length ).toBe( 8 );
 
-            let position2 = gb.rows[0][0];
-            let sut2 = BoardManager.getAdjacentCells( position2, gb );
+            const position2 = gb.rows[0][0];
+            const sut2 = BoardManager.getAdjacentCells( position2, gb );
 
             expect( sut2.length ).toBe( 3 );
         } )
@@ -109,15 +109,15 @@ describe( "BoardManager", function () {
 
     describe( "getOpenAdjacentCells", () => {
         it( "should return te cells adjacent to the passed cell on the game board", () => {
-            let gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard();
 
-            let position1 = gb.rows[4][3];
-            let sut1 = BoardManager.getOpenAdjacentCells( position1, gb );
+            const position1 = gb.rows[4][3];
+            const sut1 = BoardManager.getOpenAdjacentCells( position1, gb );
 
             expect( sut1.length ).toBe( 5 );
 
-            let position2 = gb.rows[0][0];
-            let sut2 = BoardManager.getOpenAdjacentCells( position2, gb );
+            const position2 = gb.rows[0][0];
+            const sut2 = BoardManager.getOpenAdjacentCells( position2, gb );
 
             expect( sut2.length ).toBe( 3 );
 
