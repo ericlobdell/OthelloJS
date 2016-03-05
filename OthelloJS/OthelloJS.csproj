@@ -70,7 +70,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="package.json" />
-    <Content Include="src\js\libs\system.js" />
     <Content Include="src\js\models\ObservableEvent.js" />
     <Content Include="src\js\models\View.js" />
     <Content Include="src\js\othello.ai.js" />
@@ -84,7 +83,6 @@
     <Content Include="tests\MIT.LICENSE" />
     <Content Include="tests\spec\Othello.ai.spec.js" />
     <Content Include="tests\spec\Repository.spec.js" />
-    <Content Include="tsd.json" />
     <Content Include="src\less\_animations.less" />
     <Content Include="src\less\_variables.less" />
     <None Include=".eslintrc" />
@@ -127,9 +125,6 @@
     <Content Include="src\js\models\ScoreKeeper.js" />
     <Content Include="tests\spec\BoardManager.spec.js" />
     <Content Include="tests\spec\ScoreKeeper.spec.js" />
-    <TypeScriptCompile Include="typings\jasmine\jasmine.d.ts" />
-    <TypeScriptCompile Include="typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="typings\tsd.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
