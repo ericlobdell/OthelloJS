@@ -1,5 +1,7 @@
+import Cell from './Cell';
+import Gameboard from "./Gameboard";
 
-const BoardManager = new class BoardManager {
+const BoardManager = new class boardManager {
 
     tryGetCell( row, col, gameBoard ) {
         return this.isValidMove( row, col ) ?
@@ -60,14 +62,14 @@ const BoardManager = new class BoardManager {
 
         return 0;
 
-    };
+    }
 
     cellIsInitialTarget( row, col ) {
         return ( row === 2 && col === 4 ) ||
             ( row === 3 && col === 5 ) ||
             ( row === 4 && col === 2 ) ||
             ( row === 5 && col === 3 );
-    };
+    }
 
     getInitialGameBoard( players ) {
         const gameBoard = new Gameboard( players );
@@ -84,5 +86,7 @@ const BoardManager = new class BoardManager {
     }
 
 }();
+
+export default BoardManager;
 
 

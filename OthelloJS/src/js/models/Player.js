@@ -1,5 +1,5 @@
 ﻿
-class Player {
+export default class Player {
 
     constructor( num ) {
         this.number = num;

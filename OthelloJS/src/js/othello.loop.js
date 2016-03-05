@@ -1,4 +1,10 @@
-(() => {
+import Player from "models/Player";
+import View from "models/View";
+import ScoreKeeper from "models/ScoreKeeper";
+import BoardManager from "models/BoardManager";
+import Othello from "./othello.ai";
+
+( () => {
     const _playerOne = new Player( 1 );
     const _playerTwo = new Player( 2 );
     const _players = [ _playerOne, _playerTwo ];
@@ -25,7 +31,6 @@
             ScoreKeeper.resetMoveRatings( _gameBoard );
 
             if ( opponentNextMoves.length ) {
-                console.log( `It's now player ${_otherPlayer.number}'s turn` );
 
                 if ( isComputerPlayerTurn() )
                     takeComputerTurn( opponentNextMoves );
@@ -41,7 +46,6 @@
             View.renderGameBoard( _gameBoard, opponentCaptures );
 
             if ( currentPlayerNextMoves.length ) {
-                console.log( `It's still player ${_currentPlayer.number}'s turn` );
 
                 if ( isComputerPlayerTurn() )
                     takeComputerTurn( currentPlayerNextMoves );

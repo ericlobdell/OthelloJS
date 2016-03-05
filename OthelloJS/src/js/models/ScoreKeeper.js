@@ -1,6 +1,7 @@
-/// <reference path="D:\repos\JS\OthelloJS\OthelloJS\src/js/models/Move.js" />
+import BoardManager from "./BoardManager";
+import Move from "./Move";
 
-const ScoreKeeper = new class ScoreKeeper {
+const ScoreKeeper = new class scoreKeeper {
 
     getMoveCaptures ( initialRow, initialCol, player, gameBoard ) {
         let hits = [];
@@ -146,3 +147,5 @@ const ScoreKeeper = new class ScoreKeeper {
     }
 
 }()
+
+export default ScoreKeeper;

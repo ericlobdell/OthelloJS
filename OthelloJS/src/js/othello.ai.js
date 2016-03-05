@@ -1,4 +1,4 @@
-﻿const Othello = new class Othello {
+﻿const Othello = new class othello {
 
     isCorner( move ) {
         const corners = [[0, 0], [0, 7], [7, 0], [7, 7]];
@@ -64,3 +64,5 @@
     }
 
 }();
+
+export default Othello;

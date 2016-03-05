@@ -4,7 +4,8 @@
   "description": "One or Two person game of Othello",
   "main": "gulpfile.js",
   "directories": {
-    "test": "tests"
+    "test": "tests",
+    "packages": "jspm_packages"
   },
   "dependencies": {
     "gulp": "^3.8.11",
@@ -21,24 +22,18 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
+    "babel-plugin-transform-es2015-modules-systemjs": "^6.6.5",
     "babel-preset-es2015": "^6.5.0",
-    "co": "^4.5.1",
-    "co-views": "^0.3.0",
+    "eslint": "^2.3.0",
+    "gulp-babel": "^5.3.0",
+    "gulp-eslint": "^2.0.0",
     "gulp-less": "^3.0.2",
     "gulp-minify-css": "^1.0.0",
     "gulp-rename": "^1.2.2",
     "jasmine": "^2.3.2",
-    "jasmine-expect": "^1.22.3",
-    "karma": "^0.13.10",
-    "karma-babel-preprocessor": "^5.2.1",
-    "koa": "^0.19.0",
-    "koa-route": "^2.4.0",
-    "monk": "^1.0.1"
+    "jasmine-expect": "^1.22.3"
   },
-  "scripts": {
-    "start": "node --harmony app.js",
-    "test": "gulp test"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/ericlobdell/othello.git"
@@ -54,5 +49,18 @@
   "bugs": {
     "url": "https://github.com/ericlobdell/othello/issues"
   },
-  "homepage": "https://github.com/ericlobdell/othello"
+  "homepage": "https://github.com/ericlobdell/othello",
+  "jspm": {
+    "directories": {
+      "test": "tests"
+    },
+    "dependencies": {
+      "jquery": "npm:jquery@^2.2.1"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
 }

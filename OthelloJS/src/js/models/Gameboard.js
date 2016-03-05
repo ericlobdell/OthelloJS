@@ -1,4 +1,4 @@
-﻿class Gameboard {
+﻿export default class Gameboard {
 
     constructor( players ) {
         this.rows = [];

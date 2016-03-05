@@ -18,6 +18,9 @@ module.exports = function ( wallaby ) {
                 // https://babeljs.io/docs/usage/experimental/
                 stage: 0
             } )
+        },
+        env: {
+            type: 'node'
         }
     };
 };

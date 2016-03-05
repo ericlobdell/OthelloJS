@@ -8,14 +8,17 @@ var rename = require("gulp-rename");
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
-var reload = require('gulp-livereload');
+var reload = require( 'gulp-livereload' );
+var eslint = require( 'gulp-eslint' );
 
 gulp.task('build', function () {
     return gulp.src( ['src/js/models/*.js', 'src/js/*.js'] )
         .pipe(sourcemaps.init())
-        .pipe(babel())
-        .pipe(uglify())
-        .pipe(concat('app.js'))
+        .pipe( babel( {
+            plugins: ["transform-es2015-modules-systemjs"]
+        } ) )
+        //.pipe(uglify())
+        //.pipe(concat('app.js'))
         .pipe( sourcemaps.write( '.', {
             includeContent: false,
             sourceRoot: '../src'
@@ -44,13 +47,19 @@ gulp.task("reload", function () {
 gulp.task("watch", function () {
     reload.listen();
 
-    gulp.watch('src/js/**/*.js', ["build", "reload"]);
+    gulp.watch('src/js/**/*.js', ["lint", "build", "reload"]);
     gulp.watch('src/less/*.less', ["less", "reload"]);
     gulp.watch('tests/spec/*.js', ["reload"]);
     gulp.watch("./index.html", ["reload"]);
-    gulp.watch("tests/SpecRunner.html", ["reload"]);
-});
+} );
+
+gulp.task( 'lint', function () {
+    return gulp.src( ['src/js/**/*.js', '!node_modules/**'] )
+        .pipe( eslint() )
+        .pipe( eslint.format() )
+        .pipe( eslint.failAfterError() );
+} );
 
 gulp.task("default", function() {
-    gulp.start(["build", "less", "watch"]);
+    gulp.start(["lint", "build", "less", "watch"]);
 });

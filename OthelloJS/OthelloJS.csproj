@@ -69,17 +69,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="dist\app.js.map" />
-    <Content Include="dist\js\app.js.map" />
     <Content Include="package.json" />
+    <Content Include="src\js\libs\system.js" />
     <Content Include="src\js\models\ObservableEvent.js" />
     <Content Include="src\js\models\View.js" />
     <Content Include="src\js\othello.ai.js" />
+    <Content Include="src\less\app.css">
+      <DependentUpon>app.less</DependentUpon>
+    </Content>
     <Content Include="src\less\app.less" />
+    <Content Include="src\less\app.min.css">
+      <DependentUpon>app.css</DependentUpon>
+    </Content>
     <Content Include="tests\MIT.LICENSE" />
     <Content Include="tests\spec\Othello.ai.spec.js" />
     <Content Include="tests\spec\Repository.spec.js" />
     <Content Include="tsd.json" />
+    <Content Include="src\less\_animations.less" />
+    <Content Include="src\less\_variables.less" />
+    <None Include=".eslintrc" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -89,11 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <Content Include="app.js" />
-    <Content Include="dist\css\app.min.css" />
-    <Content Include="dist\index.html" />
-    <Content Include="dist\js\app.js" />
-    <Content Include="dist\js\vendor\jQuery.js" />
+    <Content Include="index.html" />
     <Content Include="gulpfile.js" />
     <Content Include="tests\lib\jasmine\boot.js" />
     <Content Include="tests\lib\jasmine\console.js" />

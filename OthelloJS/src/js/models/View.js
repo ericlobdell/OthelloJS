@@ -1,4 +1,8 @@
-﻿const View = new class View {
+﻿
+import ObservableEvent from "./ObservableEvent";
+import $ from 'jquery';
+
+const View = new class view {
 
     constructor() {
         const _this = this;
@@ -128,3 +132,5 @@
     }
 
 }();
+
+export default View;

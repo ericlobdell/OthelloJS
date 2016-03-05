@@ -1,4 +1,4 @@
-class Repository {
+export default class Repository {
     
     constructor() {
         this.snapshots = [];
@@ -6,11 +6,9 @@ class Repository {
 
     recordMove( data ) {
         const snapshot = this.getSnapshotPattern( data.gameBoard );
-        console.log( "Snapshot created: ", snapshot );
 
         this.snapshots.push( snapshot );
         data.snapShots = this.snapshots;
-        console.log( "Saving Data: ", data );
     }
 
     getSnapshotPattern( gameboard ) {

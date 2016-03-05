@@ -1,5 +1,5 @@
 ﻿
-class Cell {
+export default class Cell {
 
     constructor( row, col, player, isTarget ) {
         this.row = row;

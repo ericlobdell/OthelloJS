@@ -1,6 +1,6 @@
-﻿class ObservableEvent {
+﻿export default class ObservableEvent {
 
-    constructor(...subs) {
+    constructor( ...subs ) {
         this.subscribers = subs || [];
     }
 
