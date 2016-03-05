@@ -78,6 +78,8 @@ build/Release
 node_modules
 
 .vs
-
+Properties
+Web*.config
+*.csproj
 
 
