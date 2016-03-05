@@ -1,7 +1,7 @@
-/// <reference path="../lib/jasmine/jasmine.js" />
-/// <reference path="D:\repos\JS\OthelloJS\OthelloJS\src/js/models/Move.js" />
-/// <reference path="ScoreKeeper.spec.js" />
-/// <reference path="BoardManager.spec.js" />
+import ScoreKeeper from "../../src/js/models/ScoreKeeper";
+import Cell from "../../src/js/models/Cell";
+import Player from "../../src/js/models/Player";
+import BoardManager from "../../src/js/models/BoardManager";
 
 const _ = null;
 

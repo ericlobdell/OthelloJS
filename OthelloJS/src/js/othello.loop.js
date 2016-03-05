@@ -1,7 +1,7 @@
-import Player from "models/Player";
-import View from "models/View";
-import ScoreKeeper from "models/ScoreKeeper";
-import BoardManager from "models/BoardManager";
+import Player from "./models/Player";
+import View from "./models/View";
+import ScoreKeeper from "./models/ScoreKeeper";
+import BoardManager from "./models/BoardManager";
 import Othello from "./othello.ai";
 
 ( () => {

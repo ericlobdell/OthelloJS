@@ -1,4 +1,6 @@
 ﻿
+import BoardManager from "../../src/js/models/BoardManager";
+
 describe( "BoardManager", function () {
 
     describe( "getFlatGameboard", () => {

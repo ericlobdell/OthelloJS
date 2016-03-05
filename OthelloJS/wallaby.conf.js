@@ -1,26 +1,55 @@
-﻿var babel = require( "babel" );
+﻿var babelPreprocessor = file => require( 'babel' )
+                                   .transform( file.content, { sourceMap: true, filename: file.path } );
 
 module.exports = function ( wallaby ) {
     return {
         files: [
-            {pattern: 'node_modules/babel/node_modules/babel-core/browser-polyfill.js', instrument: false},
-            { pattern: "dist/js/vendor/jQuery.js", instrument: false },
-           "src/js/**/*.js",
-            { pattern: "src/js/othello.js", instrument: false }
+            { pattern: 'jspm_packages/system.js', instrument: false },
+            { pattern: 'config.js', instrument: false },
+
+            { pattern: "src/**/*.js", load: false }
         ],
 
         tests: [
-           "tests/spec/*.spec.js"
+           { pattern: "tests/spec/*.spec.js", load: false }
         ],
-        compilers: {
-            '**/*.js':  wallaby.compilers.babel( {
-                babel: babel,
-                // https://babeljs.io/docs/usage/experimental/
-                stage: 0
-            } )
+        preprocessors: {
+            "tests/spec/*.spec.js": babelPreprocessor,
+            'src/js/**/*.js': babelPreprocessor
         },
-        env: {
-            type: 'node'
-        }
+        middleware: ( app, express ) => {
+            app.use( '/jspm_packages',
+                express.static( require( 'path' ).join( __dirname, 'jspm_packages' ) ) );
+        },
+        bootstrap: function ( wallaby ) {
+            var promises = [];
+            var i = 0;
+            var len = wallaby.tests.length;
+
+            wallaby.delayStart();
+
+            System.config( {
+                paths: {
+                    '*': '*.js'
+                },
+                //meta: {
+                //    'src/js/**/*.js': {
+                //        scriptLoad: true,
+                //        format: 'register'
+                //    }
+                //}
+            } );
+
+            for ( ; i < len; i++ ) {
+                promises.push( System['import']( wallaby.tests[i].replace( /\.js$/, '' ) ) );
+            }
+
+            Promise.all( promises ).then( function () {
+                wallaby.start();
+            } ).catch( function ( e ) { setTimeout( function () { throw e; }, 0 ); } );
+        }//},
+        //env: {
+        //    type: 'node'
+        //}
     };
 };

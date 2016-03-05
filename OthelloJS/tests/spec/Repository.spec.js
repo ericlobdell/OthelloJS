@@ -1,4 +1,6 @@
-﻿describe( "Repository", () => {
+﻿import Repository from "../../src/js/models/Repository";
+
+describe( "Repository", () => {
     var _repo, _bm, _gameBoard;
 
     beforeEach(() => {

@@ -1,4 +1,6 @@
-﻿describe( "Othello.ai", () => {
+﻿import Othello from "../../src/js/othello.ai";
+
+describe( "Othello.ai", () => {
 
     describe( "isCorner", () => {
         it( "should test if move location is in corner position", () => {
