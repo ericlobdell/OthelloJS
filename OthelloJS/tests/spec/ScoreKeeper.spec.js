@@ -25,7 +25,7 @@ describe( "ScoreKeeper", () => {
 
     describe( "doDirectionalSearch", () => {
         it( "should return an empty array if passed an invalid cell location", () => {
-            var sut = ScoreKeeper.doDirectionalSearch( 0, 0, 0, 0, 1, {
+            const sut = ScoreKeeper.doDirectionalSearch( 0, 0, 0, 0, 1, {
                 rows: [
                     [{ row: -1, col: 1 }]
                 ]
@@ -55,9 +55,6 @@ describe( "ScoreKeeper", () => {
             const d3 = ScoreKeeper.getHitDistance( move, hitRow3, hitCol3 );
 
             expect(d3).toBe(2);
-
-
-
         });
 
     });

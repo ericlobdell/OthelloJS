@@ -47,7 +47,7 @@ describe( "Othello.ai", () => {
                     basedOn: "highest point value" } );
         } );
 
-        it( "should select a corner position even if it isn't the ehighest scoring move", () => {
+        it( "should select a corner position even if it isn't the highest scoring move", () => {
             const nonCorner1 = { col: 6, row: 2, pointValue: 4 };
             const nonCorner2 = { col: 1, row: 2, pointValue: 6 };
             const cornerMove = { col: 0, row: 0, pointValue: 3 };
@@ -59,7 +59,7 @@ describe( "Othello.ai", () => {
                 basedOn: "corner position available" } );
         } );
 
-        it( "should select an edge position even if it isn't the ehighest scoring move, but nocorner available", () => {
+        it( "should select an edge position even if it isn't the highest scoring move, but no corner available", () => {
             const nonEdge1 = { col: 6, row: 2, pointValue: 4 };
             const nonEdge2 = { col: 1, row: 2, pointValue: 6 };
             const edgeMove = { col: 4, row: 0, pointValue: 3 };
@@ -70,9 +70,6 @@ describe( "Othello.ai", () => {
                 col: edgeMove.col,
                 basedOn: "edge position available" } );
         } );
-
-    
-
     } );
 
     describe("getRandomIndex", () => {
@@ -84,7 +81,6 @@ describe( "Othello.ai", () => {
                expect(sut >= 0).toBe(true);
                expect(sut <= max).toBe(true);
            }
-
        });
     });
 
