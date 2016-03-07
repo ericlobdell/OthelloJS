@@ -1,6 +1,10 @@
 @import "_animations";
 @import "_variables";
 
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 .game-board-container {
     padding: @paddingStandard;
     box-sizing: border-box;
@@ -22,7 +26,6 @@
 
 .choose-game-mode-view {
     margin: 50px 0 0 0;
-    width: 100%;
     text-align: center;
 }
 
@@ -41,33 +44,28 @@
 }
 
 .scoreboards-container {
-    padding: @paddingStandard;
+    width: 500px;
+    margin: 0 auto;
+    overflow: auto;
 }
 
 .score-board {
-    margin: 25px auto;
-    padding: @paddingMedium;
-    .border-radius(3px);
     text-align: center;
+    font-size: 2em;
+    font-weight: lighter;
 
-    p {
-        font-size: 2em;
+    padding {
+        margin: 0;
     }
 
     .score {
-        font-size: 4em;
-        font-weight: lighter;
+        font-weight: normal;
     }
 
-    &.player-1.active {
-        background: @colorPlayerOne;
-        color: #fff;
+    &.active {
+        border-bottom: 1px solid @colorPlayerOne;
     }
 
-    &.player-2.active {
-        background: @colorPlayerTwo;
-        color: #fff;
-    }
 }
 
 .cell {
@@ -100,19 +98,23 @@
 }
 
 .shell {
-    margin: 2em auto;
-    font-family: 'Roboto', sans-serif;
-    width: 1200px;
+    min-width: 500px;
 
     .title {
         font-weight: 700;
         font-size: 2em;
         display: inline-block;
-        margin: 0 2em 0 0;
     }
 
     .demo-toolbar {
-        margin: 1em 0;
+        padding: 1em;
+        margin: 0 0 1em 0;
+        background: #eee;
+        min-width: 500px;
+
+        .view-options {
+            padding: .75em 0 0 0;
+        }
     }
 
     &.show-marks {

@@ -260,6 +260,9 @@
   -o-animation-name: fadeOut;
   animation-name: fadeOut;
 }
+body {
+  font-family: 'Roboto', sans-serif;
+}
 .game-board-container {
   padding: 1em;
   box-sizing: border-box;
@@ -278,7 +281,6 @@
 }
 .choose-game-mode-view {
   margin: 50px 0 0 0;
-  width: 100%;
   text-align: center;
 }
 .logging-container {
@@ -294,30 +296,23 @@
   padding: 0.25em 0;
 }
 .scoreboards-container {
-  padding: 1em;
+  width: 500px;
+  margin: 0 auto;
+  overflow: auto;
 }
 .score-board {
-  margin: 25px auto;
-  padding: 0.5em;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
   text-align: center;
-}
-.score-board p {
   font-size: 2em;
-}
-.score-board .score {
-  font-size: 4em;
   font-weight: lighter;
 }
-.score-board.player-1.active {
-  background: #111;
-  color: #fff;
+.score-board padding {
+  margin: 0;
 }
-.score-board.player-2.active {
-  background: #99B2B7;
-  color: #fff;
+.score-board .score {
+  font-weight: normal;
+}
+.score-board.active {
+  border-bottom: 1px solid #111;
 }
 .cell {
   font-weight: 300;
@@ -351,18 +346,21 @@
   background: #99B2B7;
 }
 .shell {
-  margin: 2em auto;
-  font-family: 'Roboto', sans-serif;
-  width: 1200px;
+  min-width: 500px;
 }
 .shell .title {
   font-weight: 700;
   font-size: 2em;
   display: inline-block;
-  margin: 0 2em 0 0;
 }
 .shell .demo-toolbar {
-  margin: 1em 0;
+  padding: 1em;
+  margin: 0 0 1em 0;
+  background: #eee;
+  min-width: 500px;
+}
+.shell .demo-toolbar .view-options {
+  padding: .75em 0 0 0;
 }
 .shell.show-marks .cell[data-is-target="true"] {
   border-right: 1px solid #5C696B;
