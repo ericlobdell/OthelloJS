@@ -34,7 +34,7 @@ import Othello from "./othello.ai";
 
                 if ( isComputerPlayerTurn() )
                     takeComputerTurn( opponentNextMoves );
-
+                 
             }
 
             View.updateScoreBoards( _players, _currentPlayer.number );
@@ -56,8 +56,6 @@ import Othello from "./othello.ai";
                 handleEndOfMatch();
         }
         
-
-
     }
 
     function handleOnGameModeSelect ( selectedGameMode ) {

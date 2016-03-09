@@ -97,7 +97,7 @@ const View = new class view {
 
     updateScoreBoards( players, currentPlayer ) {
         players.forEach( player => {
-            const $playerSoreBoard = $( ".score-board.player-" + player.number );
+            const $playerSoreBoard = $( `.score-board.player-${ player.number }` );
 
             $playerSoreBoard
                 .find( ".score" )
@@ -117,7 +117,7 @@ const View = new class view {
         let $winningScoreBoard;
 
         if ( winner )
-            $winningScoreBoard = $( `.score-board.player-${winner}` );
+            $winningScoreBoard = $( `.score-board.player-${ winner }` );
         else
             $winningScoreBoard = $( `.score-board` );
 
