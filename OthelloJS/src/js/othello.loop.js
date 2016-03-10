@@ -37,9 +37,8 @@ import Othello from "./othello.ai";
                  
             }
 
-            View.updateScoreBoards( _players, _currentPlayer.number );
-
             updateActivePlayer();
+            View.updateScoreBoards( _players, _currentPlayer.number );
 
         } else {
             const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
