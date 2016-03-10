@@ -4,100 +4,111 @@ import ScoreKeeper from "./models/ScoreKeeper";
 import BoardManager from "./models/BoardManager";
 import Othello from "./othello.ai";
 
-( () => {
-    const _playerOne = new Player( 1 );
-    const _playerTwo = new Player( 2 );
-    const _players = [ _playerOne, _playerTwo ];
-    const _gameBoard = BoardManager.getInitialGameBoard( _players );
-    const _gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
+let _this;
+const PLAYER_ONE_NUMBER = 1;
 
-    let _gameMode = null;
-    let _currentPlayer = _playerOne;
-    let _otherPlayer = _playerTwo;
+const Loop = new class loop {
+    constructor() {
+        _this = this;
 
-    View.onMove.subscribe( handleOnMove );
-    View.onGameModeSelect.subscribe( handleOnGameModeSelect );
+        this.playerOne = new Player( 1 );
+        this.playerTwo = new Player( 2 );
+        this.players = [ _this.playerOne, _this.playerTwo ];
+        this.gameBoard = BoardManager.getInitialGameBoard( _this.players );
+        this.gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
 
-    function handleOnMove ( move ) {
-        const opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _currentPlayer.number, _gameBoard, move.isHighScoring );
+        this.gameMode = null;
+        this.currentPlayer = _this.playerOne;
+        this.otherPlayer = _this.playerTwo;
+
+        View.onMove.subscribe( _this.handleOnMove );
+        View.onGameModeSelect.subscribe( _this.handleOnGameModeSelect );
+    }
+
+    handleOnMove ( move ) {
+        const opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _this.currentPlayer.number, _this.gameBoard, move.isHighScoring );
         
         if ( opponentCaptures.length ) {
            
-            const opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _otherPlayer.number, _gameBoard );
-            ScoreKeeper.setPlayerScores( _players, _gameBoard );
+            const opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _this.otherPlayer.number, _this.gameBoard );
+            ScoreKeeper.setPlayerScores( _this.players, _this.gameBoard );
 
-            View.renderGameBoard( _gameBoard, opponentCaptures );
+            View.renderGameBoard( _this.gameBoard, opponentCaptures );
 
-            ScoreKeeper.resetMoveRatings( _gameBoard );
+            ScoreKeeper.resetMoveRatings( _this.gameBoard );
 
             if ( opponentNextMoves.length ) {
 
-                if ( isComputerPlayerTurn() )
-                    takeComputerTurn( opponentNextMoves );
+                if ( _this.isComputerPlayerTurn() )
+                    _this.takeComputerTurn( opponentNextMoves, _this.otherPlayer );
                  
             }
 
-            updateActivePlayer();
-            View.updateScoreBoards( _players, _currentPlayer.number );
+            _this.updateActivePlayer();
+            View.updateScoreBoards( _this.players, _this.currentPlayer.number );
 
         } else {
-            const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
-            View.renderGameBoard( _gameBoard, opponentCaptures );
+            const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _this.currentPlayer.number, _this.gameBoard );
+            View.renderGameBoard( _this.gameBoard, opponentCaptures );
 
             if ( currentPlayerNextMoves.length ) {
 
-                if ( isComputerPlayerTurn() )
-                    takeComputerTurn( currentPlayerNextMoves );
+                if ( _this.isComputerPlayerTurn() )
+                    _this.takeComputerTurn( currentPlayerNextMoves, _this.otherPlayer );
 
-                View.updateScoreBoards( _players, _currentPlayer.number );
+                View.updateScoreBoards( _this.players, _this.currentPlayer.number );
             }
             else
-                handleEndOfMatch();
+                _this.handleEndOfMatch();
         }
         
     }
 
-    function handleOnGameModeSelect ( selectedGameMode ) {
-        _gameMode = _gameModes[ selectedGameMode ];
+    handleOnGameModeSelect ( selectedGameMode ) {
+        _this.gameMode = _this.gameModes[ selectedGameMode ];
 
-        View.renderGameBoard( _gameBoard, [] );
-        View.updateScoreBoards( _players, _currentPlayer.number );
+        View.renderGameBoard( _this.gameBoard, [] );
+        View.updateScoreBoards( _this.players, _this.currentPlayer.number );
 
-        if ( _gameMode === _gameModes.learning ) {
-            const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _currentPlayer.number, _gameBoard );
-            takeComputerTurn( currentPlayerNextMoves );
+        if ( _this.gameMode === _this.gameModes.learning ) {
+            const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _this.currentPlayer.number, _this.gameBoard );
+            _this.takeComputerTurn( currentPlayerNextMoves, _this.otherPlayer );
         }
     }
 
-    function handleEndOfMatch () {
-        const leader = ScoreKeeper.getLeader( _playerOne, _playerTwo );
+    handleEndOfMatch () {
+        const leader = ScoreKeeper.getLeader( _this.playerOne, _this.playerTwo );
         View.announceWinner( leader );
     }
 
-    function isComputerPlayerTurn () {
-        return _gameMode === _gameModes.learning ||
-            ( _gameMode === _gameModes.singlePlayer && _otherPlayer.number === _playerTwo.number );
+    isComputerPlayerTurn () {
+        return _this.gameMode === _this.gameModes.learning ||
+            ( _this.gameMode === _this.gameModes.singlePlayer && _this.otherPlayer.number === _this.playerTwo.number );
     }
 
-    function takeComputerTurn ( availableNextMoves ) {
+    takeComputerTurn ( availableNextMoves, otherPlayer ) {
         setTimeout( () => {
-            const nextMove = _otherPlayer.number === _playerOne.number ?
+            const nextMove = otherPlayer.number === PLAYER_ONE_NUMBER ?
                 Othello.makeRandomMove( availableNextMoves ) :
                 Othello.makeMove( availableNextMoves );
 
-            handleOnMove( nextMove );
+            _this.handleOnMove( nextMove );
 
         }, 1000 );
     }
 
-    function updateActivePlayer () {
-        if ( _currentPlayer.number === _playerOne.number ) {
-            _currentPlayer = _playerTwo;
-            _otherPlayer = _playerOne;
+    updateActivePlayer () {
+        if ( _this.currentPlayer.number === _this.playerOne.number ) {
+            _this.currentPlayer = _this.playerTwo;
+            _this.otherPlayer = _this.playerOne;
         } else {
-            _currentPlayer = _playerOne;
-            _otherPlayer = _playerTwo;
+            _this.currentPlayer = _this.playerOne;
+            _this.otherPlayer = _this.playerTwo;
         }
     }
+}();
 
-})();
+export default Loop;
+
+
+

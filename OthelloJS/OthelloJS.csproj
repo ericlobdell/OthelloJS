@@ -83,6 +83,7 @@
     </Content>
     <Content Include="tests\MIT.LICENSE" />
     <Content Include="tests\spec\Othello.ai.spec.js" />
+    <Content Include="tests\spec\Othello.loop.spec.js" />
     <Content Include="tests\spec\Repository.spec.js" />
     <Content Include="src\less\_animations.less" />
     <Content Include="src\less\_variables.less" />
