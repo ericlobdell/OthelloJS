@@ -1,5 +1,5 @@
-import Cell from './Cell';
-import Gameboard from "./Gameboard";
+import Cell from '../models/Cell';
+import Gameboard from "../models/Gameboard";
 
 const BoardManager = new class boardManager {
 
@@ -53,14 +53,15 @@ const BoardManager = new class boardManager {
     }
 
     getInitialPlayer( row, col ) {
+        let playerNumber = 0;
 
         if ( ( row === 3 && col === 3 ) || ( row === 4 && col === 4 ) )
-            return 1;
+            playerNumber =  1;
 
         if ( ( row === 3 && col === 4 ) || ( row === 4 && col === 3 ) )
-            return 2;
+            playerNumber =  2;
 
-        return 0;
+        playerNumber;
 
     }
 

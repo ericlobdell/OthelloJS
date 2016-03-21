@@ -31,13 +31,7 @@ module.exports = function ( wallaby ) {
             System.config( {
                 paths: {
                     '*': '*.js'
-                },
-                //meta: {
-                //    'src/js/**/*.js': {
-                //        scriptLoad: true,
-                //        format: 'register'
-                //    }
-                //}
+                }
             } );
 
             for ( ; i < len; i++ ) {

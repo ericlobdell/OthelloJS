@@ -72,7 +72,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="src\js\models\ObservableEvent.js" />
-    <Content Include="src\js\models\View.js" />
+    <Content Include="src\js\othello.view.js" />
     <Content Include="src\js\othello.ai.js" />
     <Content Include="src\less\app.css">
       <DependentUpon>app.less</DependentUpon>
@@ -117,14 +117,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="src\js\models\BoardManager.js" />
+    <Content Include="src\js\services\BoardManager.js" />
     <Content Include="src\js\models\Gameboard.js" />
     <Content Include="src\js\models\Cell.js" />
     <Content Include="src\js\models\Move.js" />
     <Content Include="src\js\models\Player.js" />
     <Content Include="src\js\othello.loop.js" />
-    <Content Include="src\js\models\Repository.js" />
-    <Content Include="src\js\models\ScoreKeeper.js" />
+    <Content Include="src\js\services\Repository.js" />
+    <Content Include="src\js\services\ScoreKeeper.js" />
     <Content Include="tests\spec\BoardManager.spec.js" />
     <Content Include="tests\spec\ScoreKeeper.spec.js" />
   </ItemGroup>

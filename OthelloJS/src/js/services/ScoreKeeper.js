@@ -1,5 +1,5 @@
 import BoardManager from "./BoardManager";
-import Move from "./Move";
+import Move from "../models/Move";
 
 const ScoreKeeper = new class scoreKeeper {
 

@@ -1,7 +1,7 @@
 import Player from "./models/Player";
-import View from "./models/View";
-import ScoreKeeper from "./models/ScoreKeeper";
-import BoardManager from "./models/BoardManager";
+import View from "./othello.view";
+import ScoreKeeper from "./services/ScoreKeeper";
+import BoardManager from "./services/BoardManager";
 import Othello from "./othello.ai";
 
 let _this;
@@ -15,7 +15,7 @@ const Loop = new class loop {
         this.playerTwo = new Player( 2 );
         this.players = [ _this.playerOne, _this.playerTwo ];
         this.gameBoard = BoardManager.getInitialGameBoard( _this.players );
-        this.gameModes = { singlePlayer: Symbol(), twoPlayer: Symbol(), learning: Symbol() };
+        this.gameModes = { singlePlayer: 1, twoPlayer: 2, learning: 3 };
 
         this.gameMode = null;
         this.currentPlayer = _this.playerOne;

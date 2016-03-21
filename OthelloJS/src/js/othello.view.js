@@ -1,5 +1,5 @@
 ﻿
-import ObservableEvent from "./ObservableEvent";
+import ObservableEvent from "./models/ObservableEvent";
 import $ from 'jquery';
 
 const View = new class view {
