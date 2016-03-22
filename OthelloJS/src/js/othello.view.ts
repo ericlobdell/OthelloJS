@@ -1,8 +1,14 @@
 ﻿
-import ObservableEvent from "./models/ObservableEvent";
+import ObservableEvent from "models/ObservableEvent";
+import Gameboard from "models/Gameboard";
+import Player from "models/Player";
+import Cell from "models/Cell";
 import $ from 'jquery';
 
 const View = new class view {
+
+    onMove: ObservableEvent;
+    onGameModeSelect: ObservableEvent;
 
     constructor() {
         const _this = this;
@@ -62,7 +68,7 @@ const View = new class view {
 
     }
 
-    renderGameBoard( gameBoard, opponentCaptures ) {
+    renderGameBoard( gameBoard: Gameboard, opponentCaptures: Cell[] ) {
         let html = "";
 
         gameBoard.rows.forEach( row => {
@@ -95,13 +101,13 @@ const View = new class view {
             } );
     }
 
-    updateScoreBoards( players, currentPlayer ) {
+    updateScoreBoards( players: Player[], currentPlayer: number ) {
         players.forEach( player => {
             const $playerSoreBoard = $( `.score-board.player-${ player.number }` );
 
             $playerSoreBoard
                 .find( ".score" )
-                .html( player.score );
+                .html( player.score.toString() );
 
             if ( player.number === currentPlayer )
                 $playerSoreBoard
@@ -113,7 +119,7 @@ const View = new class view {
         } );
     }
 
-    announceWinner( winner ) {
+    announceWinner( winner: number ) {
         let $winningScoreBoard;
 
         if ( winner )
@@ -124,7 +130,7 @@ const View = new class view {
         $winningScoreBoard.addClass( "active animated tada" );
     }
 
-    updateLogging( entry ) {
+    updateLogging( entry: string ) {
         const $log = $( ".logging-container" );
 
         $log.append( entry );

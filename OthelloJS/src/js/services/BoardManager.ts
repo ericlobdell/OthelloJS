@@ -1,4 +1,5 @@
 import Cell from '../models/Cell';
+import Player from "../models/Player";
 import Gameboard from "../models/Gameboard";
 
 const BoardManager = new class boardManager {
@@ -9,25 +10,25 @@ const BoardManager = new class boardManager {
             null;
     }
 
-    isValidMove( row, col ) {
+    isValidMove( row: number, col: number ) : boolean {
         return ( row > -1 && col > -1 ) && ( row < 8 && col < 8 );
     }
 
-    getFlatGameBoard( gameBoard ) {
+    getFlatGameBoard( gameBoard: Gameboard ) : Cell[] {
         return Array.prototype.concat.apply( [], gameBoard.rows );
     }
 
-    getEmptyCells( gameBoard ) {
+    getEmptyCells( gameBoard: Gameboard ) : Cell[] {
         return this.getFlatGameBoard( gameBoard )
             .filter( c  => c.player === 0 );
     }
 
-    getPlayerCells( playerNumber, gameBoard ) {
+    getPlayerCells( playerNumber: number, gameBoard: Gameboard ) : Cell[] {
         return this.getFlatGameBoard( gameBoard )
             .filter( c => c.player === playerNumber );
     }
 
-    getAdjacentCells( cell, gameBoard ) {
+    getAdjacentCells( cell: Cell, gameBoard: Gameboard ) : Cell[] {
         const above = this.tryGetCell( cell.row - 1, cell.col, gameBoard );
         const aboveRight = this.tryGetCell( cell.row - 1, cell.col + 1, gameBoard );
         const aboveLeft = this.tryGetCell( cell.row - 1, cell.col - 1, gameBoard );
@@ -41,18 +42,19 @@ const BoardManager = new class boardManager {
             .filter( c => c !== null );
     }
 
-    getOpenAdjacentCells( cell, gameBoard ) {
+    getOpenAdjacentCells( cell: Cell, gameBoard: Gameboard ) : Cell[] {
         return this.getAdjacentCells( cell, gameBoard )
             .filter( c => c.player === 0 );
     }
 
-
-    resetTargetCells( gameBoard ) {
+    // impure
+    resetTargetCells( gameBoard: Gameboard ): void {
         this.getFlatGameBoard( gameBoard )
             .forEach( c => c.isTarget = false );
     }
 
-    getInitialPlayer( row, col ) {
+
+    getInitialPlayer( row: number, col: number ) : number {
         let playerNumber = 0;
 
         if ( ( row === 3 && col === 3 ) || ( row === 4 && col === 4 ) )
@@ -65,18 +67,18 @@ const BoardManager = new class boardManager {
 
     }
 
-    cellIsInitialTarget( row, col ) {
+    cellIsInitialTarget( row: number, col: number ) : boolean {
         return ( row === 2 && col === 4 ) ||
             ( row === 3 && col === 5 ) ||
             ( row === 4 && col === 2 ) ||
             ( row === 5 && col === 3 );
     }
 
-    getInitialGameBoard( players ) {
+    getInitialGameBoard( players: Player[] ) {
         const gameBoard = new Gameboard( players );
 
         for ( let r = 0; r < 8; r++ ) {
-            let row = [];
+            let row: Cell[] = [];
             for ( let c = 0; c < 8; c++ )
                 row.push( new Cell( r, c, this.getInitialPlayer( r, c ), this.cellIsInitialTarget( r, c ) ) );
 

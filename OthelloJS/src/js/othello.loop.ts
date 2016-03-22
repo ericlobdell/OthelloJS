@@ -1,4 +1,5 @@
 import Player from "./models/Player";
+import Gameboard from "models/Gameboard";
 import View from "./othello.view";
 import ScoreKeeper from "./services/ScoreKeeper";
 import BoardManager from "./services/BoardManager";
@@ -8,6 +9,16 @@ let _this;
 const PLAYER_ONE_NUMBER = 1;
 
 const Loop = new class loop {
+
+    playerOne: Player;
+    playerTwo: Player;
+    players: Player[];
+    gameBoard: Gameboard;
+    gameModes: Object
+    gameMode: number;
+    currentPlayer: Player;
+    otherPlayer: Player;
+
     constructor() {
         _this = this;
 
@@ -26,14 +37,14 @@ const Loop = new class loop {
     }
 
     handleOnMove ( move ) {
-        const opponentCaptures = ScoreKeeper.recordMove( move.row, move.col, _this.currentPlayer.number, _this.gameBoard, move.isHighScoring );
+        const result = ScoreKeeper.recordMove( move.row, move.col, _this.currentPlayer.number, _this.gameBoard, move.isHighScoring );
         
-        if ( opponentCaptures.length ) {
+        if ( result.wasScoringMove ) {
            
             const opponentNextMoves = ScoreKeeper.getNextMovesForPlayer( _this.otherPlayer.number, _this.gameBoard );
             ScoreKeeper.setPlayerScores( _this.players, _this.gameBoard );
 
-            View.renderGameBoard( _this.gameBoard, opponentCaptures );
+            View.renderGameBoard( _this.gameBoard, result.captures );
 
             ScoreKeeper.resetMoveRatings( _this.gameBoard );
 
@@ -49,7 +60,7 @@ const Loop = new class loop {
 
         } else {
             const currentPlayerNextMoves = ScoreKeeper.getNextMovesForPlayer( _this.currentPlayer.number, _this.gameBoard );
-            View.renderGameBoard( _this.gameBoard, opponentCaptures );
+            View.renderGameBoard( _this.gameBoard, result.captures );
 
             if ( currentPlayerNextMoves.length ) {
 

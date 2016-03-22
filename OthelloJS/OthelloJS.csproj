@@ -71,9 +71,11 @@
     <Content Include="config.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
-    <Content Include="src\js\models\ObservableEvent.js" />
-    <Content Include="src\js\othello.view.js" />
-    <Content Include="src\js\othello.ai.js" />
+    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="src\js\models\ObservableEvent.ts" />
+    <TypeScriptCompile Include="src\js\othello.view.ts" />
+    <TypeScriptCompile Include="src\js\othello.ai.ts" />
     <Content Include="src\less\app.css">
       <DependentUpon>app.less</DependentUpon>
     </Content>
@@ -82,9 +84,9 @@
       <DependentUpon>app.css</DependentUpon>
     </Content>
     <Content Include="tests\MIT.LICENSE" />
-    <Content Include="tests\spec\Othello.ai.spec.js" />
-    <Content Include="tests\spec\Othello.loop.spec.js" />
-    <Content Include="tests\spec\Repository.spec.js" />
+    <TypeScriptCompile Include="tests\spec\Othello.ai.spec.ts" />
+    <TypeScriptCompile Include="tests\spec\Othello.loop.spec.ts" />
+    <TypeScriptCompile Include="tests\spec\Repository.spec.ts" />
     <Content Include="src\less\_animations.less" />
     <Content Include="src\less\_variables.less" />
     <None Include=".eslintrc" />
@@ -92,6 +94,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="tsconfig.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -117,16 +120,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="src\js\services\BoardManager.js" />
-    <Content Include="src\js\models\Gameboard.js" />
-    <Content Include="src\js\models\Cell.js" />
-    <Content Include="src\js\models\Move.js" />
-    <Content Include="src\js\models\Player.js" />
-    <Content Include="src\js\othello.loop.js" />
-    <Content Include="src\js\services\Repository.js" />
-    <Content Include="src\js\services\ScoreKeeper.js" />
-    <Content Include="tests\spec\BoardManager.spec.js" />
-    <Content Include="tests\spec\ScoreKeeper.spec.js" />
+    <TypeScriptCompile Include="src\js\services\BoardManager.ts" />
+    <TypeScriptCompile Include="src\js\models\Gameboard.ts" />
+    <TypeScriptCompile Include="src\js\models\Cell.ts" />
+    <TypeScriptCompile Include="src\js\models\Move.ts" />
+    <TypeScriptCompile Include="src\js\models\Player.ts" />
+    <TypeScriptCompile Include="src\js\othello.loop.ts" />
+    <TypeScriptCompile Include="src\js\services\Repository.ts" />
+    <TypeScriptCompile Include="src\js\services\ScoreKeeper.ts" />
+    <TypeScriptCompile Include="tests\spec\BoardManager.spec.ts" />
+    <TypeScriptCompile Include="tests\spec\ScoreKeeper.spec.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
