@@ -70,7 +70,7 @@ const ScoreKeeper = new class scoreKeeper {
 
         }
 
-        return opponentCaptures;
+        return new RecordMoveResult( opponentCaptures );
 
     }
 
@@ -149,3 +149,12 @@ const ScoreKeeper = new class scoreKeeper {
 }()
 
 export default ScoreKeeper;
+
+class RecordMoveResult {
+    
+    constructor( captures ) {
+        this.captures = captures;
+        this.wasScoringMove = captures.length > 0;
+    }
+
+}

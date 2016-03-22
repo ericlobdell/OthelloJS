@@ -61,7 +61,7 @@ const BoardManager = new class boardManager {
         if ( ( row === 3 && col === 4 ) || ( row === 4 && col === 3 ) )
             playerNumber =  2;
 
-        playerNumber;
+        return playerNumber;
 
     }
 

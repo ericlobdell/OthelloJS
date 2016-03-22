@@ -1,5 +1,5 @@
 ﻿
-import BoardManager from "../../src/js/models/BoardManager";
+import BoardManager from "../../src/js/services/BoardManager";
 
 describe( "BoardManager", function () {
 
