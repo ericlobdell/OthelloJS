@@ -3,7 +3,7 @@ import BoardManager from "../../src/js/services/BoardManager";
 import Player from "../../src/js/models/Player";
 
 describe( "BoardManager", function () {
-    const _players = [new Player( 1 ), new Player( 2 )]
+    const _players = [new Player( 1 ), new Player( 2 )];
 
 
     describe( "getFlatGameboard", () => {
@@ -68,7 +68,7 @@ describe( "BoardManager", function () {
 
     describe( "resetTargetCells", () => {
         it( "should set isTarget property of all cells to false", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard( _players );
 
             expect( BoardManager.getFlatGameBoard( gb )
                 .some( c => c.isTarget ) )
@@ -85,7 +85,7 @@ describe( "BoardManager", function () {
 
     describe( "getPlayerCells", () => {
         it( "should return an array of cells belonging to the player", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard( _players );
             const player2Cells = BoardManager.getPlayerCells( 2, gb );
 
             expect( player2Cells.length ).toBe( 2 );
@@ -98,7 +98,7 @@ describe( "BoardManager", function () {
 
     describe( "getAdjacentCells", () => {
         it( "should return every cell surrounding the position on the game board", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard( _players );
 
             const position1 = gb.rows[4][3];
             const sut1 = BoardManager.getAdjacentCells( position1, gb );
@@ -114,7 +114,7 @@ describe( "BoardManager", function () {
 
     describe( "getOpenAdjacentCells", () => {
         it( "should return te cells adjacent to the passed cell on the game board", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard( _players );
 
             const position1 = gb.rows[4][3];
             const sut1 = BoardManager.getOpenAdjacentCells( position1, gb );

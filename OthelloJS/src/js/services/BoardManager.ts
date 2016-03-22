@@ -1,10 +1,10 @@
 import Cell from '../models/Cell';
 import Player from "../models/Player";
-import Gameboard from "../models/Gameboard";
+import {IGameboard, Gameboard} from "../models/Gameboard";
 
 const BoardManager = new class boardManager {
 
-    tryGetCell( row, col, gameBoard ) {
+    tryGetCell( row: number, col: number, gameBoard: IGameboard ) {
         return this.isValidMove( row, col ) ?
             gameBoard.rows[row][col] :
             null;
@@ -14,21 +14,21 @@ const BoardManager = new class boardManager {
         return ( row > -1 && col > -1 ) && ( row < 8 && col < 8 );
     }
 
-    getFlatGameBoard( gameBoard: Gameboard ) : Cell[] {
+    getFlatGameBoard( gameBoard: IGameboard ) : Cell[] {
         return Array.prototype.concat.apply( [], gameBoard.rows );
     }
 
-    getEmptyCells( gameBoard: Gameboard ) : Cell[] {
+    getEmptyCells( gameBoard: IGameboard ) : Cell[] {
         return this.getFlatGameBoard( gameBoard )
             .filter( c  => c.player === 0 );
     }
 
-    getPlayerCells( playerNumber: number, gameBoard: Gameboard ) : Cell[] {
+    getPlayerCells( playerNumber: number, gameBoard: IGameboard ) : Cell[] {
         return this.getFlatGameBoard( gameBoard )
             .filter( c => c.player === playerNumber );
     }
 
-    getAdjacentCells( cell: Cell, gameBoard: Gameboard ) : Cell[] {
+    getAdjacentCells( cell: Cell, gameBoard: IGameboard ) : Cell[] {
         const above = this.tryGetCell( cell.row - 1, cell.col, gameBoard );
         const aboveRight = this.tryGetCell( cell.row - 1, cell.col + 1, gameBoard );
         const aboveLeft = this.tryGetCell( cell.row - 1, cell.col - 1, gameBoard );
@@ -42,13 +42,13 @@ const BoardManager = new class boardManager {
             .filter( c => c !== null );
     }
 
-    getOpenAdjacentCells( cell: Cell, gameBoard: Gameboard ) : Cell[] {
+    getOpenAdjacentCells( cell: Cell, gameBoard: IGameboard ) : Cell[] {
         return this.getAdjacentCells( cell, gameBoard )
             .filter( c => c.player === 0 );
     }
 
     // impure
-    resetTargetCells( gameBoard: Gameboard ): void {
+    resetTargetCells( gameBoard: IGameboard ): void {
         this.getFlatGameBoard( gameBoard )
             .forEach( c => c.isTarget = false );
     }
@@ -91,5 +91,7 @@ const BoardManager = new class boardManager {
 }();
 
 export default BoardManager;
+
+
 
 

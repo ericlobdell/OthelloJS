@@ -2,7 +2,12 @@
 import Move from "./Move";
 import Player from "./Player";
 
-export default class Gameboard {
+export interface IGameboard {
+    rows: any[][];
+    moves: any[];
+}
+
+export class Gameboard {
     rows: Cell[][];
     moves: Move[];
     players: Player[];
