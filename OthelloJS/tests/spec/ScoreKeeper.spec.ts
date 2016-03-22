@@ -6,10 +6,12 @@ import BoardManager from "../../src/js/services/BoardManager";
 const _ = null;
 
 describe( "ScoreKeeper", () => {
+    const _players = [new Player( 1 ), new Player( 2 )];
 
     describe( "getScoreForPlayer", () => {
         it( "should return the number of cells of the game board occupied by the player", () => {
             const gb = {
+                moves: [[null]],
                 rows: [
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
@@ -26,6 +28,7 @@ describe( "ScoreKeeper", () => {
     describe( "doDirectionalSearch", () => {
         it( "should return an empty array if passed an invalid cell location", () => {
             const sut = ScoreKeeper.doDirectionalSearch( 0, 0, 0, 0, 1, {
+                moves: [[null]],
                 rows: [
                     [{ row: -1, col: 1 }]
                 ]
@@ -61,7 +64,7 @@ describe( "ScoreKeeper", () => {
 
     describe( "getMoveCaptures", () => {
         it( "should search in all 8 directions for possible points", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard(_players);
 
             spyOn( ScoreKeeper, "doDirectionalSearch" );
 
@@ -104,7 +107,7 @@ describe( "ScoreKeeper", () => {
         } );
 
         it( "should calculate the correct score", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard(_players);
             const hits = ScoreKeeper.getMoveCaptures( 5, 3, 1, gb );
             expect(hits.length).toBe(1);
 
@@ -114,7 +117,7 @@ describe( "ScoreKeeper", () => {
 
     describe("getNextMovesForPlayer", () => {
         it("should return an array of cells that the next player can use as a next move", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard(_players);
 
             const sut = ScoreKeeper.getNextMovesForPlayer( 1, gb );
 
@@ -122,7 +125,7 @@ describe( "ScoreKeeper", () => {
         } );
 
         it( "should mark all cells as isTarget", () => {
-            const gb = BoardManager.getInitialGameBoard();
+            const gb = BoardManager.getInitialGameBoard(_players);
 
             const nextMoves = ScoreKeeper.getNextMovesForPlayer( 1, gb );
 

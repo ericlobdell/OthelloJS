@@ -26,9 +26,10 @@ const Loop = new class loop {
         this.playerTwo = new Player( 2 );
         this.players = [ _this.playerOne, _this.playerTwo ];
         this.gameBoard = BoardManager.getInitialGameBoard( _this.players );
-        this.gameModes = { singlePlayer: 1, twoPlayer: 2, learning: 3 };
 
+        this.gameModes = { singlePlayer: 1, twoPlayer: 2, learning: 3 };
         this.gameMode = null;
+
         this.currentPlayer = _this.playerOne;
         this.otherPlayer = _this.playerTwo;
 
