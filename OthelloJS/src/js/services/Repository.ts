@@ -1,4 +1,8 @@
+import Gameboard from "../models/Gameboard";
+
 export default class Repository {
+
+    snapshots: string[];
     
     constructor() {
         this.snapshots = [];
@@ -11,9 +15,9 @@ export default class Repository {
         data.snapShots = this.snapshots;
     }
 
-    getSnapshotPattern( gameboard ) {
+    getSnapshotPattern( gameboard: Gameboard ) {
         return gameboard.moves.reduce( ( pattern, move ) => {
-            return pattern + `${move.col}-${move.row}-${move.player}-${ +move.wasHighestScoring || 0},`;
+            return pattern + `${move.col}-${move.row}-${move.player}-${ +move.isHighestScoring || 0},`;
         }, "" );
     }
 }

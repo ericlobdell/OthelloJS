@@ -1,7 +1,10 @@
 ﻿
 export default class Player {
 
-    constructor( num ) {
+    number: number;
+    score: number;
+
+    constructor( num: number ) {
         this.number = num;
         this.score = 2;
     }

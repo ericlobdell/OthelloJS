@@ -7,16 +7,16 @@ module.exports = function ( wallaby ) {
             { pattern: 'jspm_packages/system.js', instrument: false },
             { pattern: 'config.js', instrument: false },
 
-            { pattern: "src/**/*.js", load: false }
+            { pattern: "src/**/*.ts", load: false }
         ],
 
         tests: [
-           { pattern: "tests/spec/*.spec.js", load: false }
+           { pattern: "tests/spec/*.spec.ts", load: false }
         ],
-        preprocessors: {
-            "tests/spec/*.spec.js": babelPreprocessor,
-            'src/js/**/*.js': babelPreprocessor
-        },
+        //preprocessors: {
+        //    "tests/spec/*.spec.js": babelPreprocessor,
+        //    'src/js/**/*.js': babelPreprocessor
+        //},
         middleware: ( app, express ) => {
             app.use( '/jspm_packages',
                 express.static( require( 'path' ).join( __dirname, 'jspm_packages' ) ) );

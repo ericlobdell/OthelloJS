@@ -1,5 +1,7 @@
 ﻿export default class ObservableEvent {
 
+    subscribers: Function[];
+
     constructor( ...subs ) {
         this.subscribers = subs || [];
     }

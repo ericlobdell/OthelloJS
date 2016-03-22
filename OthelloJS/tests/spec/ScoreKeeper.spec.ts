@@ -1,7 +1,7 @@
-import ScoreKeeper from "../../src/js/models/ScoreKeeper";
+import ScoreKeeper from "../../src/js/services/ScoreKeeper";
 import Cell from "../../src/js/models/Cell";
 import Player from "../../src/js/models/Player";
-import BoardManager from "../../src/js/models/BoardManager";
+import BoardManager from "../../src/js/services/BoardManager";
 
 const _ = null;
 
