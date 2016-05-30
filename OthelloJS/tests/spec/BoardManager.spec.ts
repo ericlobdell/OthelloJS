@@ -13,7 +13,8 @@ describe( "BoardManager", function () {
                     [1, 2, 3],
                     [4, 5, 6],
                     [7, 8, 9]
-                ]
+                ],
+                moves: []
             };
             const expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             expect( BoardManager.getFlatGameBoard( gb ) ).toEqual( expected );
@@ -28,7 +29,8 @@ describe( "BoardManager", function () {
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
                     [{ player: 1 }, { player: 1 }, { player: 0 }],
                     [{ player: 1 }, { player: 0 }, { player: 0 }]
-                ]
+                ],
+                moves: []
             };
             const sut = BoardManager.getEmptyCells( gb );
 

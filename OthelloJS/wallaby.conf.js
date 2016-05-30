@@ -11,12 +11,10 @@ module.exports = function ( wallaby ) {
         ],
 
         tests: [
-           { pattern: "tests/spec/*.spec.ts", load: false }
+           { pattern: "tests/spec/*.spec.ts", load: false },
+           { pattern: "tests/mocks/*.ts", load: false }
         ],
-        //preprocessors: {
-        //    "tests/spec/*.spec.js": babelPreprocessor,
-        //    'src/js/**/*.js': babelPreprocessor
-        //},
+
         middleware: ( app, express ) => {
             app.use( '/jspm_packages',
                 express.static( require( 'path' ).join( __dirname, 'jspm_packages' ) ) );
@@ -41,9 +39,6 @@ module.exports = function ( wallaby ) {
             Promise.all( promises ).then( function () {
                 wallaby.start();
             } ).catch( function ( e ) { setTimeout( function () { throw e; }, 0 ); } );
-        }//},
-        //env: {
-        //    type: 'node'
-        //}
+        }
     };
 };

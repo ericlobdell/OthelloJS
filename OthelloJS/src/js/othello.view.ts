@@ -1,8 +1,8 @@
 ﻿
-import ObservableEvent from "models/ObservableEvent";
-import Gameboard from "models/Gameboard";
-import Player from "models/Player";
-import Cell from "models/Cell";
+import ObservableEvent from "./models/ObservableEvent";
+import { Gameboard } from "./models/Gameboard";
+import Player from "./models/Player";
+import Cell from "./models/Cell";
 import $ from 'jquery';
 
 const View = new class view {

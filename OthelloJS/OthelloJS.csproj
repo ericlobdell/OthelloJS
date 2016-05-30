@@ -84,6 +84,7 @@
       <DependentUpon>app.css</DependentUpon>
     </Content>
     <Content Include="tests\MIT.LICENSE" />
+    <TypeScriptCompile Include="tests\mocks\MockDataBuilder.ts" />
     <TypeScriptCompile Include="tests\spec\Othello.ai.spec.ts" />
     <TypeScriptCompile Include="tests\spec\Othello.loop.spec.ts" />
     <TypeScriptCompile Include="tests\spec\Repository.spec.ts" />

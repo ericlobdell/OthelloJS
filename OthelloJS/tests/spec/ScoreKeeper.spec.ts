@@ -142,6 +142,7 @@ describe( "ScoreKeeper", () => {
             p1.score = 10;
             p2.score = 4;
 
+            console.log( ScoreKeeper );
             const sut = ScoreKeeper.getLeader( p1, p2 );
             expect( sut ).toBe( 1 );
         } );

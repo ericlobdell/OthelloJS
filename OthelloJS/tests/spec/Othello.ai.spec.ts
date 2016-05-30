@@ -1,11 +1,25 @@
 ﻿import Othello from "../../src/js/othello.ai";
+import Move from '../../src/js/models/Move';
+import MockDataBuilder from '../mocks/MockDataBuilder';
 
 describe( "Othello.ai", () => {
+    let moveBuilder;
+
+    beforeEach(() => {
+        moveBuilder = new MockDataBuilder( Move );
+    });
 
     describe( "isCorner", () => {
         it( "should test if move location is in corner position", () => {
-            const notCornerMove = { row: 0, col: 3 };
-            const cornerMove = { row: 7, col: 0 }
+            const notCornerMove = moveBuilder
+                .setRow( 1 )
+                .setCol( 1 )
+                .build();
+
+            const cornerMove = moveBuilder
+                .setRow( 7 )
+                .setCol( 0 )
+                .build();
 
             expect( Othello.isCorner( notCornerMove ) ).toBe( false );
             expect( Othello.isCorner( cornerMove ) ).toBe( true );
@@ -15,8 +29,14 @@ describe( "Othello.ai", () => {
 
     describe( "isEdge", () => {
         it( "should test if a move is an edge position", () => {
-            const nonEdgeMove = { col: 3, row: 5 };
-            const edgeMove = { row: 0, col: 5 };
+            const nonEdgeMove = moveBuilder
+                .setRow( 3 )
+                .setCol( 5 )
+                .build();
+            const edgeMove = moveBuilder
+                .setRow( 0)
+                .setCol( 5 )
+                .build();
 
             expect( Othello.isEdge( nonEdgeMove ) ).toBe( false );
             expect( Othello.isEdge( edgeMove ) ).toBe( true );
@@ -25,19 +45,38 @@ describe( "Othello.ai", () => {
 
     describe( "getHighestScoringMove", () => {
         it( "should return a move with the highest pointValue", () => {
-            const moves = [{ pointValue: 2 }, { pointValue: 4 }, { pointValue: 2 }, { pointValue: 1 }];
+            const m1 = moveBuilder.setPointValue( 2 ).build();
+            const m2 = moveBuilder.setPointValue( 4 ).build();
+            const m3 = moveBuilder.setPointValue( 2 ).build();
+            const m4 = moveBuilder.setPointValue( 1 ).build();
 
-            expect( Othello.getHighestScoringMove( moves ) ).toEqual( { pointValue: 4 } );
+            const moves = [m1, m2, m3, m4];
+
+            expect( Othello.getHighestScoringMove( moves ) ).toEqual( m2 );
         } );
     } );
 
     describe( "makeMove", () => {
         it( "should return the coordinates of the move it wants to make", () => {
-            const moves = [
-                { col: 1, row: 1, pointValue: 4 },
-                { col: 2, row: 3, pointValue: 3 },
-                { col: 1, row: 2, pointValue: 6 }
-            ];
+            const m1 = moveBuilder
+                .setRow( 1 )
+                .setCol(1)
+                .setPointValue( 4 )
+                .build();
+
+            const m2 = moveBuilder
+                .setRow( 3 )
+                .setCol( 2 )
+                .setPointValue( 3 )
+                .build();
+
+            const m3 = moveBuilder
+                .setRow( 2 )
+                .setCol( 1 )
+                .setPointValue( 6 )
+                .build();
+
+            const moves = [m1, m2, m3];
 
             const sut = Othello.makeMove( moves );
             expect( sut )
@@ -48,9 +87,23 @@ describe( "Othello.ai", () => {
         } );
 
         it( "should select a corner position even if it isn't the highest scoring move", () => {
-            const nonCorner1 = { col: 6, row: 2, pointValue: 4 };
-            const nonCorner2 = { col: 1, row: 2, pointValue: 6 };
-            const cornerMove = { col: 0, row: 0, pointValue: 3 };
+            const nonCorner1 = moveBuilder
+                .setRow( 2 )
+                .setCol( 6 )
+                .setPointValue( 4 )
+                .build();
+
+            const nonCorner2 = moveBuilder
+                .setRow( 2 )
+                .setCol( 1 )
+                .setPointValue( 6 )
+                .build();
+
+            const cornerMove = moveBuilder
+                .setRow( 0 )
+                .setCol( 0 )
+                .setPointValue( 3 )
+                .build();
 
             const sut = Othello.makeMove( [nonCorner1, cornerMove, nonCorner2] );
             expect( sut ).toEqual( {
@@ -60,9 +113,23 @@ describe( "Othello.ai", () => {
         } );
 
         it( "should select an edge position even if it isn't the highest scoring move, but no corner available", () => {
-            const nonEdge1 = { col: 6, row: 2, pointValue: 4 };
-            const nonEdge2 = { col: 1, row: 2, pointValue: 6 };
-            const edgeMove = { col: 4, row: 0, pointValue: 3 };
+            const nonEdge1 = moveBuilder
+                .setRow( 2 )
+                .setCol( 6 )
+                .setPointValue( 4 )
+                .build();
+
+            const nonEdge2 = moveBuilder
+                .setRow( 2 )
+                .setCol( 1 )
+                .setPointValue( 6 )
+                .build();
+
+            const edgeMove = moveBuilder
+                .setRow( 0 )
+                .setCol( 4 )
+                .setPointValue( 3 )
+                .build();
 
             const sut = Othello.makeMove( [nonEdge1, edgeMove, nonEdge2] );
             expect( sut ).toEqual( {
@@ -86,9 +153,23 @@ describe( "Othello.ai", () => {
 
     describe("makeRandomMove", () => {
         it( "should select a move at random", () => {
-            const nonCorner1 = { col: 6, row: 2, pointValue: 4 };
-            const nonCorner2 = { col: 1, row: 2, pointValue: 6 };
-            const cornerMove = { col: 0, row: 0, pointValue: 3 };
+            const nonCorner1 = moveBuilder
+                .setRow( 2 )
+                .setCol( 6 )
+                .setPointValue( 4 )
+                .build();
+
+            const nonCorner2 = moveBuilder
+                .setRow( 2 )
+                .setCol( 1 )
+                .setPointValue( 6 )
+                .build();
+
+            const cornerMove = moveBuilder
+                .setRow( 0 )
+                .setCol( 0 )
+                .setPointValue( 3 )
+                .build();
 
             let sut = Othello.makeRandomMove( [nonCorner1, cornerMove, nonCorner2] );
             expect( sut )

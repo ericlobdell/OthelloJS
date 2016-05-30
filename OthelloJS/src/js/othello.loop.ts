@@ -1,5 +1,5 @@
 import Player from "./models/Player";
-import Gameboard from "models/Gameboard";
+import { Gameboard } from "./models/Gameboard";
 import View from "./othello.view";
 import ScoreKeeper from "./services/ScoreKeeper";
 import BoardManager from "./services/BoardManager";
