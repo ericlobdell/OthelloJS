@@ -3,8 +3,8 @@ import Move from "./Move";
 import Player from "./Player";
 
 export interface IGameboard {
-    rows: any[][];
-    moves: any[];
+    rows: Cell[][];
+    moves: Move[];
 }
 
 export class Gameboard {

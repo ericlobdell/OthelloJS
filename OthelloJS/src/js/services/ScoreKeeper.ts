@@ -4,7 +4,9 @@ import {IGameboard, Gameboard} from "../models/Gameboard";
 import Cell from "../models/Cell";
 import Player from "../models/Player";
 
-const ScoreKeeper = new class scoreKeeper {
+class ScoreKeeper {
+
+    constructor() { }
 
     getMoveCaptures ( initialRow: number, initialCol: number, player: number, gameBoard: IGameboard ): Cell[] {
         let hits: Cell[] = [];
@@ -151,9 +153,9 @@ const ScoreKeeper = new class scoreKeeper {
         return nextMoves;
     }
 
-}()
+}
 
-export default ScoreKeeper;
+export default new ScoreKeeper();
 
 class RecordMoveResult {
 

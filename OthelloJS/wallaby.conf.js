@@ -1,6 +1,4 @@
-﻿var babelPreprocessor = file => require( 'babel' )
-                                   .transform( file.content, { sourceMap: true, filename: file.path } );
-
+﻿
 module.exports = function ( wallaby ) {
     return {
         files: [

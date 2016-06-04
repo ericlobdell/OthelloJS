@@ -71,6 +71,7 @@
     <Content Include="config.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <TypeScriptCompile Include="Scripts\typings\globals.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="src\js\models\ObservableEvent.ts" />
@@ -84,6 +85,7 @@
       <DependentUpon>app.css</DependentUpon>
     </Content>
     <Content Include="tests\MIT.LICENSE" />
+    <TypeScriptCompile Include="src\js\strategies\IGameModeStrategy.ts" />
     <TypeScriptCompile Include="tests\mocks\MockDataBuilder.ts" />
     <TypeScriptCompile Include="tests\spec\Othello.ai.spec.ts" />
     <TypeScriptCompile Include="tests\spec\Othello.loop.spec.ts" />

@@ -2,7 +2,9 @@ import Cell from '../models/Cell';
 import Player from "../models/Player";
 import {IGameboard, Gameboard} from "../models/Gameboard";
 
-const BoardManager = new class boardManager {
+class BoardManager {
+
+    constructor() { }
 
     tryGetCell( row: number, col: number, gameBoard: IGameboard ) {
         return this.isValidMove( row, col ) ?
@@ -13,7 +15,7 @@ const BoardManager = new class boardManager {
     isValidMove( row: number, col: number ) : boolean {
         return ( row > -1 && col > -1 ) && ( row < 8 && col < 8 );
     }
-
+    s
     getFlatGameBoard( gameBoard: IGameboard ) : Cell[] {
         return Array.prototype.concat.apply( [], gameBoard.rows );
     }
@@ -88,9 +90,9 @@ const BoardManager = new class boardManager {
         return gameBoard;
     }
 
-}();
+}
 
-export default BoardManager;
+export default new BoardManager();
 
 
 

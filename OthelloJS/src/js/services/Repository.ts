@@ -1,4 +1,4 @@
-import Gameboard from "../models/Gameboard";
+import { Gameboard } from "../models/Gameboard";
 
 export default class Repository {
 

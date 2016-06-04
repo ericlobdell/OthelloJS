@@ -1,23 +1,28 @@
 ﻿import Othello from "../../src/js/othello.ai";
 import Move from '../../src/js/models/Move';
+import Cell from '../../src/js/models/Cell';
 import MockDataBuilder from '../mocks/MockDataBuilder';
 
 describe( "Othello.ai", () => {
-    let moveBuilder;
+    let moveBuilder, cellBuilder;
+    let _ = null;
 
     beforeEach(() => {
         moveBuilder = new MockDataBuilder( Move );
+        cellBuilder = new MockDataBuilder( Cell );
     });
 
     describe( "isCorner", () => {
         it( "should test if move location is in corner position", () => {
-            const notCornerMove = moveBuilder
+            const notCornerMove = cellBuilder
+                .createNew()
                 .setRow( 1 )
                 .setCol( 1 )
                 .build();
 
-            const cornerMove = moveBuilder
-                .setRow( 7 )
+            const cornerMove = cellBuilder
+                .createNew()
+                .setRow( 0 )
                 .setCol( 0 )
                 .build();
 
@@ -29,12 +34,15 @@ describe( "Othello.ai", () => {
 
     describe( "isEdge", () => {
         it( "should test if a move is an edge position", () => {
-            const nonEdgeMove = moveBuilder
+            const nonEdgeMove = cellBuilder
+                .createNew()
                 .setRow( 3 )
                 .setCol( 5 )
-                .build();
-            const edgeMove = moveBuilder
-                .setRow( 0)
+                .build(); 
+                       
+            const edgeMove = cellBuilder
+                .createNew()
+                .setRow( 0 )
                 .setCol( 5 )
                 .build();
 
@@ -45,10 +53,10 @@ describe( "Othello.ai", () => {
 
     describe( "getHighestScoringMove", () => {
         it( "should return a move with the highest pointValue", () => {
-            const m1 = moveBuilder.setPointValue( 2 ).build();
-            const m2 = moveBuilder.setPointValue( 4 ).build();
-            const m3 = moveBuilder.setPointValue( 2 ).build();
-            const m4 = moveBuilder.setPointValue( 1 ).build();
+            const m1 = moveBuilder.createNew().setPointValue( 2 ).build();
+            const m2 = moveBuilder.createNew().setPointValue( 4 ).build();
+            const m3 = moveBuilder.createNew().setPointValue( 2 ).build();
+            const m4 = moveBuilder.createNew().setPointValue( 1 ).build();
 
             const moves = [m1, m2, m3, m4];
 
@@ -59,18 +67,21 @@ describe( "Othello.ai", () => {
     describe( "makeMove", () => {
         it( "should return the coordinates of the move it wants to make", () => {
             const m1 = moveBuilder
+                .createNew()
                 .setRow( 1 )
                 .setCol(1)
                 .setPointValue( 4 )
                 .build();
 
             const m2 = moveBuilder
+                .createNew()
                 .setRow( 3 )
                 .setCol( 2 )
                 .setPointValue( 3 )
                 .build();
 
             const m3 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 1 )
                 .setPointValue( 6 )
@@ -88,18 +99,21 @@ describe( "Othello.ai", () => {
 
         it( "should select a corner position even if it isn't the highest scoring move", () => {
             const nonCorner1 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 6 )
                 .setPointValue( 4 )
                 .build();
 
             const nonCorner2 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 1 )
                 .setPointValue( 6 )
                 .build();
 
             const cornerMove = moveBuilder
+                .createNew()
                 .setRow( 0 )
                 .setCol( 0 )
                 .setPointValue( 3 )
@@ -114,18 +128,21 @@ describe( "Othello.ai", () => {
 
         it( "should select an edge position even if it isn't the highest scoring move, but no corner available", () => {
             const nonEdge1 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 6 )
                 .setPointValue( 4 )
                 .build();
 
             const nonEdge2 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 1 )
                 .setPointValue( 6 )
                 .build();
 
             const edgeMove = moveBuilder
+                .createNew()
                 .setRow( 0 )
                 .setCol( 4 )
                 .setPointValue( 3 )
@@ -154,18 +171,21 @@ describe( "Othello.ai", () => {
     describe("makeRandomMove", () => {
         it( "should select a move at random", () => {
             const nonCorner1 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 6 )
                 .setPointValue( 4 )
                 .build();
 
             const nonCorner2 = moveBuilder
+                .createNew()
                 .setRow( 2 )
                 .setCol( 1 )
                 .setPointValue( 6 )
                 .build();
 
             const cornerMove = moveBuilder
+                .createNew()
                 .setRow( 0 )
                 .setCol( 0 )
                 .setPointValue( 3 )

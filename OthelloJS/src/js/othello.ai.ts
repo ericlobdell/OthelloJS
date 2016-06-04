@@ -1,8 +1,9 @@
 ﻿import Move from "models/Move";
 import Cell from "models/Cell";
 
+class Othello {
 
-const Othello = new class othello {
+    constructor() { }
 
     isCorner( move: Cell ) : boolean {
         const corners = [[0, 0], [0, 7], [7, 0], [7, 7]];
@@ -67,9 +68,9 @@ const Othello = new class othello {
         return Math.floor( Math.random() * max );
     }
 
-}();
+}
 
-export default Othello;
+export default new Othello();
 
 interface MoveResult {
     row: number;

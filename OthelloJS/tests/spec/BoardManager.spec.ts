@@ -2,12 +2,12 @@
 import BoardManager from "../../src/js/services/BoardManager";
 import Player from "../../src/js/models/Player";
 
-describe( "BoardManager", function () {
+describe( "BoardManager", () => {
     const _players = [new Player( 1 ), new Player( 2 )];
 
 
     describe( "getFlatGameboard", () => {
-        it( "should return a matrix as a flat one dimensional array", function () {
+        it( "should return a matrix as a flat one dimensional array", () => {
             const gb = {
                 rows: [
                     [1, 2, 3],
@@ -16,13 +16,14 @@ describe( "BoardManager", function () {
                 ],
                 moves: []
             };
+
             const expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             expect( BoardManager.getFlatGameBoard( gb ) ).toEqual( expected );
         });
     });
 
     describe( "getEmptyCells", () => {
-        it( "should return only the cells of the game board that are unoccupied", function () {
+        it( "should return only the cells of the game board that are unoccupied", () => {
             const expected = [{ player: 0 }, { player: 0 }, { player: 0 }, { player: 0 }];
             const gb = {
                 rows: [
